@@ -144,7 +144,7 @@ pub struct BizActivity {
 > Wrapper的特殊方法
 
 | 方法    | sql/rust_code | 功能 |
-| ------ | ------ |
+| ------ | ------ |------ |
 | push_wrapper(sql,wrapper)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |  wrapper添加wrapper    |   
 | push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   wrapper添加sql和参数   |   
 | push_sql(sql)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |    wrapper添加sql  |   
