@@ -2,7 +2,7 @@
 
 # Rbatis
 
-> 高性能、易用的Rust ORM框架
+> ORM formwork Rustlang-based,dynamic sql, no Runtime,No Garbage Collector, low Memory use,High Performance orm Framework. support async_std,tokio
 
 * 高性能、易用的Rust ORM框架
 
