@@ -1,4 +1,4 @@
-![logo](https://raw.githubusercontent.com/rbatis/rbatis/master/logo.png)
+![logo](logo.png)
 
 # Rbatis
 
