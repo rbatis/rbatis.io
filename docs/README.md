@@ -491,7 +491,7 @@ fn main() {
    }
 ```
 
-# 插件：SqlIntercept拦截器
+# 插件：SqlIntercept
 
 > 实现接口
 ```rust
