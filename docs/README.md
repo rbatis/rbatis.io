@@ -141,7 +141,7 @@ pub struct BizActivity {
 | in_array(column,args)      |   IN (#{},#{},#{},#{})  |
 | not_in(column,args)      |   NOT IN (#{},#{},#{},#{})  |
 
-> 特殊方法
+> Wrapper的特殊方法
 
 | 方法    | sql/rust_code | 功能 |
 | ------ | ------ |
