@@ -148,7 +148,7 @@ pub struct BizActivity {
 | push_wrapper(sql,wrapper)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 | push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 | push_sql(sql)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-| push_arg(arg)            |   args.push(*)     |   
+| push_arg(arg)            |   wrapper.push(*)     |   
 | do_if(test:bool,method)            |  wrapper.do_if(p.is_some(), *)    |   
 | do_match(&[method...])  |  wrapper.do_match(p.is_some(), *))    |   
 
