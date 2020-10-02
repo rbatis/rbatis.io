@@ -82,7 +82,7 @@ async fn main() {
 ```rust
 #[macro_use]
 extern crate rbatis_macro_driver;
-///数据库表模型 CRUDEnable也可以写成 impl CRUDEnable for BizActivity{}
+
 #[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)]
 pub struct BizActivity {
     pub id: Option<String>,
