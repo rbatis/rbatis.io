@@ -143,11 +143,14 @@ pub struct BizActivity {
 
 > 特殊方法
 
-| 方法    | sql |
+| 方法    | sql/rust_code |
 | ------ | ------ |
 | push_wrapper(sql,wrapper)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 | push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-
+| push_sql(sql)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
+| push_arg(arg)            |   args.push(*)     |   
+| do_if(test:bool,method)            |  wrapper.do_if(p.is_some(), *)    |   
+| do_match(&[method...])  |  wrapper.do_match(p.is_some(), *))    |   
 
 > Wrapper使用例子
 ```rust
