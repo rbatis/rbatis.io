@@ -4,12 +4,10 @@
 
 > ORM formwork Rustlang-based,dynamic sql, no Runtime,No Garbage Collector, low Memory use,High Performance orm Framework. support async_std,tokio
 
-* 高性能、易用的Rust ORM框架 
-* 支持Future,async_std,tokio等协程运行时
-* 提供fast_log异步日志框架，Log日志框架可替换
-* 支持分页，逻辑删除，sql过滤器插件
+* 高性能(基于Future)、易用的Rust ORM框架 
 * 百分百safe安全代码实现，安全性保障
-* 易用性，Wrapper几乎解决99%的常见sql，py_sql宏解决100%的复杂sql
+* 提供丰富的插件支持，分页，逻辑删除，sql过滤、修改
+* 强大的易用性，Wrapper几乎解决99%的常见sql，py_sql宏解决100%的复杂sql， 字段支持自定义format
 
 [GitHub](https://github.com/rbatis/rbatis)
 [Get Started](#Rbatis-初始化)
