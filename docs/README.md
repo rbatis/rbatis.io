@@ -100,7 +100,7 @@ pub struct BizActivity {
 }
 ```
 
->  使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
+>  (可选)使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 ```rust
     impl CRUDEnable for BizActivity {
         type IdType = String;
