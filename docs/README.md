@@ -75,10 +75,10 @@ async fn main() {
 
 >  CRUDEnable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
 
-* #{} table_name()表名(对应struct的蛇形命名)
-* #{} IdType(对应struct的id字段类型)
-* #{} table_fields()表字段逗号分隔的字符串(对应struct的所有字段名称)
-* #{} format_chain() 字段格式化链条（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp ）
+* #{} IdType(对应struct的id字段类型，必须声明)
+* #{} table_name()表名(对应struct的蛇形命名，可选重写)
+* #{} table_fields()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
+* #{} format_chain() 字段格式化链条（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
 
 >  使用宏实现CRUDEnable(可选) 好处是宏在编译器生成代码，性能较高
