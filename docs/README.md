@@ -49,7 +49,7 @@ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
 ```
 
-> 使用全局变量初始化
+> 使用全局变量初始化（需依赖lazy_static这个库）
 ```rust
 lazy_static! {
   // Rbatis是线程、协程安全的，运行时的方法是Send+Sync，内部使用DashMap等等并发安全的map实现，无需担心线程竞争
