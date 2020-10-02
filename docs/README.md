@@ -432,7 +432,7 @@ fn main() {
 ```
 
 
-# 分页插件
+# 插件：分页插件
 ```rust
         let mut rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -478,7 +478,7 @@ fn main() {
 }
 ```
 
-# 逻辑删除插件
+# 插件：逻辑删除插件
 > (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 list**(),remove**()，fetch**())
 ```rust
    let mut rb = init_rbatis().await;
@@ -491,7 +491,7 @@ fn main() {
    }
 ```
 
-# SqlIntercept拦截器
+# 插件：SqlIntercept拦截器
 
 > 实现接口
 ```rust
