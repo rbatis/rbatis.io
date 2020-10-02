@@ -143,14 +143,14 @@ pub struct BizActivity {
 
 > 特殊方法
 
-| 方法    | sql/rust_code |
+| 方法    | sql/rust_code | 功能 |
 | ------ | ------ |
-| push_wrapper(sql,wrapper)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-| push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-| push_sql(sql)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-| push_arg(arg)            |   wrapper.push(*)     |   
-| do_if(test:bool,method)            |  wrapper.do_if(p.is_some(), *)    |   
-| do_match(&[method...])  |  wrapper.do_match(p.is_some(), *))    |   
+| push_wrapper(sql,wrapper)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |  wrapper添加wrapper    |   
+| push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   wrapper添加sql和参数   |   
+| push_sql(sql)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |    wrapper添加sql  |   
+| push_arg(arg)            |   wrapper.push(*)     |   wrapper添加参数   |   
+| do_if(test:bool,method)            |  wrapper.do_if(p.is_some(), *)    |  wrapper执行判断    |   
+| do_match(&[method...])  |  wrapper.do_match(p.is_some(), *))    |    wrapper执行match条件匹配  |   
 
 > Wrapper使用例子
 ```rust
