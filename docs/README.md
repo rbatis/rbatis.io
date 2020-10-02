@@ -146,7 +146,7 @@ pub struct BizActivity {
 
 | 方法    | sql |
 | ------ | ------ |
-| push_wrapper(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
+| push_wrapper(sql,wrapper)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 | push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 
 
