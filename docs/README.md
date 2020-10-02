@@ -11,7 +11,7 @@
 # Rbatis-初始化
 
 > 安装依赖
-##### 安装依赖(Cargo.toml)，然后执行命令 cargo install
+##### 安装依赖(Cargo.toml)，执行 cargo install
 ``` rust
 #json支持(必须)
 serde = { version = "1.0", features = ["derive"] }
