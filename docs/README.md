@@ -37,7 +37,7 @@ rbatis-macro-driver = { version = "1.6" }
 ```
 
 
-> 普通初始化
+> 普通初始化/自动判断驱动类型"mysql://*","postgres://*","sqlite://*"加载驱动
 ```rust
 ///rbatis初始化，rbatis是线程安全可使用lazy_static 定义为全局变量
 let rb = Rbatis::new();
