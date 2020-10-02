@@ -2,7 +2,7 @@
 
 # Rbatis
 
-> Rust ORM Framework Rustlang-based,dynamic sql, no Runtime,No Garbage Collector, low Memory use. support async_std,tokio
+> Rust ORM Framework Dynamic sql, No Runtime,No Garbage Collector, Low Memory,Async_std,Tokio.
 
 > 高性能/易用的Rust首选ORM
 
