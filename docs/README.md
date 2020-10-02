@@ -331,7 +331,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
-> 宏映射 py_sql
+> 宏映射 py_sql(传入事务tx_id的模式)
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
@@ -340,12 +340,12 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[py_sql(RB, "select * from biz_activity where id = #{name}
                   if name != '':
                     and name=#{name}")]
-    fn py_select(name: &str) -> Option<BizActivity> {}
+    fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
     #[async_std::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-        let a = py_select("1").await.unwrap();
+        let a = py_select("","1").await.unwrap();
         println!("{:?}", a);
     }
 ```
