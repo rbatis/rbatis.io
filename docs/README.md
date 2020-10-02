@@ -112,10 +112,62 @@ pub struct BizActivity {
     }
 ```
 
+# Wrapper-使用Sql包装
+
+> Wrapper是对sql的一系列包装，注意结尾调用check()检查正确性
+
+| 方法    | sql |
+| ------ | ------ |
+| and            |  AND     |   
+| or         | OR     |  
+| having           | HAVING {}     |  
+| all_eq(map[String,#{}#{}])             | a = #{}, b= #{},c=#{}     |
+| eq      |  a = #{}    |
+| ne      |  a <> #{}    |
+| order_by(bool,&[str])      |  order by #{} desc, #{} asc....    |
+| group_by      |  group by #{},#{},#{}    |
+| gt      |  a > #{}    |
+| ge      |  a >= #{}    |
+| lt      |  a < #{}    |
+| le      |  a <= #{}    |
+| between(column,min,max)      |  BETWEEN #{} AND #{}    |
+| not_between(column,min,max)      |  NOT BETWEEN #{} AND #{}    |
+| like(column,obj)      |   LIKE '%#{}%'   |
+| like_left(column,obj)      |   LIKE '%#{}'   |
+| like_right(column,obj)      |   LIKE '#{}%'   |
+| not_like(column,obj)      |   NOT LIKE  '%#{}%'   |
+| is_null(column)      |   #{} IS NULL   |
+| is_not_null(column)      |   #{} IS NOT NULL   |
+| in_array(column,args)      |   IN (#{},#{},#{},#{})  |
+| not_in(column,args)      |   NOT IN (#{},#{},#{},#{})  |
+
+> 特殊方法
+
+| 方法    | sql |
+| ------ | ------ |
+| push_wrapper(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
+| push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 
 
+> Wrapper使用例子
+```rust
+  //初始化Wrapper可以使用let rb=Rbatis::new();rb.new_wrapper()方法
+  let w = Wrapper::new(&DriverType::Mysql).eq("id", 1)
+            .ne("id", 1)
+            .in_array("id", &[1, 2, 3])
+            .not_in("id", &[1, 2, 3])
+            .all_eq(&m)
+            .like("name", 1)
+            .or()
+            .not_like("name", "asdf")
+            .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
+            .group_by(&["id"])
+            .order_by(true, &["id", "name"])
+            .check().unwrap();
+```
 
-# CRUD-简化
+
+# CRUD+Wrapper- 增删改查配合Wrapper
 
 ```rust
 let rb = Rbatis::new();
@@ -185,64 +237,107 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...还有更多方法，请查看crud.rs
 ```
 
-
-# Wrapper-使用Sql包装
-
-> Wrapper是对sql的一系列包装，注意结尾调用check()检查正确性
-
-| 方法    | sql |
-| ------ | ------ |
-| and            |  AND     |   
-| or         | OR     |  
-| having           | HAVING {}     |  
-| all_eq(map[String,#{}#{}])             | a = #{}, b= #{},c=#{}     |
-| eq      |  a = #{}    |
-| ne      |  a <> #{}    |
-| order_by(bool,&[str])      |  order by #{} desc, #{} asc....    |
-| group_by      |  group by #{},#{},#{}    |
-| gt      |  a > #{}    |
-| ge      |  a >= #{}    |
-| lt      |  a < #{}    |
-| le      |  a <= #{}    |
-| between(column,min,max)      |  BETWEEN #{} AND #{}    |
-| not_between(column,min,max)      |  NOT BETWEEN #{} AND #{}    |
-| like(column,obj)      |   LIKE '%#{}%'   |
-| like_left(column,obj)      |   LIKE '%#{}'   |
-| like_right(column,obj)      |   LIKE '#{}%'   |
-| not_like(column,obj)      |   NOT LIKE  '%#{}%'   |
-| is_null(column)      |   #{} IS NULL   |
-| is_not_null(column)      |   #{} IS NOT NULL   |
-| in_array(column,args)      |   IN (#{},#{},#{},#{})  |
-| not_in(column,args)      |   NOT IN (#{},#{},#{},#{})  |
-
-> 特殊方法
-
-| 方法    | sql |
-| ------ | ------ |
-| push_wrapper(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-| push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
-
-
-> Wrapper使用例子
-```rust
-  //初始化Wrapper可以使用let rb=Rbatis::new();rb.new_wrapper()方法
-  let w = Wrapper::new(&DriverType::Mysql).eq("id", 1)
-            .ne("id", 1)
-            .in_array("id", &[1, 2, 3])
-            .not_in("id", &[1, 2, 3])
-            .all_eq(&m)
-            .like("name", 1)
-            .or()
-            .not_like("name", "asdf")
-            .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
-            .group_by(&["id"])
-            .order_by(true, &["id", "name"])
-            .check().unwrap();
-```
-
 # Py-使用Py语法
 
+> py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
+
+* py语法支持加减乘除，if，for in,trim,include,where,set,choose等等语法(和xml使用的功能几乎一样)
+* py语法中，child的行空格必须大于father的空格。表示自己是它的child
+* py语法必须以 : 结尾
+
+>例如
+```rust
+        SELECT * FROM biz_activity
+        WHERE delete_flag = #{delete_flag}
+        if name != null:
+          AND name like #{name+'%'}
+        if ids != null:
+          AND id in (
+          trim ',':
+             for item in ids:
+               #{item},
+```
+
+> 1 直接使用Rbatis执行pysql
+``` python
+//执行到远程mysql 并且获取结果。支持serde_json可序列化的任意类型
+        let rb = Rbatis::new();
+        rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+            let py = r#"
+        SELECT * FROM biz_activity
+        WHERE delete_flag = #{delete_flag}
+        if name != null:
+          AND name like #{name+'%'}
+        if ids != null:
+          AND id in (
+          trim ',':
+             for item in ids:
+               #{item},
+          )"#;
+            let data: serde_json::Value = rb.py_fetch("", py, &json!({   "delete_flag": 1 })).await.unwrap();
+            println!("{}", data);
+```
+
+> 2使用宏映射执行pysql
+
 # Macro-智能宏映射
+
+> 宏实现方法能非常方便的编写自定义的sql，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性
+
+* sql宏的第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如 #[sql(RB, "select * from biz_activity where id = ?")]
+* py_sql宏和sql宏类似，区别就是 使用#{}代替预编译参数，${}代替直接替换参数
+
+> 宏映射 原生驱动sql
+```rust
+    lazy_static! {
+     static ref RB:Rbatis=Rbatis::new();
+   }
+
+    /// 宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql
+    /// RB是本地依赖Rbatis引用的名称,例如  dao::RB, com::xxx::RB....都可以
+    /// 第二个参数是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
+    /// 宏会自动转换函数为  pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
+    ///
+    #[sql(RB, "select * from biz_activity where id = ?")]
+    fn select(name: &str) -> BizActivity {}
+    //其他写法： pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
+
+    #[async_std::test]
+    pub async fn test_macro() {
+        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+        let a = select("1").await.unwrap();
+        println!("{:?}", a);
+    }
+```
+
+> 宏映射 py sql
+```rust
+    lazy_static! {
+     static ref RB:Rbatis=Rbatis::new();
+   }
+
+    /// 宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql
+    /// RB是本地依赖Rbatis引用的名称,例如  dao::RB, com::xxx::RB....都可以
+    /// 第二个参数是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
+    /// 宏会自动转换函数为  pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
+    ///
+    #[py_sql(RB, "select * from biz_activity where id = #{name}
+                  if name != '':
+                    and name=#{name}")]
+    fn py_select(name: &str) -> Option<BizActivity> {}
+    //其他写法： pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
+
+    #[async_std::test]
+    pub async fn test_macro_py_select() {
+        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+        let a = py_select("1").await.unwrap();
+        println!("{:?}", a);
+    }
+```
+
+
 
 # Xml-使用xml
 
