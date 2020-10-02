@@ -7,4 +7,4 @@
 * 高性能、易用的Rust ORM框架
 
 [GitHub](https://github.com/rbatis/rbatis)
-[Get Started](#quick-start)
+[Get Started](#Rbatis-初始化)
