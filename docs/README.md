@@ -103,10 +103,10 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 >  (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 ```rust
     impl CRUDEnable for BizActivity {
-        type IdType = String;
-        //fn table_name() -> String {}
-        //fn table_fields() -> String {} 
-        //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{}
+        type IdType = String; //默认提供IdType类型即可，接口里其他的method默认使用json序列化实现
+        //fn table_name() -> String {} //可重写
+        //fn table_fields() -> String {}  //可重写
+        //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //可重写
     }
 ```
 
