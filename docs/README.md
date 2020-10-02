@@ -493,6 +493,8 @@ fn main() {
 ```
 
 # SqlIntercept拦截器
+
+> 实现接口
 ```rust
 pub struct Intercept{}
 
@@ -505,7 +507,12 @@ impl SqlIntercept for Intercept{
     /// is_prepared_sql: if is run in prepared_sql=ture
     fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis_core::Error>;
 }
+```
 
+> 设置到Rbatis
+```rust
+let mut rb=Rbatis::new();
+rb.sql_intercepts.push(Box::new(Intercept{}));
 ```
 
 
