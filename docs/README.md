@@ -238,7 +238,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...还有更多方法，请查看crud.rs
 ```
 
-# Py-使用Py语法
+# PySql-使用Py语法
 
 > py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
 
@@ -281,7 +281,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 2使用宏映射执行pysql，见 #Macro-智能宏映射
 
-# Macro-智能宏映射
+# Macro Method-智能宏映射方法
 
 > 宏实现方法能非常方便的编写自定义的sql，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性
 
@@ -350,9 +350,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 
-
-
-# Xml-使用xml
+# XML/SQL-使用xml操作SQL
 
 ``` rust
 /**
@@ -433,7 +431,7 @@ fn main() {
 ```
 
 
-# 插件：分页插件
+# 插件：分页RbatisPagePlugin
 ```rust
         let mut rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -478,7 +476,7 @@ fn main() {
 }
 ```
 
-# 插件：逻辑删除插件
+# 插件：逻辑删除RbatisLogicDeletePlugin
 > (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 list**(),remove**()，fetch**())
 ```rust
    let mut rb = init_rbatis().await;
