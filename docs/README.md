@@ -284,8 +284,12 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 宏实现方法能非常方便的编写自定义的sql，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性
 
-* sql宏的第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如 #[sql(RB, "select * from biz_activity where id = ?")]
-* py_sql宏和sql宏类似，区别就是 使用#{}代替预编译参数（预编译较安全，防sql注入），${}代替直接替换参数（有sql注入风险）
+*  sql宏的第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如 #[sql(RB, "select * from biz_activity where id = ?")]
+*  py_sql宏和sql宏类似，区别就是 使用#{}代替预编译参数（预编译较安全，防sql注入），${}代替直接替换参数（有sql注入风险）
+*  宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql 
+*  第一个参数 RB是本地依赖Rbatis引用的名称,例如  dao::RB, com::xxx::RB....都可以
+*  第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
+*  宏会自动转换函数为  pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
 
 > 宏映射 原生驱动sql
 ```rust
@@ -293,14 +297,8 @@ rb.update_by_wrapper("", &activity, &w).await;
      static ref RB:Rbatis=Rbatis::new();
    }
 
-    /// 宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql
-    /// RB是本地依赖Rbatis引用的名称,例如  dao::RB, com::xxx::RB....都可以
-    /// 第二个参数是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
-    /// 宏会自动转换函数为  pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
-    ///
     #[sql(RB, "select * from biz_activity where id = ?")]
     fn select(name: &str) -> BizActivity {}
-    //其他写法： pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
 
     #[async_std::test]
     pub async fn test_macro() {
