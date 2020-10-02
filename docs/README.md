@@ -1,4 +1,4 @@
-### 支持数据库类型√已支持.进行中
+### 支持数据库
 | 数据库    | 已支持 |
 | ------ | ------ |
 | Mysql            | √     |   
@@ -11,7 +11,7 @@
 # Rbatis-初始化
 
 > 安装依赖
-##### 使用方法：添加依赖(Cargo.toml)
+##### 安装依赖(Cargo.toml)
 ``` rust
 # add this library,and cargo install
 
