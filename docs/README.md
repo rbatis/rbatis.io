@@ -78,7 +78,7 @@ async fn main() {
 *  format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
 
->  使用宏实现CRUDEnable 好处是宏在编译器生成代码，性能较高
+>  使用derive宏实现CRUDEnable 好处是宏在编译器生成代码，性能较高.
 ```rust
 #[macro_use]
 extern crate rbatis_macro_driver;
