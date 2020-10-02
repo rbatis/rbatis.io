@@ -74,10 +74,10 @@ async fn main() {
 # CRUDEnable-模型和表定义
 
 >  CRUDEnable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
-* table_name()表名(对应struct的蛇形命名)
-* IdType(对应struct的id字段类型)
-* table_fields()表字段逗号分隔的字符串(对应struct的所有字段名称)
-* format_chain() 字段格式化链条（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp ）
+#{} table_name()表名(对应struct的蛇形命名)
+#{} IdType(对应struct的id字段类型)
+#{} table_fields()表字段逗号分隔的字符串(对应struct的所有字段名称)
+#{} format_chain() 字段格式化链条（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp ）
 
 
 >  使用宏实现CRUDEnable(可选) 好处是宏在编译器生成代码，性能较高
@@ -195,25 +195,32 @@ rb.update_by_wrapper("", &activity, &w).await;
 | and            |  AND     |   
 | or         | OR     |  
 | having           | HAVING {}     |  
-| all_eq(map[String,**])             | a = *, b= *,c=*     |
-| eq      |  a = *    |
-| ne      |  a <> *    |
-| order_by(bool,&[str])      |  order by * desc, * asc....    |
-| group_by      |  group by *,*,*    |
-| gt      |  a > *    |
-| ge      |  a >= *    |
-| lt      |  a < *    |
-| le      |  a <= *    |
-| between(column,min,max)      |  BETWEEN * AND *    |
-| not_between(column,min,max)      |  NOT BETWEEN * AND *    |
-| like(column,obj)      |   LIKE '%*%'   |
-| like_left(column,obj)      |   LIKE '%*'   |
-| like_right(column,obj)      |   LIKE '*%'   |
-| not_like(column,obj)      |   NOT LIKE  '%*%'   |
-| is_null(column)      |   * IS NULL   |
-| is_not_null(column)      |   * IS NOT NULL   |
-| in_array(column,args)      |   IN (*,*,*,*)  |
-| not_in(column,args)      |   NOT IN (*,*,*,*)  |
+| all_eq(map[String,#{}#{}])             | a = #{}, b= #{},c=#{}     |
+| eq      |  a = #{}    |
+| ne      |  a <> #{}    |
+| order_by(bool,&[str])      |  order by #{} desc, #{} asc....    |
+| group_by      |  group by #{},#{},#{}    |
+| gt      |  a > #{}    |
+| ge      |  a >= #{}    |
+| lt      |  a < #{}    |
+| le      |  a <= #{}    |
+| between(column,min,max)      |  BETWEEN #{} AND #{}    |
+| not_between(column,min,max)      |  NOT BETWEEN #{} AND #{}    |
+| like(column,obj)      |   LIKE '%#{}%'   |
+| like_left(column,obj)      |   LIKE '%#{}'   |
+| like_right(column,obj)      |   LIKE '#{}%'   |
+| not_like(column,obj)      |   NOT LIKE  '%#{}%'   |
+| is_null(column)      |   #{} IS NULL   |
+| is_not_null(column)      |   #{} IS NOT NULL   |
+| in_array(column,args)      |   IN (#{},#{},#{},#{})  |
+| not_in(column,args)      |   NOT IN (#{},#{},#{},#{})  |
+
+> 特殊方法
+
+| 方法    | sql |
+| ------ | ------ |
+| push_wrapper(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
+| push(sql,args)            |  'SELECT * FROM TABLE'=> 'SELECT * FROM TABLE #{sql}'     |   
 
 
 > Wrapper使用例子
