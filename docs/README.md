@@ -83,9 +83,9 @@ async fn main() {
 #[macro_use]
 extern crate rbatis_macro_driver;
 
-#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)]
-pub struct BizActivity {
-    pub id: Option<String>,
+#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
+pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
+    pub id: Option<String>, 
     pub name: Option<String>,
     pub pc_link: Option<String>,
     pub h5_link: Option<String>,
