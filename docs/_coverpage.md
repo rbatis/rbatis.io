@@ -1,4 +1,4 @@
-![logo](https://docsify.js.org/_media/icon.svg)
+![logo](https://raw.githubusercontent.com/rbatis/rbatis/master/logo.png)
 
 # Rbatis
 
