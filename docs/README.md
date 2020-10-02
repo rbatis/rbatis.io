@@ -419,3 +419,83 @@ fn main() {
 //[{"id":"221","name":"test","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"0","status":0,"remark":"","create_time":"2020-06-17T20:10:23Z","version":0,"delete_flag":1},{"id":"222","name":"test","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"0","status":0,"remark":"","create_time":"2020-06-17T20:10:23Z","version":0,"delete_flag":1},{"id":"223","name":"test","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"0","status":0,"remark":"","create_time":"2020-06-17T20:10:23Z","version":0,"delete_flag":1},{"id":"178","name":"test_insret","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"1","status":1,"remark":"","create_time":"2020-06-17T20:08:13Z","version":0,"delete_flag":1}]
 ```
 
+
+# 分页插件
+```rust
+        let mut rb = Rbatis::new();
+        rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+        //框架默认RbatisPagePlugin，如果需要自定义的话需要结构体 必须实现impl PagePlugin for Plugin***{}，例如：
+        //rb.page_plugin = Box::new(RbatisPagePlugin {});
+
+        let req = PageRequest::new(1, 20);//分页请求，页码，条数
+        let wraper= rb.new_wrapper()
+                    .eq("delete_flag",1)
+                    .check()
+                    .unwrap();
+        let data: Page<BizActivity> = rb.fetch_page_by_wrapper("", &wraper,  &req).await.unwrap();
+        println!("{}", serde_json::to_string(&data).unwrap());
+
+//2020-07-10T21:28:40.036506700+08:00 INFO rbatis::rbatis - [rbatis] Query ==> SELECT count(1) FROM biz_activity  WHERE delete_flag =  ? LIMIT 0,20
+//2020-07-10T21:28:40.040505200+08:00 INFO rbatis::rbatis - [rbatis] Args  ==> [1]
+//2020-07-10T21:28:40.073506+08:00 INFO rbatis::rbatis - [rbatis] Total <== 1
+//2020-07-10T21:28:40.073506+08:00 INFO rbatis::rbatis - [rbatis] Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity  WHERE delete_flag =  ? LIMIT 0,20
+//2020-07-10T21:28:40.073506+08:00 INFO rbatis::rbatis - [rbatis] Args  ==> [1]
+//2020-07-10T21:28:40.076506500+08:00 INFO rbatis::rbatis - [rbatis] Total <== 5
+```
+> json result 运行结果
+```json
+{
+	"records": [{
+		"id": "12312",
+		"name": "null",
+		"pc_link": "null",
+		"h5_link": "null",
+		"pc_banner_img": "null",
+		"h5_banner_img": "null",
+		"sort": "null",
+		"status": 1,
+		"remark": "null",
+		"create_time": "2020-02-09T00:00:00+00:00",
+		"version": 1,
+		"delete_flag": 1
+	}],
+	"total": 5,
+	"size": 20,
+	"current": 1,
+	"serch_count": true
+}
+```
+
+# 逻辑删除插件
+> (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 list**(),remove**()，fetch**())
+```rust
+   let mut rb = init_rbatis().await;
+   //rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new_opt("delete_flag",1,0)));//自定义已删除/未删除 写法
+   rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new("delete_flag")));
+   rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+           let r = rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).await;
+           if r.is_err() {
+               println!("{}", r.err().unwrap().to_string());
+   }
+```
+
+# SqlIntercept拦截器
+```rust
+pub struct Intercept{}
+
+impl SqlIntercept for Intercept{
+
+    ///the intercept name
+    fn name(&self) -> &str;
+
+    /// do intercept sql/args
+    /// is_prepared_sql: if is run in prepared_sql=ture
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis_core::Error>;
+}
+
+```
+
+
+
+
+
