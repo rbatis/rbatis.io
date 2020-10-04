@@ -30,7 +30,6 @@
 # Rbatis-init
 
 > Install dependencies
-##### dependencies(Cargo.toml)，exec: cargo install
 ``` rust
 #json support(must)
 serde = { version = "1.0", features = ["derive"] }
@@ -85,7 +84,7 @@ async fn main() {
 
 
 
-# CRUDEnable- Data Model and table definitions
+# CRUDEnable
 
 >  CRUDEnable An interface is a Trait that helps define the table structure, and it provides the following methods
 
@@ -127,7 +126,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     }
 ```
 
-# Wrapper-Use Sql wrapper
+# Wrapper
 
 > Wrapper Is a series of wrappers around SQL, note that the end call check() checks correctness
 
@@ -184,7 +183,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 ```
 
 
-# Wrapper/CRUD-Add,delete,update,query+Wrapper
+# CRUD
 
 ```rust
 let rb = Rbatis::new();
@@ -254,7 +253,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...For more, check out CRUd.rs
 ```
 
-# SQL-Use native SQL/PySql
+# SQL-Raw sql/Py sql
 
 > The PY syntax is used in SQL to modify the SYNTAX of SQL and is a form of dynamic SQL
 
@@ -296,7 +295,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 2 Use Macro mapping to perform PysQL, see # Macro-Intelligent Macro mapping
 
-# Macro Method- Intelligent Macro mapping Method
+# Macro impl SQL
 
 > Macros make it easy to write custom SQL, which is useful when you're writing complex multi-table associated queries, while keeping things simple and extensible
 
@@ -365,7 +364,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 
-# XML/SQL- Use XML to manipulate SQL
+# XML impl SQL
 
 ``` rust
 /**
@@ -445,7 +444,7 @@ fn main() {
 ```
 
 
-# Plug-ins: Paging RbatisPagePlugin
+# Plugin: RbatisPagePlugin
 ```rust
         let mut rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -490,7 +489,7 @@ fn main() {
 }
 ```
 
-# Plugin: Delete RbatisLogicDeletePlugin logically
+# Plugin: RbatisLogicDeletePlugin
 > (Logical delete the query and delete methods provided for Rbatis are valid, such as list**(),remove**(), fetch**())
 ```rust
    let mut rb = init_rbatis().await;
@@ -503,7 +502,7 @@ fn main() {
    }
 ```
 
-# Plug-in: SQL interceptor SqlIntercept
+# Plug-in: SqlIntercept
 
 > Implementing an interface
 ```rust
