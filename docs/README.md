@@ -168,7 +168,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 ```
 
 
-# CRUD+Wrapper- 增删改查配合Wrapper
+# Wrapper/CRUD-增删改查+Wrapper
 
 ```rust
 let rb = Rbatis::new();
