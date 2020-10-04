@@ -261,6 +261,18 @@ rb.update_by_wrapper("", &activity, &w).await;
 * PY syntax, the line space for Child must be greater than that for father. It says it's its child
 * PY syntax must end with:
 
+| method    | rust code |
+| ------ | ------ |
+| trim 'AND ': | trim |
+| if arg!=1 : | if |
+| for item in arg : | for |
+| set : | sql:"SET" |
+| choose : | match |
+| when : | match expr |
+| otherwise : | match default value |
+| where : | sql:"WHERE" |
+| bind a,1+1: | let a = 1+1 |
+
 > example
 ```rust
         SELECT * FROM biz_activity

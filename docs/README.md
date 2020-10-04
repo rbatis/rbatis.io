@@ -250,6 +250,18 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py语法中，child的行空格必须大于father的空格。表示自己是它的child
 * py语法必须以 : 结尾
 
+| 方法    | rust代码 |
+| ------ | ------ |
+| trim 'AND ': | trim |
+| if arg!=1 : | if |
+| for item in arg : | for |
+| set : | sql:"SET" |
+| choose : | match |
+| when : | match expr |
+| otherwise : | match default value |
+| where : | sql:"WHERE" |
+| bind a,1+1: | let a = 1+1 |
+
 >例如
 ```rust
         SELECT * FROM biz_activity
