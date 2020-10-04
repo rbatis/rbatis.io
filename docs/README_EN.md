@@ -1,3 +1,17 @@
+
+> high performance/ease of use Rust preferred ORM
+
+
+
+* - 100% Safe security code implementation
+
+* - Rich plug-ins, paging, logical deletion, SQL interceptor
+
+* - Field formatting, perfect support for various database functions, type conversion
+
+* - Super easy to use, Wrapper+ PY_SQL Macro handles 100% of arbitrarily complex SQL
+
+
 ### Support database
 | database    | support |
 | ------ | ------ |
