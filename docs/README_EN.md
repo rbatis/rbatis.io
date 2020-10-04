@@ -11,6 +11,8 @@
 
 * - Super easy to use, Wrapper+ PY_SQL Macro handles 100% of arbitrarily complex SQL
 
+* - Inspiration comes from Mybatis(Java),MybatisPlus(Java)
+
 
 ### Support database
 | database    | support |
