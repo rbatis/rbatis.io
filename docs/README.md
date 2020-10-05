@@ -365,6 +365,20 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
+> 宏映射 py_sql (join表连接)
+```rust
+#[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time FROM test.biz_activity a1,biz_activity a2 where a1.id=a2.id and a1.name=#{name}")]
+    fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
+
+    #[async_std::test]
+    pub async fn test_join() {
+        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+        let results = join_select(&RB, "test").await.unwrap();
+        println!("data: {:?}", results);
+    }
+```
+
 
 # XML/SQL-使用xml操作SQL
 
