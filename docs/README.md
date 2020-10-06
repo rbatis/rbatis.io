@@ -463,6 +463,49 @@ fn main() {
 ```
 
 
+# 事务
+
+> 普通事务 
+```rust
+#[async_std::test]
+pub async fn test_tx() {
+    fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+    let RB = Rbatis::new();
+    RB.link(MYSQL_URL).await.unwrap();
+    let tx_id = "1";
+    //begin
+    RB.begin(tx_id).await.unwrap();
+    let v: serde_json::Value = RB.fetch(tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
+    println!("{}", v.clone());
+    //commit or rollback
+    RB.commit(tx_id).await.unwrap();
+}
+```
+
+> 宏事务
+```rust
+    #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
+                      FROM test.biz_activity a1,biz_activity a2
+                      WHERE a1.id=a2.id
+                      AND a1.name=#{name}")]
+    fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
+
+    #[async_std::test]
+    pub async fn test_join() {
+        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+
+        let tx_id = "1";
+        //begin
+        RB.begin(tx_id).await.unwrap();
+        let results = join_select(&RB, "test").await.unwrap();
+        println!("data: {:?}", results);
+        //commit or rollback
+        RB.commit(tx_id).await.unwrap();
+    }
+```
+
+
 # 插件：分页RbatisPagePlugin
 ```rust
         let mut rb = Rbatis::new();
