@@ -498,7 +498,7 @@ pub async fn test_tx() {
         let tx_id = "1";
         //begin
         RB.begin(tx_id).await.unwrap();
-        let results = join_select(&RB, "test").await.unwrap();
+        let results = join_select(&RB,tx_id, "test").await.unwrap();
         println!("data: {:?}", results);
         //commit or rollback
         RB.commit(tx_id).await.unwrap();
