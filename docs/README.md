@@ -591,6 +591,8 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
 或者[GitHub](https://github.com/rbatis/rbatis) 点star
 
+## 联系方式
+微信号: zxj347284221
 
 
 
