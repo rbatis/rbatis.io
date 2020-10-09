@@ -587,9 +587,9 @@ let mut rb=Rbatis::new();
 rb.sql_intercepts.push(Box::new(Intercept{}));
 ```
 
-## 您的支持永远是我们的动力，迫切欢迎微信捐赠支持我们 ~或者[GitHub](https://github.com/rbatis/rbatis) 点star
+## 您的支持永远是我们的动力，迫切欢迎微信捐赠支持我们 
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
-
+或者[GitHub](https://github.com/rbatis/rbatis) 点star
 
 
 
