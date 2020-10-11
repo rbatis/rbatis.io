@@ -78,7 +78,7 @@ async fn main() {
 
 *  IdType(对应struct的id字段类型，必须声明)
 *  table_name()表名(对应struct的蛇形命名，可选重写)
-*  table_fields()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
+*  table_columns()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
 *  format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
 
@@ -109,7 +109,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     impl CRUDEnable for BizActivity {
         type IdType = String; //默认提供IdType类型即可，接口里其他的method默认使用json序列化实现
         //fn table_name() -> String {} //可重写
-        //fn table_fields() -> String {}  //可重写
+        //fn table_columns() -> String {}  //可重写
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //可重写
     }
 ```

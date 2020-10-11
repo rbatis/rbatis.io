@@ -90,7 +90,7 @@ async fn main() {
 
 *  IdType(The id field type corresponding to the struct must be declared)
 *  table_name() Table name (serpentine name corresponding to struct, optional rewrite)
-*  table_fields() Comma-separated string of table fields (all field names corresponding to the struct, optionally overridden)
+*  table_columns() Comma-separated string of table fields (all field names corresponding to the struct, optionally overridden)
 *  format_chain() Field formatting chain (you can format fields such as Pg database string date to timestamp #{date}:: Timestamp, optional override)
 
 
@@ -121,7 +121,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     impl CRUDEnable for BizActivity {
         type IdType = String; //By default, IdType is provided; other methods in the interface use JSON serialization by default
         //fn table_name() -> String {} //Can be rewritten
-        //fn table_fields() -> String {}  //Can be rewritten
+        //fn table_columns() -> String {}  //Can be rewritten
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //Can be rewritten
     }
 ```
