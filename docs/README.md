@@ -307,6 +307,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 *  第一个参数 RB是本地依赖Rbatis引用的名称,例如  'dao::RB', 'com::xxx::RB'都可以
 *  第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
 *  宏会自动转换函数为  pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
+*  宏支持分页插件
 
 > 宏映射 原生驱动sql
 ```rust
@@ -379,6 +380,18 @@ rb.update_by_wrapper("", &activity, &w).await;
         let results = join_select(&RB, "test").await.unwrap();
         println!("data: {:?}", results);
     }
+```
+
+> 宏映射 使用分页插件
+```rust
+
+#[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
+fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+
+#[py_sql(RB, "select * from biz_activity where delete_flag = 0
+                  if name != '':
+                    and name=#{name}")]
+fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
 
