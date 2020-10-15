@@ -317,6 +317,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 *  The first parameter, RB, is a name referenced locally by Rbatis, such as 'dao::RB', 'com:: XXX ::RB'
 *  The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is $1...
 *  The macro automatically converts the function pub async fn select(name: & STR) -> rbatis_core::Result {}
+*  The macro support Page Plugin!
 
 > Macro mapping native driver SQL
 ```rust
@@ -390,6 +391,18 @@ rb.update_by_wrapper("", &activity, &w).await;
         println!("data: {:?}", results);
     }
 ```
+
+> Macro mapping use page plugin
+```rust
+#[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
+fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+
+#[py_sql(RB, "select * from biz_activity where delete_flag = 0
+                  if name != '':
+                    and name=#{name}")]
+fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+```
+
 
 
 
