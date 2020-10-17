@@ -6,7 +6,7 @@
 
 > Rust ORM Framework Dynamic sql, No Runtime,No Garbage Collector, Low Memory,Async_std,Tokio.
 
-* - 100% Safe security code implementation
+* - 100% Safe security code implementation,based on Future support Tokio/AsyncStd
 
 * - Rich plug-ins, paging, logical deletion, SQL interceptor
 
