@@ -403,6 +403,10 @@ fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
+> Disable generate Rust code print
+```toml
+rbatis-macro-driver = { path = "../rbatis-macro-driver" ,default-features=false, features = ["no_print"]}
+```
 
 
 
