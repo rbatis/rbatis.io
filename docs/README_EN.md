@@ -631,6 +631,11 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+> set into Rbatis
+```rust
+let mut rb=Rbatis::new();
+rb.log_plugin = Box::new(RbatisLog{});
+```
 
 > Set to Rbatis
 ```rust

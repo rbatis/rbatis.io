@@ -627,6 +627,11 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+> 设置到Rbatis
+```rust
+let mut rb=Rbatis::new();
+rb.log_plugin = Box::new(RbatisLog{});
+```
 
 
 ## 欢迎捐赠
