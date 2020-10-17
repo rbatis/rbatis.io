@@ -600,6 +600,35 @@ let mut rb=Rbatis::new();
 rb.sql_intercepts.push(Box::new(Intercept{}));
 ```
 
+# 插件：日志打印插件
+```rust
+use log::{debug, error, info, LevelFilter, trace, warn};
+pub struct RbatisLog {}
+
+impl LogPlugin for RbatisLog {
+    fn error(&self, data: &str) {
+        error!("{}", data);
+    }
+
+    fn warn(&self, data: &str) {
+        warn!("{}", data);
+    }
+
+    fn info(&self, data: &str) {
+        info!("{}", data);
+    }
+
+    fn debug(&self, data: &str) {
+        debug!("{}", data);
+    }
+
+    fn trace(&self, data: &str) {
+        trace!("{}", data);
+    }
+}
+```
+
+
 ## 欢迎捐赠
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
 或者[GitHub](https://github.com/rbatis/rbatis) 点star

@@ -604,6 +604,34 @@ impl SqlIntercept for Intercept{
 }
 ```
 
+# Plug-in: LogPlugin
+```rust
+use log::{debug, error, info, LevelFilter, trace, warn};
+pub struct RbatisLog {}
+
+impl LogPlugin for RbatisLog {
+    fn error(&self, data: &str) {
+        error!("{}", data);
+    }
+
+    fn warn(&self, data: &str) {
+        warn!("{}", data);
+    }
+
+    fn info(&self, data: &str) {
+        info!("{}", data);
+    }
+
+    fn debug(&self, data: &str) {
+        debug!("{}", data);
+    }
+
+    fn trace(&self, data: &str) {
+        trace!("{}", data);
+    }
+}
+```
+
 > Set to Rbatis
 ```rust
 let mut rb=Rbatis::new();
