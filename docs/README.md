@@ -397,7 +397,7 @@ fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 
 > 禁用打印宏生成的Rust代码
 ```toml
-rbatis-macro-driver = { path = "../rbatis-macro-driver" ,default-features=false, features = ["no_print"]}
+rbatis-macro-driver = { version = "替换版本号" ,default-features=false, features = ["no_print"]}
 ```
 
 
