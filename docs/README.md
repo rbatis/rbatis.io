@@ -525,6 +525,19 @@ pub async fn test_tx() {
 ```
 
 
+# 选择和切换运行时
+> Rbatis 新版本会删除对 Tokio的依赖，改用async_std，因为async_std的顶层依赖async-global-executor已经依赖了tokio0.2 和tokio0.3
+并且它的api支持做的更好，async_std支持取协程id.以下是切换配置
+
+```rust
+# 使用tokio运行时,async-std以后的版本支持tokio03,目前大部分框架基于02
+async-std = { version = "1.6", features = ["attributes","tokio02"] }
+# 使用async-std默认运行时
+async-std = { version = "1.6", features = ["attributes"] }
+```
+
+
+
 # 插件：分页RbatisPagePlugin
 ```rust
         let mut rb = Rbatis::new();

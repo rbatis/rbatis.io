@@ -489,6 +489,17 @@ fn main() {
 //[{"id":"221","name":"test","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"0","status":0,"remark":"","create_time":"2020-06-17T20:10:23Z","version":0,"delete_flag":1},{"id":"222","name":"test","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"0","status":0,"remark":"","create_time":"2020-06-17T20:10:23Z","version":0,"delete_flag":1},{"id":"223","name":"test","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"0","status":0,"remark":"","create_time":"2020-06-17T20:10:23Z","version":0,"delete_flag":1},{"id":"178","name":"test_insret","pc_link":"","h5_link":"","pc_banner_img":null,"h5_banner_img":null,"sort":"1","status":1,"remark":"","create_time":"2020-06-17T20:08:13Z","version":0,"delete_flag":1}]
 ```
 
+# choose Runtime
+> Rbatis new version will remove the Tokio dependency and switch to async_std because async-global-executor already relies on tokio0.2 and tokio0.3 for the top layer of async_std
+And its API support is even better, Async_STD supports fetching the coroutine ID. Here is the switch configuration
+
+```rust
+# use tokio runtime
+async-std = { version = "1.6", features = ["attributes","tokio02"] }
+# use async-std runtime
+async-std = { version = "1.6", features = ["attributes"] }
+```
+
 
 # Plugin: RbatisPagePlugin
 ```rust
