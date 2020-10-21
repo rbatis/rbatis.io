@@ -400,7 +400,7 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 ```
 
 
-# XML
+# XML语法
 
 ``` rust
 /**
