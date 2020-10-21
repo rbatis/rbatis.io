@@ -2,8 +2,6 @@
 
 # Rbatis
 
-> Rust ORM Framework Dynamic sql, No Runtime,No Garbage Collector, Low Memory,Async_std,Tokio.
-
 > 首选Rust-ORM框架
 
 * [Click-English](https://rbatis.github.io/rbatis.io/#/README_EN)
