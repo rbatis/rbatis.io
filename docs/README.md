@@ -71,7 +71,7 @@ async fn main() {
 
 
 
-# CRUDEnable-模型和表定义
+# 表模型定义
 
 >  CRUDEnable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
 
@@ -113,7 +113,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     }
 ```
 
-# Wrapper-使用Sql包装
+# 使用Wrapper-Sql
 
 > Wrapper是对sql的一系列包装，注意结尾调用check()检查正确性
 
@@ -171,7 +171,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 ```
 
 
-# Wrapper/CRUD-增删改查+Wrapper
+# Wrapper增删改查
 
 ```rust
 let rb = Rbatis::new();
@@ -241,7 +241,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...还有更多方法，请查看crud.rs
 ```
 
-# SQL-使用原生SQL/PySql
+# Py语法
 
 > py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
 
@@ -296,7 +296,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 2使用宏映射执行pysql，见 #Macro-智能宏映射
 
-# Macro Method-智能宏映射方法
+# 宏映射
 
 > 宏实现方法能非常方便的编写自定义的sql，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性
 
@@ -400,7 +400,7 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 ```
 
 
-# XML/SQL-使用xml操作SQL
+# XML
 
 ``` rust
 /**
