@@ -530,11 +530,11 @@ pub async fn test_tx() {
 
 ```rust
 # 使用tokio运行时,async-std以后的版本支持tokio03,目前大部分框架基于02
-async-std = { version = "1.6", features = ["attributes","tokio02"] }
-rbatis-core = {  default-features = false ,  features = ["all","tokio02"] }
-rbatis = {  default-features = false , features = ["tokio02"] }
+async-std = { version = "*", features = ["attributes","tokio02"] }
+rbatis-core = { version = "*", default-features = false ,  features = ["all","tokio02"] }
+rbatis = { version = "*", default-features = false , features = ["tokio02"] }
 # 使用async-std默认运行时
-async-std = { version = "1.6", features = ["attributes"] }
+async-std = { version = "*", features = ["attributes"] }
 ```
 
 

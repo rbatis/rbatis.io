@@ -495,11 +495,11 @@ And its API support is even better, Async_STD supports fetching the coroutine ID
 
 ```rust
 # use tokio runtime
-async-std = { version = "1.6", features = ["attributes","tokio02"] }
-rbatis-core = {  default-features = false ,  features = ["all","tokio02"] }
-rbatis = {  default-features = false , features = ["tokio02"] }
+async-std = { version = "*", features = ["attributes","tokio02"] }
+rbatis-core = { version = "*", default-features = false ,  features = ["all","tokio02"] }
+rbatis = { version = "*", default-features = false , features = ["tokio02"] }
 # use async-std runtime
-async-std = { version = "1.6", features = ["attributes"] }
+async-std = { version = "*", features = ["attributes"] }
 ```
 
 
