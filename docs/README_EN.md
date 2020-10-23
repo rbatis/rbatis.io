@@ -23,8 +23,9 @@
 | Mysql            | √     |   
 | Postgres         | √     |  
 | Sqlite           | √     |  
-| TiDB             | √     |
-| CockroachDB      | √     |
+| MariaDB(Mysql)             | √     |
+| TiDB(Mysql)             | √     |
+| CockroachDB(Postgres)      | √     |
 
 
 # Rbatis-init
