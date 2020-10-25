@@ -140,7 +140,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 | not_like(column,obj)      |   NOT LIKE  '%#{}%'   |
 | is_null(column)      |   #{} IS NULL   |
 | is_not_null(column)      |   #{} IS NOT NULL   |
-| in_array(column,args)      |   IN (#{},#{},#{},#{})  |
+| r#in(column,args)      |   IN (#{},#{},#{},#{})  |
 | not_in(column,args)      |   NOT IN (#{},#{},#{},#{})  |
 
 > Wrapper的特殊方法
@@ -159,7 +159,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
   //初始化Wrapper可以使用let rb=Rbatis::new();rb.new_wrapper()方法
   let w = Wrapper::new(&DriverType::Mysql).eq("id", 1)
             .ne("id", 1)
-            .in_array("id", &[1, 2, 3])
+            .r#in("id", &[1, 2, 3])
             .not_in("id", &[1, 2, 3])
             .all_eq(&m)
             .like("name", 1)
@@ -182,7 +182,7 @@ let wrapper = rb.new_wrapper()
             .eq("id", 1)                    //sql:  id = 1
             .and()                          //sql:  and 
             .ne("id", 1)                    //sql:  id <> 1
-            .in_array("id", &[1, 2, 3])     //sql:  id in (1,2,3)
+            .r#in("id", &[1, 2, 3])     //sql:  id in (1,2,3)
             .not_in("id", &[1, 2, 3])       //sql:  id not in (1,2,3)
             .like("name", 1)                //sql:  name like 1
             .or()                           //sql:  or
