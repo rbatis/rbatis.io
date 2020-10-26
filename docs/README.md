@@ -26,7 +26,7 @@ chrono = { version = "0.4", features = ["serde"] }
 
 #log日志支持(必须)
 log = "0.4"
-fast_log="1.2.2"
+fast_log="1.2.9"
 
 #BigDecimal支持(可选)
 bigdecimal = "0.2"
@@ -50,7 +50,7 @@ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //启用日志输出，你也可以使用其他日志框架，这个不限定的
-fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 ```
 
 > 使用全局变量初始化（需依赖lazy_static这个库）
@@ -63,7 +63,7 @@ lazy_static! {
 #[async_std::main]
 async fn main() {
       //启用日志输出，你也可以使用其他日志框架，这个不限定的
-      fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+      fast_log::init_log("requests.log", 1000,log::Level::Info,true);
       //初始化连接池
       RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 }
@@ -425,7 +425,7 @@ pub struct Activity {
 fn main() {
     async_std::task::block_on(
            async move {
-               fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+               fast_log::init_log("requests.log", 1000,log::Level::Info,true);
                let mut rb = Rbatis::new();
                rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
                //xml数据建议以 XXMapper.xml 的格式存储管理
@@ -488,7 +488,7 @@ fn main() {
 ```rust
 #[async_std::test]
 pub async fn test_tx() {
-    fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+    fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
     RB.link(MYSQL_URL).await.unwrap();
     let tx_id = "1";

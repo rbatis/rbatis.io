@@ -41,7 +41,7 @@ chrono = { version = "0.4", features = ["serde"] }
 
 #log support(must)
 log = "0.4"
-fast_log="1.2.2"
+fast_log="1.2.9"
 
 #BigDecimal support(not must)
 bigdecimal = "0.2"
@@ -65,7 +65,7 @@ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //With log output enabled, you can also use other logging frameworks, which are not qualified
-fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 ```
 
 > Initialize with a global variable (depending on the library lazy_static)
@@ -77,7 +77,7 @@ lazy_static! {
 //Use the async_STd main method here, you can select actix, ToKIO, and other runtime main methods or spawn
 #[async_std::main]
 async fn main() {
-      fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+      fast_log::init_log("requests.log", 1000,log::Level::Info,true);
       RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 }
 
@@ -435,7 +435,7 @@ pub struct Activity {
 fn main() {
     async_std::task::block_on(
            async move {
-               fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+               fast_log::init_log("requests.log", 1000,log::Level::Info,true);
                let mut rb = Rbatis::new();
                rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
                rb.load_xml("test", r#"<?xml version="1.0" encoding="UTF-8"?>
@@ -556,7 +556,7 @@ async-std = { version = "*", features = ["attributes"] }
 ```rust
 #[async_std::test]
 pub async fn test_tx() {
-    fast_log::log::init_log("requests.log", &RuntimeType::Std).unwrap();
+    fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
     RB.link(MYSQL_URL).await.unwrap();
     let tx_id = "1";
