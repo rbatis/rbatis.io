@@ -7,6 +7,7 @@
 | Mysql            | √     |   
 | Postgres         | √     |  
 | Sqlite           | √     |  
+| Mssql/Sqlserver           | √     |  
 | MariaDB(Mysql)             | √     |
 | TiDB(Mysql)             | √     |
 | CockroachDB(Postgres)      | √     |
