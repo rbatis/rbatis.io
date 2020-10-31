@@ -662,6 +662,8 @@ rb.log_plugin = Box::new(RbatisLog{});
 
 ## 联系方式
 微信号: zxj347284221
+微信群：先加微信，然后拉进群
+
 
 
 
