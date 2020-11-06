@@ -277,15 +277,27 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > example
 ```rust
-        SELECT * FROM biz_activity
-        WHERE delete_flag = #{delete_flag}
-        if name != null:
-          AND name like #{name+'%'}
-        if ids != null:
-          AND id in (
-          trim ',':
-             for item in ids:
-               #{item},
+    SELECT * FROM biz_activity
+    if  name!=null:
+      AND delete_flag = #{del}
+      AND version = 1
+      if  age!=1:
+        AND version = 1
+      AND version = 1
+    AND a = 0
+      yes
+    for item in ids:
+      #{item}
+    for index,item in ids:
+      #{item}
+    trim 'AND':
+      AND delete_flag = #{del2}
+    choose:
+        when age==27:
+          AND age = 27
+        otherwise:
+          AND age = 0
+    WHERE id  = '2';
 ```
 
 > 1 Execute PysQL directly using Rbatis
