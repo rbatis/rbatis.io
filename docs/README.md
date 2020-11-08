@@ -43,7 +43,7 @@ rbatis-macro-driver = { version = "1.8" }
 > 普通初始化
 ```rust
 let rb = Rbatis::new();
-///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*"加载驱动   
+///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*","mssql://*"加载驱动   
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///自定义连接池参数。(可选)
 // let mut opt =PoolOptions::new();
