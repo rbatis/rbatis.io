@@ -118,6 +118,36 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 }
 ```
 
+> Another option is to use the Attr attribute macro to achieve CRUDEnable, which is more scalable and allows you to customize table names and fields
+
+```rust
+//for example-1(All automatic generation):
+
+    #[crud_enable]
+    #[derive(Serialize, Deserialize, Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
+// for example-2（Only the table name is changed, the rest is generated automatically）:
+    #[crud_enable(table_name:biz_activity)]
+    #[derive(Serialize, Deserialize, Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
+//for example-3（Full customization）:
+    #[crud_enable( id_name:id|  id_type:String|  table_name:biz_activity|  table_columns:id,name,delete_flag )]
+    #[derive(Serialize, Deserialize, Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
+```
+
 >  (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name
 ```rust
     impl CRUDEnable for BizActivity {

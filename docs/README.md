@@ -105,6 +105,36 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 }
 ```
 
+> 另一种选择是使用Attr属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段
+
+```rust
+//例子1(全部自动判断):
+    #[crud_enable]
+    #[derive(Serialize, Deserialize, Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
+// 例子2（只自定义表名，其他自动）:
+    #[crud_enable(table_name:biz_activity)]
+    #[derive(Serialize, Deserialize, Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
+// 例子3（全部自定义，其他自动）:
+    #[crud_enable( id_name:id|  id_type:String|  table_name:biz_activity|  table_columns:id,name,delete_flag )]
+    #[derive(Serialize, Deserialize, Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
+```
+
+
 >  (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 ```rust
     impl CRUDEnable for BizActivity {
@@ -114,6 +144,8 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //可重写
     }
 ```
+
+
 
 # 使用Wrapper-Sql
 
