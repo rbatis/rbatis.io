@@ -58,7 +58,7 @@ rbatis-macro-driver = { version = "1.8" }
 > Ordinary init
 ```rust
 let rb = Rbatis::new();
-///Connect to the database, automatic judgment drive type "mysql: / / *", "postgres: / / *", "sqlite: / / *" load driver  
+///Connect to the database, automatic judgment drive type "mysql: / / *", "postgres: / / *", "sqlite: / / *","mssql://*"  load driver  
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///Customize connection pool parameters. (optional)
 // let mut opt =PoolOptions::new();
