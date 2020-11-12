@@ -107,6 +107,13 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 
 > 另一种选择是使用Attr属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段
 
+| 属性    | 含义 |
+| ------ | ------ |
+| id_name | 表主键id名称 |
+| id_type | 表主键类型 |
+| table_name | 表名称 |
+| table_columns | 表列成员用','分割 |
+
 ```rust
 //例子1(全部自动判断):
     #[crud_enable]

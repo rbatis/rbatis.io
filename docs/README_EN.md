@@ -120,6 +120,13 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 
 > Another option is to use the Attr attribute macro to achieve CRUDEnable, which is more scalable and allows you to customize table names and fields
 
+| attr    | doc |
+| ------ | ------ |
+| id_name | the table id name |
+| id_type | the table id type |
+| table_name | table name |
+| table_columns | table columns use ',' split |
+
 ```rust
 //for example-1(All automatic generation):
 
