@@ -147,7 +147,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
         pub delete_flag: Option<i32>,
     }
 //for example-3（Full customization）:
-    #[crud_enable( id_name:id|  id_type:String|  table_name:biz_activity|  table_columns:id,name,delete_flag )]
+    #[crud_enable( id_name:id |  id_type:String | table_name:biz_activity | table_columns:id,name,delete_flag )]
     #[derive(Serialize, Deserialize, Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,

@@ -133,7 +133,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         pub delete_flag: Option<i32>,
     }
 // 例子3（全部自定义，其他自动）:
-    #[crud_enable( id_name:id|  id_type:String|  table_name:biz_activity|  table_columns:id,name,delete_flag )]
+    #[crud_enable( id_name:id |  id_type:String |  table_name:biz_activity |  table_columns:id,name,delete_flag )]
     #[derive(Serialize, Deserialize, Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
