@@ -359,7 +359,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 *  宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql 
 *  第一个参数 RB是本地依赖Rbatis引用的名称,例如  'dao::RB', 'com::xxx::RB'都可以
 *  第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
-*  宏会自动转换函数为  pub async fn select(name: &str) -> rbatis_core::Result<BizActivity> {}
+*  宏会自动转换函数为  pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}
 *  宏支持分页插件
 
 > 宏映射 原生驱动sql
@@ -664,7 +664,7 @@ impl SqlIntercept for Intercept{
 
     /// do intercept sql/args
     /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis_core::Error>;
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
 }
 ```
 

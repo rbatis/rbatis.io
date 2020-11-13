@@ -368,7 +368,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 *  The macro generates execution logic based on the method definition, similar to @select dynamic SQL for Java/MybATIS
 *  The first parameter, RB, is a name referenced locally by Rbatis, such as 'dao::RB', 'com:: XXX ::RB'
 *  The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is $1...
-*  The macro automatically converts the function pub async fn select(name: & STR) -> rbatis_core::Result {}
+*  The macro automatically converts the function pub async fn select(name: & STR) -> rbatis::core::Result {}
 *  The macro support Page Plugin!
 
 > Macro mapping native driver SQL
@@ -669,7 +669,7 @@ impl SqlIntercept for Intercept{
 
     /// do intercept sql/args
     /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis_core::Error>;
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
 }
 ```
 
