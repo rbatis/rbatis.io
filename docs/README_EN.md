@@ -90,7 +90,8 @@ async fn main() {
 
 >  CRUDEnable An interface is a Trait that helps define the table structure, and it provides the following methods
 
-*  IdType(The id field type corresponding to the struct must be declared)
+*  IdType (The id field type corresponding to the struct must be declared)
+*  id_name() The name of the primary key ID (non-mandatory, default ID)
 *  table_name() Table name (serpentine name corresponding to struct, optional rewrite)
 *  table_columns() Comma-separated string of table fields (all field names corresponding to the struct, optionally overridden)
 *  format_chain() Field formatting chain (you can format fields such as Pg database string date to timestamp #{date}:: Timestamp, optional override)
