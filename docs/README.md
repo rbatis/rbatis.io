@@ -452,8 +452,6 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 ```
 
 
-# XML语法(不再支持，py sql更加简洁功能强大，请使用Py sql)
-
 
 # 事务
 
