@@ -288,6 +288,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py语法支持加减乘除，if，for in,trim,include,where,set,choose等等语法(和mybatis使用的功能几乎一样)
 * py语法中，child的行空格必须大于father的空格。表示自己是它的child
 * py语法必须以 : 结尾
+* py语法支持同一行连续写(中间用': '分割)   例如   trim: for item in arg:
 
 | 方法    | rust代码 |
 | ------ | ------ |

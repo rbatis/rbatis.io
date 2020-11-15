@@ -298,6 +298,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py syntax, support for addition, subtraction, multiplication, and division if, for, in the trim, include, where, the set, choose, and so on syntax (and mybatis using the functions are almost the same)In the 
 * PY syntax, the line space for Child must be greater than that for father. It says it's its child
 * PY syntax must end with:
+* PY syntax support many express in same line.for example      trim 'a': for item in arg:
 
 | method    | rust code |
 | ------ | ------ |
