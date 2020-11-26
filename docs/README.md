@@ -599,6 +599,11 @@ use log::{debug, error, info, LevelFilter, trace, warn};
 pub struct RbatisLog {}
 
 impl LogPlugin for RbatisLog {
+    //日志等级，或者关闭日志
+    fn get_level_filter(&self) -> &LevelFilter {
+        &self.level_filter
+    }
+
     fn error(&self, data: &str) {
         error!("{}", data);
     }

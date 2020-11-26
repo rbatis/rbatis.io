@@ -599,6 +599,12 @@ use log::{debug, error, info, LevelFilter, trace, warn};
 pub struct RbatisLog {}
 
 impl LogPlugin for RbatisLog {
+    
+    //LevelFilter，allow close log print
+    fn get_level_filter(&self) -> &LevelFilter {
+        &self.level_filter
+    }
+
     fn error(&self, data: &str) {
         error!("{}", data);
     }
