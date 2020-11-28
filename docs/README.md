@@ -281,7 +281,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...还有更多方法，请查看crud.rs
 ```
 
-# Py解释器语法
+# Py语法
 
 > py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
 
