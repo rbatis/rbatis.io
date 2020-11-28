@@ -293,7 +293,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 # SQL-Raw sql/Py sql
 
-> The PY syntax is used in SQL to modify the SYNTAX of SQL and is a form of dynamic SQL
+> The PY interpreter syntax is used in SQL to modify the SYNTAX of SQL and is a form of dynamic SQL
 
 * py syntax, support for addition, subtraction, multiplication, and division if, for, in the trim, include, where, the set, choose, and so on syntax (and mybatis using the functions are almost the same)In the 
 * PY syntax, the line space for Child must be greater than that for father. It says it's its child
