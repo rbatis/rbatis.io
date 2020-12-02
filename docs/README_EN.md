@@ -530,7 +530,7 @@ pub async fn test_tx() {
     fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
     RB.link(MYSQL_URL).await.unwrap();
-    let tx_id = "1";
+    let tx_id = "tx:1";
     //begin
     RB.begin(tx_id).await.unwrap();
     let v: serde_json::Value = RB.fetch(tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
