@@ -530,6 +530,9 @@ pub async fn test_tx() {
     fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
     RB.link(MYSQL_URL).await.unwrap();
+    
+    //let (tx_id,_)=rb.begin_tx().await.unwrap();//Since version 1.8.40 also you can use begin_tx()
+
     // Since version 1.8.39, the transaction format is'tx:transactionID',no ‘tx:’  the id at the beginning is executed in normal mode
     let tx_id = "tx:1";
     //begin
