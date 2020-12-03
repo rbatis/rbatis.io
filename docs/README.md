@@ -456,13 +456,14 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 
 # 事务
 
-> 普通事务 
+> 普通事务
 ```rust
 #[async_std::test]
 pub async fn test_tx() {
     fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
     RB.link(MYSQL_URL).await.unwrap();
+    //自1.8.39版本之后，事务格式是'tx:事务id'
     let tx_id = "tx:1";
     //begin
     RB.begin(tx_id).await.unwrap();
