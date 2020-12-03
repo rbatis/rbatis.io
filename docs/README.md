@@ -476,6 +476,30 @@ pub async fn test_tx() {
 }
 ```
 
+> 事务守卫
+```rust
+#[async_std::test]
+    pub async fn test_tx_commit_defer() {
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+        let rb: Rbatis = Rbatis::new();
+        rb.link(MYSQL_URL).await.unwrap();
+        //使用defer事务，你可以在任何函数结尾忘记提交或回滚事务，框架会在守卫被回收时帮助你提交，回滚事务
+        let guard = rb.begin_tx_defer(true).await.unwrap();
+        let v: serde_json::Value = rb.fetch(&guard.tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
+        // tx will be commit
+        drop(guard);
+        println!("{}", v.clone());
+        sleep(Duration::from_secs(1));
+    }
+
+2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
+2020-12-03 14:53:24.909074 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Query ==> SELECT count(1) FROM biz_activity;
+2020-12-03 14:53:24.912973 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] ReturnRows <== 1
+2020-12-03 14:53:24.914487 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Commit
+
+```
+
+
 > 宏事务
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
