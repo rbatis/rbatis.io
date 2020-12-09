@@ -631,7 +631,7 @@ async-std = { version = "*", features = ["attributes"] }
 
 | 单选    | 解释 |
 | ------ | ------ |
-| default  | 使用async-io(async-std)运行时，所有数据库 |
+| default  | 默认-使用async-io(async-std)运行时，所有数据库 |
 | async-io | 使用async-io(async-std)运行时，所有数据库 |
 | actix | 使用actix运行时，所有数据库 |
 | tokio02 | 使用tokio02版本运行时，所有数据库 |
@@ -653,7 +653,10 @@ async-std = { version = "*", features = ["attributes"] }
 | actix-sqlite | 使用actix版本运行时，sqlite数据库 |
 | actix-mssql | 使用actix版本运行时，mssql数据库 |
 
-
+> 例如单选actix-mysql
+```rust
+rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
+```
 
 
 # 插件：分页RbatisPagePlugin

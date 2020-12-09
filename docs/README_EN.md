@@ -589,7 +589,10 @@ async-std = { version = "*", features = ["attributes"] }
 |Actix SQLite | when running with Actix version, SQLite database|
 |Actix MSSQL | when running with Actix version, MSSQL database|
 
-
+> for example,use 'actix-mysql'
+```rust
+rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
+```
 
 # Plugin: RbatisPagePlugin
 ```rust
