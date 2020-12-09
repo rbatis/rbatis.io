@@ -299,7 +299,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 | token    | doc  |
 | ------ | ------ |
-|   (*)    |    brackets    | 
+|   ()    |    brackets    | 
 |   %     |        | 
 |   ^     |   xor     | 
 |   *     |        | 
