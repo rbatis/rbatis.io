@@ -314,7 +314,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 |   !=     |        | 
 |   ==     |        | 
 |   &&     |        | 
-|   ||     |        | 
+|&#124;&#124;|        | 
 
 > operating-expression syntax example
 ```
