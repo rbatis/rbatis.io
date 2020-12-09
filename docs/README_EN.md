@@ -291,6 +291,32 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...For more, check out CRUd.rs
 ```
 
+# operating-expression syntax
+
+> expressions are used for operations on parameters, such as addition, subtraction, multiplication, and division, square, mod, parameter (A.B.C), array (a[0]), comparison, etc...
+> expressions are commonly found in py_sql if conditions, such as #{} or ${} expressions
+> The operators supported by the > operand expression engine are shown below
+
+| token    | doc  |
+| ------ | ------ |
+|   (*)    |    brackets    | 
+|   %     |        | 
+|   ^     |   xor     | 
+|   *     |        | 
+|   **     |   square     | 
+|   /     |        | 
+|   +     |        | 
+|   -     |        | 
+|   <=     |        | 
+|   <     |        | 
+|   >     |        | 
+|   >=     |        | 
+|   !=     |        | 
+|   ==     |        | 
+|   &&     |        | 
+|   ||     |        | 
+
+
 # SQL-Raw sql/Py sql
 
 > The PY syntax is used in SQL to modify the SYNTAX of SQL and is a form of dynamic SQL

@@ -281,6 +281,33 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...还有更多方法，请查看crud.rs
 ```
 
+# 运算表达式语法
+
+> 运算表达式用于针对参数运算，例如加减乘除，平方，取余，取参数(a.b.c),取数组(a[0]),对比 等等...
+> 运算表达式广泛存着于py_sql的if条件中，#{}或者${}表达式中
+> 运算表达式引擎支持的操作符 见下图
+
+| token    | doc  |
+| ------ | ------ |
+|   (*)    |    brackets    | 
+|   %     |        | 
+|   ^     |   xor     | 
+|   *     |        | 
+|   **     |   square     | 
+|   /     |        | 
+|   +     |        | 
+|   -     |        | 
+|   <=     |        | 
+|   <     |        | 
+|   >     |        | 
+|   >=     |        | 
+|   !=     |        | 
+|   ==     |        | 
+|   &&     |        | 
+|   ||     |        | 
+
+
+
 # Py语法
 
 > py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
@@ -290,10 +317,11 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py语法必须以 : 结尾
 * py语法支持同一行连续写(中间用': '分割)   例如   trim: for item in arg:
 
+
 | 方法    | rust代码 |
 | ------ | ------ |
 | trim 'AND ': | trim |
-| if arg!=1 : | if |
+| if arg!=1 : | if判断，if后面运算表达式 |
 | for item in arg : | for |
 | set : | sql:"SET" |
 | choose : | match |
