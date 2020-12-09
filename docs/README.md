@@ -625,6 +625,40 @@ async-std = { version = "*", features = ["attributes"] }
 ```
 
 
+# 条件编译
+> 条件编译可以选择指定的数据库、运行时编译，而不是编译全部数据库。条件编译可以缩减程序体积
+> 条件编译支持以下编译参数(任意其中一种)
+
+| 选项    | 解释 |
+| ------ | ------ |
+| default  | 使用async-io(async-std)运行时，所有数据库 |
+| async-io | 使用async-io(async-std)运行时，所有数据库 |
+| actix | 使用actix运行时，所有数据库 |
+| tokio02 | 使用tokio02版本运行时，所有数据库 |
+| tokio03 | 使用tokio03版本运行时，所有数据库 |
+
+| async-io-mysql | 使用async-std版本运行时，mysql数据库 |
+| async-io-postgres | 使用async-std版本运行时，pg数据库 |
+| async-io-sqlite | 使用async-std版本运行时，sqlite数据库 |
+| async-io-mssql | 使用async-std版本运行时，mssql数据库 |
+
+| tokio03-mysql | 使用tokio03版本运行时，mysql数据库 |
+| tokio03-postgres | 使用tokio03版本运行时，pg数据库 |
+| tokio03-sqlite | 使用tokio03版本运行时，sqlite数据库 |
+| tokio03-mssql | 使用tokio03版本运行时，mssql数据库 |
+
+| tokio02-mysql | 使用tokio02版本运行时，mysql数据库 |
+| tokio02-postgres | 使用tokio02版本运行时，pg数据库 |
+| tokio02-sqlite | 使用tokio02版本运行时，sqlite数据库 |
+| tokio02-mssql | 使用tokio02版本运行时，mssql数据库 |
+
+| actix-mysql | 使用actix版本运行时，mysql数据库 |
+| actix-postgres | 使用actix版本运行时，pg数据库 |
+| actix-sqlite | 使用actix版本运行时，sqlite数据库 |
+| actix-mssql | 使用actix版本运行时，mssql数据库 |
+
+
+
 
 # 插件：分页RbatisPagePlugin
 ```rust
