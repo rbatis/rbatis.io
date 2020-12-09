@@ -546,7 +546,7 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 
 
 
-# Conditional compilation choose Runtime
+# Conditional compilation choose Runtime or driver
 >Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
 >Conditional compilation supports any of the following compilation parameters
 
