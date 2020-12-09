@@ -104,7 +104,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 }
 ```
 
-> 另一种选择是使用Attr属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段
+> 另一种选择是使用Attr属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
 
 | 属性    | 含义 |
 | ------ | ------ |
