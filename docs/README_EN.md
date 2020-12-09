@@ -738,6 +738,12 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+> log plugin set into Rbatis
+```rust
+let mut rb=Rbatis::new();
+rb.log_plugin = Box::new(RbatisLog{});
+```
+
 # Plug-in: distributed unique ID (snowflake algorithm)
 ```toml
 rbatis = { version = "1.8", features = ["snowflake"] }
@@ -751,11 +757,6 @@ rbatis = { version = "1.8", features = ["snowflake"] }
             println!("{}", async_snowflake_id().await);
         });
     }
-```
-> set into Rbatis
-```rust
-let mut rb=Rbatis::new();
-rb.log_plugin = Box::new(RbatisLog{});
 ```
 
 > Set to Rbatis

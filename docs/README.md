@@ -739,6 +739,11 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+> 日志插件设置到Rbatis
+```rust
+let mut rb=Rbatis::new();
+rb.log_plugin = Box::new(RbatisLog{});
+```
 
 # 插件：分布式唯一ID(雪花算法)
 ```toml
@@ -753,12 +758,6 @@ rbatis = { version = "1.8", features = ["snowflake"] }
             println!("{}", async_snowflake_id().await);
         });
     }
-```
-
-> 设置到Rbatis
-```rust
-let mut rb=Rbatis::new();
-rb.log_plugin = Box::new(RbatisLog{});
 ```
 
 
