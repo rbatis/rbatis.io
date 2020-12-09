@@ -379,8 +379,8 @@ rb.update_by_wrapper("", &activity, &w).await;
 | 方法    | rust代码 |
 | ------ | ------ |
 | trim 'AND ': | trim |
-| if arg!=1 : | if判断，if后面运算表达式 |
-| for item in arg : | for |
+| if arg!=1 : | if后面是 '运算表达式' |
+| for item in arg : | for 循环 |
 | set : | sql:"SET" |
 | choose : | match |
 | when : | match expr |
