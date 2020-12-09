@@ -738,6 +738,20 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+# Plug-in: distributed unique ID (snowflake algorithm)
+```toml
+rbatis = { version = "1.8", features = ["snowflake"] }
+```
+```rust
+    use crate::plugin::snowflake::{async_snowflake_id, block_snowflake_id};
+
+    #[test]
+    fn test_new_async_id() {
+        crate::core::runtime::block_on(async {
+            println!("{}", async_snowflake_id().await);
+        });
+    }
+```
 > set into Rbatis
 ```rust
 let mut rb=Rbatis::new();
