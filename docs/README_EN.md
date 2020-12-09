@@ -572,22 +572,18 @@ async-std = { version = "*", features = ["attributes"] }
 |Actix | when using Actix runtime, all databases|
 |Tokio02 | when running with the version of tokio02, all databases|
 |Tokio03 | when running with the version of tokio03, all databases|
-
 |Async IO MySQL | when running with async STD version, MySQL database|
 |Async IO Postgres | when running with async STD version, PG database|
 |Async IO SQLite | when using async STD version, SQLite database|
 |Async IO MSSQL | when running with async STD version, MSSQL database|
-
 |Tokio03 MySQL | when running with the tokio03 version, MySQL database|
 |Tokio03 Postgres | using tokio03 version runtime, PG database|
-|Run sqltokiite with sqlto03|
+|Tokio03-sqlite |  Using tokio03 version runtime, SQLite database |
 |Tokio03 MSSQL | when running with the version of tokio03, MSSQL database|
-
 |Tokio02 MySQL | when running with the version of tokio02, MySQL database|
 |Tokio02 Postgres | using tokio02 version runtime, PG database|
 |Tokio02 SQLite | when using the tokio02 version runtime, SQLite database|
 |Tokio02 MSSQL | when running with the version of tokio02, MSSQL database|
-
 |Actix MySQL | when running with Actix version, MySQL database|
 |Actix Postgres | when running with Actix version, PG database|
 |Actix SQLite | when running with Actix version, SQLite database|
