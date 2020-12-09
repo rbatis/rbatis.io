@@ -293,7 +293,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 # operating-expression syntax
 
-> expressions are used for operations on parameters, such as addition, subtraction, multiplication, and division, square, mod, parameter (A.B.C), array (a[0]), comparison, etc...
+> expressions are used for operations on parameters, such as String CONCAT,addition, subtraction, multiplication, and division, square, mod, parameter (A.B.C), array (a[0]), comparison, etc...
 > expressions are commonly found in py_sql if conditions, such as #{} or ${} expressions
 > The operators supported by the > operand expression engine are shown below
 
