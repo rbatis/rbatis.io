@@ -546,22 +546,7 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 
 
 
-# choose Runtime
-> Rbatis new version will remove the Tokio dependency and switch to async_std because async-global-executor already relies on tokio0.2 and tokio0.3 for the top layer of async_std
-And its API support is even better, Async_STD supports fetching the coroutine ID. Here is the switch configuration
-
-```rust
-# use tokio runtime
-async-std = { version = "*", features = ["attributes","tokio02"] }
-rbatis-core = { version = "*", default-features = false ,  features = ["all","tokio02"] }
-rbatis = { version = "*", default-features = false , features = ["tokio02"] }
-# use async-std runtime
-async-std = { version = "*", features = ["attributes"] }
-```
-
-
-
-#Conditional compilation
+# Conditional compilation choose Runtime
 >Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
 >Conditional compilation supports any of the following compilation parameters
 
