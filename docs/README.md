@@ -116,7 +116,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 ```rust
 //例子1(全部自动判断):
     #[crud_enable]
-    #[derive(Serialize, Deserialize, Clone, Debug)]
+    #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,
@@ -124,7 +124,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     }
 // 例子2（只自定义表名，其他自动）:
     #[crud_enable(table_name:biz_activity)]
-    #[derive(Serialize, Deserialize, Clone, Debug)]
+    #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,
@@ -132,7 +132,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     }
 // 例子3（全部自定义，其他自动）:
     #[crud_enable( id_name:id |  id_type:String |  table_name:biz_activity |  table_columns:id,name,delete_flag )]
-    #[derive(Serialize, Deserialize, Clone, Debug)]
+    #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,

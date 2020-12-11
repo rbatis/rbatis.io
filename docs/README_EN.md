@@ -130,7 +130,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 //for example-1(All automatic generation):
 
     #[crud_enable]
-    #[derive(Serialize, Deserialize, Clone, Debug)]
+    #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,
@@ -138,7 +138,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     }
 // for example-2（Only the table name is changed, the rest is generated automatically）:
     #[crud_enable(table_name:biz_activity)]
-    #[derive(Serialize, Deserialize, Clone, Debug)]
+    #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,
@@ -146,7 +146,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     }
 //for example-3（Full customization）:
     #[crud_enable( id_name:id |  id_type:String | table_name:biz_activity | table_columns:id,name,delete_flag )]
-    #[derive(Serialize, Deserialize, Clone, Debug)]
+    #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,
