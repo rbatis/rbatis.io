@@ -158,13 +158,17 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 > 因此需要使用Pg数据库 ::type 来强制类型转换，可以借助列格式化宏
 > 
 > 宏定义为 formats_数据库:列名称:带有{}符号的格式化内容
-> 例如 #[crud_enable(formats_pg:id:{}::uuid)]
-> #[crud_enable(formats_mysql:...)]
-> #[crud_enable(formats_sqlite:...)]
-> #[crud_enable(formats_mssql:...)]
-
+> 例如
+```rust
+#[crud_enable(formats_pg:id:{}::uuid)]
+//#[crud_enable(formats_pg:id:{}::uuid)]
+//#[crud_enable(formats_mysql:...)]
+//#[crud_enable(formats_sqlite:...)]
+//#[crud_enable(formats_mssql:...)]
+```
 
 ```rust
+// 这是格式化宏的例子
 #[async_std::test]
     pub async fn test_postgres_uuid() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
