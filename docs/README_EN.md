@@ -178,6 +178,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]
+//#[crud_enable(formats_mssql:...|formats_pg:...)|...]
 ```
 
 ```rust

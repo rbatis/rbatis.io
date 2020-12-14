@@ -166,6 +166,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]
+//#[crud_enable(formats_mssql:...|formats_pg:...)|...]
 ```
 
 ```rust
