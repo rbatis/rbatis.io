@@ -180,22 +180,18 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 ```
 
 ```rust
-// this is formats macro example
+//this is example format.
+#[crud_enable(formats_pg:id:{}::uuid)]
+#[derive(Clone, Debug)]
+pub struct BizUuid {
+    pub id: Option<Uuid>,
+    pub name: Option<String>,
+}
 #[async_std::test]
     pub async fn test_postgres_uuid() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb = Rbatis::new();
         rb.link("postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
-
-        //'formats_pg' use postgres format
-        //'id' ->  table column 'id'
-        //'{}::uuid' -> format data str
-        #[crud_enable(formats_pg:id:{}::uuid)]
-        #[derive(Clone, Debug)]
-        pub struct BizUuid {
-            pub id: Option<Uuid>,
-            pub name: Option<String>,
-        }
         let uuid = Uuid::from_str("df07fea2-b819-4e05-b86d-dfc15a5f52a9").unwrap();
         //create table
         rb.exec("", "CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;

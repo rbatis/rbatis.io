@@ -169,6 +169,12 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 
 ```rust
 // 这是格式化宏的例子
+#[crud_enable(formats_pg:id:{}::uuid)]
+#[derive(Clone, Debug)]
+pub struct BizUuid {
+    pub id: Option<Uuid>,
+    pub name: Option<String>,
+}
 #[async_std::test]
     pub async fn test_postgres_uuid() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
