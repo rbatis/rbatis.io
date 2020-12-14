@@ -174,7 +174,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 
 ```rust
 #[crud_enable(formats_pg:id:{}::uuid)]
-//#[crud_enable(formats_pg:id:{}::uuid, m_uuid:{}::uuid)]
+//#[crud_enable(formats_pg:id:{}::uuid,create_time:{}::timestamp)]
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]

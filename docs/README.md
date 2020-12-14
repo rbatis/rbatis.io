@@ -162,7 +162,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 > 例如
 ```rust
 #[crud_enable(formats_pg:id:{}::uuid)]
-//#[crud_enable(formats_pg:id:{}::uuid,m_uuid:{}::uuid)]
+//#[crud_enable(formats_pg:id:{}::uuid,create_time:{}::timestamp)]
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]
