@@ -152,6 +152,14 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
         pub name: Option<String>,
         pub delete_flag: Option<i32>,
     }
+    //for example-4（Full customization）:
+    #[crud_enable( id_name:"id" |  id_type:"String" | table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
+    #[derive(Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
 ```
 
 >  (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name

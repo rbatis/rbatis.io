@@ -138,6 +138,14 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         pub name: Option<String>,
         pub delete_flag: Option<i32>,
     }
+// 例子-4（使用引号）:
+    #[crud_enable( id_name:"id" |  id_type:"String" | table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
+    #[derive(Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub delete_flag: Option<i32>,
+    }
 ```
 
 
