@@ -145,7 +145,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
         pub delete_flag: Option<i32>,
     }
 //for example-3（Full customization）:
-    #[crud_enable( id_name:id |  id_type:String | table_name:biz_activity | table_columns:id,name,delete_flag )]
+    #[crud_enable( id_name:id |  id_type:String | table_name:biz_activity | table_columns:id,name,delete_flag | formats_pg:id:{}::uuid)]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -162,6 +162,56 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
         //fn table_columns() -> String {}  //Can be rewritten
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //Can be rewritten
     }
+```
+
+
+> database column formatting macro
+>, for example, a Postgres database uses UUID as the primary key and fails to precompile if a string parameter is passed in under precompiled SQL.
+> therefore requires a Pg database ::type to cast, using column formatting macros The 
+>  macro is defined as formats_database:column_name:formatted content with a {} symbol
+> for example # [crud_enable (formats_pg:id:{}::uuid)]
+> #[crud_enable(formats_mysql:...)]
+> #[crud_enable(formats_sqlite:...)]
+> #[crud_enable(formats_mssql:...)]
+
+```rust
+#[async_std::test]
+    pub async fn test_postgres_uuid() {
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+        let rb = Rbatis::new();
+        rb.link("postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+
+        //'formats_pg' use postgres format
+        //'id' ->  table column 'id'
+        //'{}::uuid' -> format data str
+        #[crud_enable(formats_pg:id:{}::uuid)]
+        #[derive(Clone, Debug)]
+        pub struct BizUuid {
+            pub id: Option<Uuid>,
+            pub name: Option<String>,
+        }
+        let uuid = Uuid::from_str("df07fea2-b819-4e05-b86d-dfc15a5f52a9").unwrap();
+        //create table
+        rb.exec("", "CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;
+        //insert table
+        rb.save("", &BizUuid { id: Some(uuid), name: Some("test".to_string()) }).await;
+        //update table
+        rb.update_by_id("",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
+        //query table
+        let data: BizUuid = rb.fetch_by_id("", &uuid).await.unwrap();
+        println!("{:?}", data);
+        //delete table
+        rb.remove_by_id::<BizUuid>("",&uuid).await;
+    }
+2020-12-14 14:26:58.072638 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));
+2020-12-14 14:26:58.084423 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> INSERT INTO biz_uuid (id,name) VALUES ($1::uuid,$2)
+                                                                [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9","test"]
+2020-12-14 14:26:58.093312 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> UPDATE biz_uuid SET  name = $1 WHERE id = $2::uuid
+                                                                [rbatis] [] Args  ==> ["test_updated","df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
+2020-12-14 14:26:58.103995 +08:00    INFO rbatis::plugin::log - [rbatis] [] Query ==> SELECT id,name FROM biz_uuid WHERE id = $1::uuid
+                                                                [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
+2020-12-14 14:26:58.125965 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> DELETE FROM biz_uuid WHERE id = $1::uuid
+                                                                [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
 ```
 
 # Wrapper

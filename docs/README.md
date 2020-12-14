@@ -131,7 +131,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         pub delete_flag: Option<i32>,
     }
 // 例子3（全部自定义，其他自动）:
-    #[crud_enable( id_name:id |  id_type:String |  table_name:biz_activity |  table_columns:id,name,delete_flag )]
+    #[crud_enable( id_name:id |  id_type:String |  table_name:biz_activity |  table_columns:id,name,delete_flag | formats_pg:id:{}::uuid)]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -150,6 +150,62 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //可重写
     }
 ```
+
+
+
+> 数据库列格式化宏
+> 例如Postgres数据库用UUID作为主键,在预编译的sql下传入参数为string的情况下预编译失败。
+> 因此需要使用Pg数据库 ::type 来强制类型转换，可以借助列格式化宏
+> 
+> 宏定义为 formats_数据库:列名称:带有{}符号的格式化内容
+> 例如 #[crud_enable(formats_pg:id:{}::uuid)]
+> #[crud_enable(formats_mysql:...)]
+> #[crud_enable(formats_sqlite:...)]
+> #[crud_enable(formats_mssql:...)]
+
+
+```rust
+#[async_std::test]
+    pub async fn test_postgres_uuid() {
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+        let rb = Rbatis::new();
+        rb.link("postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+
+        //'formats_pg' use postgres format
+        //'id' ->  table column 'id'
+        //'{}::uuid' -> format data str
+        #[crud_enable(formats_pg:id:{}::uuid)]
+        #[derive(Clone, Debug)]
+        pub struct BizUuid {
+            pub id: Option<Uuid>,
+            pub name: Option<String>,
+        }
+        let uuid = Uuid::from_str("df07fea2-b819-4e05-b86d-dfc15a5f52a9").unwrap();
+        //create table
+        rb.exec("", "CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;
+        //insert table
+        rb.save("", &BizUuid { id: Some(uuid), name: Some("test".to_string()) }).await;
+        //update table
+        rb.update_by_id("",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
+        //query table
+        let data: BizUuid = rb.fetch_by_id("", &uuid).await.unwrap();
+        println!("{:?}", data);
+        //delete table
+        rb.remove_by_id::<BizUuid>("",&uuid).await;
+    }
+    
+    
+2020-12-14 14:26:58.072638 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));
+2020-12-14 14:26:58.084423 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> INSERT INTO biz_uuid (id,name) VALUES ($1::uuid,$2)
+                                                                [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9","test"]
+2020-12-14 14:26:58.093312 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> UPDATE biz_uuid SET  name = $1 WHERE id = $2::uuid
+                                                                [rbatis] [] Args  ==> ["test_updated","df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
+2020-12-14 14:26:58.103995 +08:00    INFO rbatis::plugin::log - [rbatis] [] Query ==> SELECT id,name FROM biz_uuid WHERE id = $1::uuid
+                                                                [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
+2020-12-14 14:26:58.125965 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> DELETE FROM biz_uuid WHERE id = $1::uuid
+                                                                [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
+```
+
 
 
 
