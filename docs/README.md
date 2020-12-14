@@ -153,7 +153,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 
 
 
-> 数据库列格式化宏
+#  数据库列格式化宏
 > 例如Postgres数据库用UUID作为主键,在预编译的sql下传入参数为string的情况下预编译失败。
 > 因此需要使用Pg数据库 ::type 来强制类型转换，可以借助列格式化宏
 > 
