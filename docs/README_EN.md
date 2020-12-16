@@ -6,18 +6,23 @@
 
 > Rust ORM Framework Dynamic sql, No Runtime,No Garbage Collector, Low Memory,Async_std,Tokio.
 
-* - 100% Safe security code implementation,based on Future support Tokio/AsyncStd
+*
+    - 100% Safe security code implementation,based on Future support Tokio/AsyncStd
 
-* - Rich plug-ins, paging, logical deletion, SQL interceptor
+*
+    - Rich plug-ins, paging, logical deletion, SQL interceptor
 
-* - Field formatting, perfect support for various database functions, type conversion
+*
+    - Field formatting, perfect support for various database functions, type conversion
 
-* - Super easy to use, Wrapper+ PY_SQL Macro handles 100% of arbitrarily complex SQL
+*
+    - Super easy to use, Wrapper+ PY_SQL Macro handles 100% of arbitrarily complex SQL
 
-* - Inspiration comes from Mybatis(Java),MybatisPlus(Java)
-
+*
+    - Inspiration comes from Mybatis(Java),MybatisPlus(Java)
 
 ### Support database
+
 | database    | support |
 | ------ | ------ |
 | Mysql            | √     |   
@@ -28,10 +33,10 @@
 | TiDB(Mysql)             | √     |
 | CockroachDB(Postgres)      | √     |
 
-
 # Rbatis-init
 
 > Install dependencies
+
 ``` rust
 #json support(must)
 serde = { version = "1.0", features = ["derive"] }
@@ -52,8 +57,8 @@ rbatis =  { version = "1.8" }
 rbatis-macro-driver = { version = "1.8" }
 ```
 
-
 > Ordinary init
+
 ```rust
 let rb = Rbatis::new();
 ///Connect to the database, automatic judgment drive type "mysql: / / *", "postgres: / / *", "sqlite: / / *","mssql://*"  load driver  
@@ -68,6 +73,7 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 ```
 
 > Initialize with a global variable (depending on the library lazy_static)
+
 ```rust
 lazy_static! {
   // Rbatis is thread-safe, and the runtime method is Send+Sync. Internally, DashMap and other concurrent and safe map implementations are used, so there is no need to worry about thread contention
@@ -82,20 +88,20 @@ async fn main() {
 
 ```
 
-
-
 # CRUDEnable
 
->  CRUDEnable An interface is a Trait that helps define the table structure, and it provides the following methods
+> CRUDEnable An interface is a Trait that helps define the table structure, and it provides the following methods
 
-*  IdType (The id field type corresponding to the struct must be declared)
-*  id_name() The name of the primary key ID (non-mandatory, default ID)
-*  table_name() Table name (serpentine name corresponding to struct, optional rewrite)
-*  table_columns() Comma-separated string of table fields (all field names corresponding to the struct, optionally overridden)
-*  format_chain() Field formatting chain (you can format fields such as Pg database string date to timestamp #{date}:: Timestamp, optional override)
+* IdType (The id field type corresponding to the struct must be declared)
+* id_name() The name of the primary key ID (non-mandatory, default ID)
+* table_name() Table name (serpentine name corresponding to struct, optional rewrite)
+* table_columns() Comma-separated string of table fields (all field names corresponding to the struct, optionally
+  overridden)
+* format_chain() Field formatting chain (you can format fields such as Pg database string date to timestamp #{date}::
+  Timestamp, optional override)
 
+> The benefit of implementing CRUDEnable using derive macros is that the macros generate code in the compiler and have higher performance.
 
->  The benefit of implementing CRUDEnable using derive macros is that the macros generate code in the compiler and have higher performance.
 ```rust
 #[macro_use]
 extern crate rbatis_macro_driver;
@@ -125,6 +131,10 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 | id_type | the table id type |
 | table_name | table name |
 | table_columns | table columns use ',' split |
+| formats_pg,formats_postgres | Postgres Column SQL formatting for type conversion|
+| formats_mysql | Mysql Column SQL formatting for type conversion|
+| formats_sqlite | Sqlite Column SQL formatting for type conversion|
+| formats_mssql | Mssql Column SQL formatting for type conversion|
 
 ```rust
 //for example-1(All automatic generation):
@@ -162,7 +172,8 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     }
 ```
 
->  (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name
+> (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name
+
 ```rust
     impl CRUDEnable for BizActivity {
         type IdType = String; //By default, IdType is provided; other methods in the interface use JSON serialization by default
@@ -172,10 +183,10 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     }
 ```
 
+## database column formatting macro
 
-##  database column formatting macro
->  a Postgres database uses UUID as the primary key and fails to precompile if a string parameter is passed in under precompiled SQL.
-> therefore requires a Pg database ::type to cast, using column formatting macros The 
+> a Postgres database uses UUID as the primary key and fails to precompile if a string parameter is passed in under precompiled SQL.
+> therefore requires a Pg database ::type to cast, using column formatting macros The
 > format macro is defined as formats_database:column_name:formatted content with a {} symbol
 > format macro use ',' split columns
 > for example:
@@ -267,6 +278,7 @@ pub struct BizUuid {
 | do_match(&[method...])  |  wrapper.do_match(p.is_some(), *))    |    The Wrapper performs a match condition match  |   
 
 > Wrapper use case
+
 ```rust
   let w = Wrapper::new(&DriverType::Mysql).eq("id", 1)
             .ne("id", 1)
@@ -281,7 +293,6 @@ pub struct BizUuid {
             .order_by(true, &["id", "name"])
             .check().unwrap();
 ```
-
 
 # CRUD
 
@@ -372,13 +383,14 @@ rb.update_by_wrapper("", &activity, &w).await;
 |   <=     |        | 
 |   <     |        | 
 |   >     |        | 
-|   >=     |        | 
+|   > =     |        | 
 |   !=     |        | 
 |   ==     |        | 
 |   &&     |        | 
 |&#124;&#124;|        | 
 
 > operating-expression syntax example
+
 ```
     #[test]
     fn test_node_run() {
@@ -436,16 +448,15 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
-
-
 # SQL-Raw sql/Py sql
 
 > The PY syntax is used in SQL to modify the SYNTAX of SQL and is a form of dynamic SQL
 
-* py syntax, support for addition, subtraction, multiplication, and division if, for, in the trim, include, where, the set, choose, and so on syntax (and mybatis using the functions are almost the same)In the 
+* py syntax, support for addition, subtraction, multiplication, and division if, for, in the trim, include, where, the
+  set, choose, and so on syntax (and mybatis using the functions are almost the same)In the
 * PY syntax, the line space for Child must be greater than that for father. It says it's its child
 * PY syntax must end with:
-* PY syntax support many express in same line.for example      trim 'a': for item in arg:
+* PY syntax support many express in same line.for example trim 'a': for item in arg:
 
 | method    | rust code |
 | ------ | ------ |
@@ -460,6 +471,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 | bind a,1+1: | let a = 1+1 |
 
 > example
+
 ```rust
     SELECT * FROM biz_activity
     if  name!=null:
@@ -485,6 +497,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > 1 Execute PysQL directly using Rbatis
+
 ``` python
         let rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -509,15 +522,20 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > Macros make it easy to write custom SQL, which is useful when you're writing complex multi-table associated queries, while keeping things simple and extensible
 
-*  The first parameter to the SQL macro is the Rbatis instance name followed by SQL. Note that the SQL macro executes SQL that is driven to run directly, so it must be a replacement symbol for a specific database, such as mysql(? ,?) ,pg($1,$2) for example #[SQL (RB, "select * from biz_activity where ID =?")]
-*  Py_sql macros are similar to SQL macros, except that #{} is used instead of precompiled parameters (precompiled is safer and anti-SQL injection), and ${} is used instead of direct replacement parameters (SQL injection risk).
-*  The macro generates execution logic based on the method definition, similar to @select dynamic SQL for Java/MybATIS
-*  The first parameter, RB, is a name referenced locally by Rbatis, such as 'dao::RB', 'com:: XXX ::RB'
-*  The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is $1...
-*  The macro automatically converts the function pub async fn select(name: & STR) -> rbatis::core::Result {}
-*  The macro support Page Plugin!
+* The first parameter to the SQL macro is the Rbatis instance name followed by SQL. Note that the SQL macro executes SQL
+  that is driven to run directly, so it must be a replacement symbol for a specific database, such as mysql(? ,?) ,pg(
+  $1,$2) for example #[SQL (RB, "select * from biz_activity where ID =?")]
+* Py_sql macros are similar to SQL macros, except that #{} is used instead of precompiled parameters (precompiled is
+  safer and anti-SQL injection), and ${} is used instead of direct replacement parameters (SQL injection risk).
+* The macro generates execution logic based on the method definition, similar to @select dynamic SQL for Java/MybATIS
+* The first parameter, RB, is a name referenced locally by Rbatis, such as 'dao::RB', 'com:: XXX ::RB'
+* The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is
+  $1...
+* The macro automatically converts the function pub async fn select(name: & STR) -> rbatis::core::Result {}
+* The macro support Page Plugin!
 
 > Macro mapping native driver SQL
+
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
@@ -536,6 +554,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > Macro mapping py_SQL (passed in schema referenced by Rbatis)
+
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
@@ -556,6 +575,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > Macro mapping py_SQL (schema passing in transaction TX_ID)
+
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
@@ -575,6 +595,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > Macro mapping py_SQL (join)
+
 ```rust
 #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time 
                   FROM test.biz_activity a1,biz_activity a2 
@@ -591,6 +612,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > Macro mapping use page plugin
+
 ```rust
 #[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
 fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
@@ -602,15 +624,15 @@ fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
 > Disable generate Rust code print
+
 ```toml
 rbatis-macro-driver = { version = "last version" , default-features=false, features = ["no_print"]}
 ```
 
-
-
 # Conditional compilation choose Runtime or driver
->Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
->Conditional compilation supports any of the following compilation parameters
+
+> Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
+> Conditional compilation supports any of the following compilation parameters
 
 |Options | explanation|
 | ------ | ------ |
@@ -637,11 +659,13 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 |Actix MSSQL | when running with Actix version, MSSQL database|
 
 > for example,use 'actix-mysql'
+
 ```rust
 rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
 ```
 
 # Plugin: RbatisPagePlugin
+
 ```rust
         let mut rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -656,7 +680,9 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
         let data: Page<BizActivity> = rb.fetch_page_by_wrapper("", &wraper,  &req).await.unwrap();
         println!("{}", serde_json::to_string(&data).unwrap());
 ```
+
 > json result
+
 ```json
 //2020-07-10T21:28:40.036506700+08:00 INFO rbatis::rbatis - [rbatis] Query ==> SELECT count(1) FROM biz_activity  WHERE delete_flag =  ? LIMIT 0,20
 //2020-07-10T21:28:40.040505200+08:00 INFO rbatis::rbatis - [rbatis] Args  ==> [1]
@@ -665,31 +691,33 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 //2020-07-10T21:28:40.073506+08:00 INFO rbatis::rbatis - [rbatis] Args  ==> [1]
 //2020-07-10T21:28:40.076506500+08:00 INFO rbatis::rbatis - [rbatis] Total <== 5
 {
-	"records": [{
-		"id": "12312",
-		"name": "null",
-		"pc_link": "null",
-		"h5_link": "null",
-		"pc_banner_img": "null",
-		"h5_banner_img": "null",
-		"sort": "null",
-		"status": 1,
-		"remark": "null",
-		"create_time": "2020-02-09T00:00:00+00:00",
-		"version": 1,
-		"delete_flag": 1
-	}],
-	"total": 5,
-	"size": 20,
-	"current": 1,
-	"serch_count": true
+  "records": [
+    {
+      "id": "12312",
+      "name": "null",
+      "pc_link": "null",
+      "h5_link": "null",
+      "pc_banner_img": "null",
+      "h5_banner_img": "null",
+      "sort": "null",
+      "status": 1,
+      "remark": "null",
+      "create_time": "2020-02-09T00:00:00+00:00",
+      "version": 1,
+      "delete_flag": 1
+    }
+  ],
+  "total": 5,
+  "size": 20,
+  "current": 1,
+  "serch_count": true
 }
 ```
 
-
 # transaction
 
-> default transaction 
+> default transaction
+
 ```rust
 #[async_std::test]
 pub async fn test_tx() {
@@ -711,6 +739,7 @@ pub async fn test_tx() {
 ```
 
 > TxGuard
+
 ```rust
 #[async_std::test]
     pub async fn test_tx_commit_defer() {
@@ -734,6 +763,7 @@ pub async fn test_tx() {
 ```
 
 > macro transaction
+
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
@@ -757,7 +787,9 @@ pub async fn test_tx() {
 ```
 
 # Plugin: RbatisLogicDeletePlugin
+
 > (Logical delete the query and delete methods provided for Rbatis are valid, such as list**(),remove**(), fetch**())
+
 ```rust
    let mut rb = init_rbatis().await;
    //rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new_opt("delete_flag",1,0)));//Customize deleted/undeleted writing
@@ -772,6 +804,7 @@ pub async fn test_tx() {
 # Plug-in: SqlIntercept
 
 > Implementing an interface
+
 ```rust
 pub struct Intercept{}
 
@@ -787,6 +820,7 @@ impl SqlIntercept for Intercept{
 ```
 
 # Plug-in: LogPlugin
+
 ```rust
 use log::{debug, error, info, LevelFilter, trace, warn};
 pub struct RbatisLog {}
@@ -819,16 +853,20 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+
 > log plugin set into Rbatis
+
 ```rust
 let mut rb=Rbatis::new();
 rb.log_plugin = Box::new(RbatisLog{});
 ```
 
 # Plug-in: distributed unique ID (snowflake algorithm)
+
 ```toml
 rbatis = { version = "1.8", features = ["snowflake"] }
 ```
+
 ```rust
     use crate::plugin::snowflake::{async_snowflake_id, block_snowflake_id};
 
@@ -841,6 +879,7 @@ rbatis = { version = "1.8", features = ["snowflake"] }
 ```
 
 > Set to Rbatis
+
 ```rust
 let mut rb=Rbatis::new();
 rb.sql_intercepts.push(Box::new(Intercept{}));
