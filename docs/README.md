@@ -533,7 +533,7 @@ rb.update_by_wrapper("", &activity, &w).await;
    }
 
     #[sql(RB, "select * from biz_activity where id = ?")]
-    fn select(name: &str) -> BizActivity {}
+    async fn select(name: &str) -> BizActivity {}
 
     #[async_std::test]
     pub async fn test_macro() {
@@ -554,7 +554,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[py_sql(rbatis, "select * from biz_activity where id = #{name}
                   if name != '':
                     and name=#{name}")]
-    fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
+    async fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
    
     #[async_std::test]
     pub async fn test_macro_py_select() {
@@ -575,7 +575,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[py_sql(RB, "select * from biz_activity where id = #{name}
                   if name != '':
                     and name=#{name}")]
-    fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
+    async fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
     #[async_std::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
@@ -591,7 +591,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time 
                   FROM test.biz_activity a1,biz_activity a2 
                   WHERE a1.id=a2.id and a1.name=#{name}")]
-    fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
 
     #[async_std::test]
     pub async fn test_join() {
@@ -607,12 +607,12 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```rust
 
 #[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
-fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+async fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 
 #[py_sql(RB, "select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
-fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
 > 禁用打印宏生成的Rust代码
@@ -675,7 +675,7 @@ pub async fn test_tx() {
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
-    fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
 
     #[async_std::test]
     pub async fn test_join() {
