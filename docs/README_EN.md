@@ -528,9 +528,6 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py_sql macro:  For writing 'dynamic SQL'.  Rule:   ```#{}``` is used instead of precompiled parameters (precompiled is
   safer and anti-SQL injection), and ```${}``` is used instead of direct replacement parameters (SQL injection risk).
 * The macro generates execution logic based on the method definition, similar to @select dynamic SQL for Java/MybATIS
-* The first parameter, RB, is a name referenced locally by Rbatis, such as ``` 'RB','dao::RB', 'com:: XXX ::RB' ```
-* The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is
-  $1...
 * The macro automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
 * The macro support Page Plugin!(Just put PageRequest into parameter)
 * For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '

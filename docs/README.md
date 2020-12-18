@@ -520,8 +520,6 @@ rb.update_by_wrapper("", &activity, &w).await;
   ``` #[sql(RB, "select * from biz_activity where id = ?")] ```
 * py_sql宏: 用于编写‘动态SQL’。 规则：使用```#{}```代替预编译参数（预编译较安全，防sql注入），```${}```代替直接替换参数（有sql注入风险）
 * 宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql
-* 第一个参数 RB是本地依赖Rbatis引用的名称,例如 ``` 'RB','dao::RB', 'com::xxx::RB' ```都可以
-* 第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
 * 宏会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
 * 宏支持分页插件(参数传入PageRequest即可)
 * 对于PostgresSQL数据库,默认使用预编译SQL。特殊类型例如UUID 需使用::type强制转换类型。例如``` #{arg}::uuid ```
