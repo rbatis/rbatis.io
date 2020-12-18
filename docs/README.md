@@ -514,12 +514,12 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 # 宏映射(Macro Mapper)
 
-> 宏映射方法能非常方便的编写自定义的sql,并实现一个Fn，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性
+> 宏映射方法能非常方便的编写自定义的sql,并实现一个Fn，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性.有点类似于 java/mybatis的@select动态sql
 
 * sql宏: 用于编写原始SQL。 规则：第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如
   ``` #[sql(RB, "select * from biz_activity where id = ?")] ```
 * py_sql宏: 用于编写‘动态SQL’。 规则：使用```#{}```代替预编译参数（预编译较安全，防sql注入），```${}```代替直接替换参数（有sql注入风险）
-* 宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql
+* 其中，py_sql宏中的py_sql可以使用运算表达式，例如 ``` #{1+1},#{arg},#{arg[0]},#{arg[0] + 'string'} ```
 * 宏会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
 * 宏支持分页插件(参数传入PageRequest即可)
 * 对于PostgresSQL数据库,默认使用预编译SQL。特殊类型例如UUID 需使用::type强制转换类型。例如``` #{arg}::uuid ```
