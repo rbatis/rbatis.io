@@ -1,4 +1,4 @@
-* [English](https://rbatis.github.io/rbatis.io/#/README_EN)
+* [English](en/)
 
 ### 支持数据库
 
