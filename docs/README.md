@@ -623,7 +623,7 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 
 # 事务
 
-> 普通事务
+## 普通事务
 
 ```rust
 #[async_std::test]
@@ -644,7 +644,7 @@ pub async fn test_tx() {
 }
 ```
 
-> 事务守卫
+## 事务守卫
 
 ```rust
 #[async_std::test]
@@ -668,7 +668,7 @@ pub async fn test_tx() {
 
 ```
 
-> 宏事务
+## 宏事务
 
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time

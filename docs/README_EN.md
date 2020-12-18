@@ -715,7 +715,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 
 # transaction
 
-> default transaction
+## default transaction
 
 ```rust
 #[async_std::test]
@@ -737,7 +737,7 @@ pub async fn test_tx() {
 }
 ```
 
-> TxGuard
+## TxGuard
 
 ```rust
 #[async_std::test]
@@ -761,7 +761,7 @@ pub async fn test_tx() {
 
 ```
 
-> macro transaction
+## macro transaction
 
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
