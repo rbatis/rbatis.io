@@ -187,13 +187,13 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 
 > a Postgres database uses UUID as the primary key and fails to precompile if a string parameter is passed in under precompiled SQL.
 > therefore requires a Pg database ::type to cast, using column formatting macros The
-> format macro is defined as formats_database:column_name:formatted content with a {} symbol
+> format macro is defined as formats_database:"column_name:format_string"  format_string with a {} symbol
 > format macro use ',' split columns
 > for example:
 
 ```rust
-#[crud_enable(formats_pg:id:{}::uuid)]
-//#[crud_enable(formats_pg:id:{}::uuid,create_time:{}::timestamp)]
+#[crud_enable(formats_pg:"id:{}::uuid")]
+//#[crud_enable(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]
