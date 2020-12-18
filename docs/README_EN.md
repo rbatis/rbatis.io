@@ -176,7 +176,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 ##  database column formatting macro
 >  a Postgres database uses UUID as the primary key and fails to precompile if a string parameter is passed in under precompiled SQL.
 > therefore requires a Pg database ::type to cast, using column formatting macros The 
-> format macro is defined as formats_database:column_name:formatted content with a {} symbol
+> format macro is defined as formats_database:"column_name:formatted",   formatted with a '{}' symbol
 > format macro use ',' split columns
 > for example:
 
