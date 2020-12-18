@@ -370,7 +370,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > operating-expression syntax example
 
-```
+``` rust
     #[test]
     fn test_node_run() {
         let arg = json!({"a":1,"b":2,"c":"c", "d":null,});
@@ -477,7 +477,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 1 Execute PysQL directly using Rbatis
 
-``` python
+``` rust
         let rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
             let py = r#"
@@ -769,7 +769,7 @@ pub async fn test_tx() {
 
 ## transaction guard
 
-```
+```rust
 #[async_std::test]
     pub async fn test_tx_commit_defer() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
@@ -793,7 +793,7 @@ pub async fn test_tx() {
 
 ## transaction macro
 
-```
+```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
@@ -849,7 +849,7 @@ pub async fn test_tx() {
 
 > such as radio actix-mysql
 
-```rust
+```toml
 
 rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
 
