@@ -135,7 +135,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         pub delete_flag: Option<i32>,
     }
 // 例子3（全部自定义，其他自动）:
-    #[crud_enable( id_name:id |  id_type:String |  table_name:biz_activity |  table_columns:id,name,delete_flag | formats_pg:id:{}::uuid)]
+    #[crud_enable( id_name:"id" |  id_type:"String" |  table_name:"biz_activity" |  table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -183,7 +183,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 
 ```rust
 // 这是格式化宏的例子
-#[crud_enable(formats_pg:id:{}::uuid)]
+#[crud_enable(formats_pg:"id:{}::uuid")]
 #[derive(Clone, Debug)]
 pub struct BizUuid {
     pub id: Option<Uuid>,
@@ -198,7 +198,7 @@ pub struct BizUuid {
         //'formats_pg' use postgres format
         //'id' ->  table column 'id'
         //'{}::uuid' -> format data str
-        #[crud_enable(formats_pg:id:{}::uuid)]
+        #[crud_enable(formats_pg:"id:{}::uuid")]
         #[derive(Clone, Debug)]
         pub struct BizUuid {
             pub id: Option<Uuid>,
