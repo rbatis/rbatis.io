@@ -533,6 +533,7 @@ rb.update_by_wrapper("", &activity, &w).await;
   $1...
 * The macro automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
 * The macro support Page Plugin!(Just put PageRequest into parameter)
+* For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '
 
 > Macro mapping native driver SQL
 

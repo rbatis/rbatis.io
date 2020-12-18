@@ -524,6 +524,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * 第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
 * 宏会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
 * 宏支持分页插件(参数传入PageRequest即可)
+* 对于PostgresSQL数据库,默认使用预编译SQL。特殊类型例如UUID 需使用::type强制转换类型。例如``` #{arg}::uuid ```
 
 > 宏映射 原生驱动sql
 
