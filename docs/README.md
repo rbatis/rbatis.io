@@ -512,7 +512,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 2使用宏映射执行pysql，见 #Macro-智能宏映射
 
-# 宏映射(Macro Mapper)
+# Mapper宏映射
 
 > 宏映射方法能非常方便的编写自定义的sql,并实现一个Fn，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性.有点类似于 java/mybatis的@select动态sql
 
