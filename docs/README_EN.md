@@ -851,22 +851,22 @@ pub async fn test_tx() {
 | actix | using the actix runtime, all drivers |
 | tokio02 | using the tokio02 version of the runtime, all drivers |
 | tokio03 | using the tokio03 version of the runtime, all drivers |
-| async-io-mysql | uses the async-std version run when mysql drives |
-| async-io-postgres | using async-std version run, pg drive |
-| async-io-sqlite | uses the async-std version run when sqlite drives |
-| async-io-mssql | uses async-std version to run while MSSQL drives |
-| tokio03-mysql | using the tokio03 version of the runtime, mysql drives |
-| tokio03-postgres | using the tokio03 version of the run time, pg drive |
+| async-io-mysql | uses the async-std version run when mysql driver |
+| async-io-postgres | using async-std version run, pg driver |
+| async-io-sqlite | uses the async-std version run when sqlite driver |
+| async-io-mssql | uses async-std version to run while MSSQL driver |
+| tokio03-mysql | using the tokio03 version of the runtime, mysql driver |
+| tokio03-postgres | using the tokio03 version of the run time, pg driver |
 | tokio03-sqlite | using the tokio03 version of the run, sqlite driver |
-| tokio03- MSSQL | using the tokio03 version of the run time, MSSQL drive |
-| tokio02-mysql | uses the tokio02 version to run, mysql to drive |
-| tokio02-postgres | uses the tokio02 version to run, pg drives |
-| tokio02-sqlite | using the tokio02 version of the runtime, sqlite drives |
-| tokio02-mssql | using the tokio02 version run time, MSSQL drive |
-| actix-mysql | using the actix version of the runtime, mysql drives |
-| actix-postgres | runs with the actix version, pg drives |
-| actix-sqlite | using the actix version of the runtime, sqlite drives |
-| actix-mssql | using the actix version runs, MSSQL drives |
+| tokio03- MSSQL | using the tokio03 version of the run time, MSSQL driver |
+| tokio02-mysql | uses the tokio02 version to run, mysql to driver |
+| tokio02-postgres | uses the tokio02 version to run, pg driver |
+| tokio02-sqlite | using the tokio02 version of the runtime, sqlite driver |
+| tokio02-mssql | using the tokio02 version run time, MSSQL driver |
+| actix-mysql | using the actix version of the runtime, mysql driver |
+| actix-postgres | runs with the actix version, pg driver |
+| actix-sqlite | using the actix version of the runtime, sqlite driver |
+| actix-mssql | using the actix version runs, MSSQL driver |
 
 > such as radio actix-mysql
 
