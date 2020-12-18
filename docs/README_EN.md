@@ -525,8 +525,8 @@ rb.update_by_wrapper("", &activity, &w).await;
 * The first parameter to the SQL macro is the Rbatis instance name followed by SQL. Note that the SQL macro executes SQL
   that is driven to run directly, so it must be a replacement symbol for a specific database, such as mysql(? ,?) ,pg(
   $1,$2) for example ``` #[sql(RB, "select * from biz_activity where id = ?")] ```
-* Py_sql macros are similar to SQL macros, except that #{} is used instead of precompiled parameters (precompiled is
-  safer and anti-SQL injection), and ${} is used instead of direct replacement parameters (SQL injection risk).
+* Py_sql macros are similar to SQL macros, except that ```#{}``` is used instead of precompiled parameters (precompiled is
+  safer and anti-SQL injection), and ```${}``` is used instead of direct replacement parameters (SQL injection risk).
 * The macro generates execution logic based on the method definition, similar to @select dynamic SQL for Java/MybATIS
 * The first parameter, RB, is a name referenced locally by Rbatis, such as ``` 'RB','dao::RB', 'com:: XXX ::RB' ```
 * The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is
