@@ -837,67 +837,38 @@ pub async fn test_tx() {
 ```
 
 
-Conditional compilation switch runtime
+# Conditional compilation switch runtime
 
 
 
 > conditional compilation can select the specified database, run time compilation, and not compile the entire database. Conditional compilation can reduce program size
-
 > conditional compilation supports any of the following compilation parameters (radio)
 
-
-
 | single option | explains |
-
 | ------ | ------ |
-
 | default | - runs with async-io(async-std) on all drivers |
-
 | async-io | uses async-io(async-std) run when all drivers |
-
 | actix | using the actix runtime, all drivers |
-
 | tokio02 | using the tokio02 version of the runtime, all drivers |
-
 | tokio03 | using the tokio03 version of the runtime, all drivers |
-
 | async-io-mysql | uses the async-std version run when mysql drives |
-
 | async-io-postgres | using async-std version run, pg drive |
-
 | async-io-sqlite | uses the async-std version run when sqlite drives |
-
 | async-io-mssql | uses async-std version to run while MSSQL drives |
-
 | tokio03-mysql | using the tokio03 version of the runtime, mysql drives |
-
 | tokio03-postgres | using the tokio03 version of the run time, pg drive |
-
 | tokio03-sqlite | using the tokio03 version of the run, sqlite driver |
-
 | tokio03- MSSQL | using the tokio03 version of the run time, MSSQL drive |
-
 | tokio02-mysql | uses the tokio02 version to run, mysql to drive |
-
 | tokio02-postgres | uses the tokio02 version to run, pg drives |
-
 | tokio02-sqlite | using the tokio02 version of the runtime, sqlite drives |
-
 | tokio02-mssql | using the tokio02 version run time, MSSQL drive |
-
 | actix-mysql | using the actix version of the runtime, mysql drives |
-
 | actix-postgres | runs with the actix version, pg drives |
-
 | actix-sqlite | using the actix version of the runtime, sqlite drives |
-
 | actix-mssql | using the actix version runs, MSSQL drives |
 
-
-
 > such as radio actix-mysql
-
-
 
 ```rust
 
