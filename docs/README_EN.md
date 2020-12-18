@@ -364,7 +364,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ///...For more, check out CRUd.rs
 ```
 
-# operating-expression syntax
+# Expr-OperationalExpression
 
 > expressions are used for operations on parameters, such as String CONCAT,addition, subtraction, multiplication, and division, square, mod, parameter (A.B.C), array (a[0]), comparison, etc...
 > expressions are commonly found in py_sql if conditions, such as #{} or ${} expressions
