@@ -633,7 +633,7 @@ pub async fn test_tx() {
     RB.link(MYSQL_URL).await.unwrap();
 
     //let (tx_id,_)=rb.begin_tx().await.unwrap();//1.8.40开始使用begin_tx()可返回自动生成的tx_id
-    //自1.8.39版本之后，事务格式是'tx:事务id',非tx:开头的id以普通模式执行
+    //事务格式是'tx:事务id',非tx:开头的id以普通模式执行
     let tx_id = "tx:1";
     //begin
     RB.begin(tx_id).await.unwrap();

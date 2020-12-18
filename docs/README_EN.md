@@ -775,7 +775,9 @@ pub async fn test_tx() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 
-        let tx_id = "1";
+        //let (tx_id,_)=rb.begin_tx().await.unwrap(); //1.8.40 start using begin_tx() to return automatically generated TX_ID
+        //The transaction format is'tx:transactionID', and non-tx: starting ids are executed in normal mode
+        let tx_id = "tx:1";
         //begin
         RB.begin(tx_id).await.unwrap();
         let results = join_select(&RB, "test").await.unwrap();
