@@ -518,7 +518,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 2 Use Macro mapping to perform PysQL, see # Macro-Intelligent Macro mapping
 
-# Macro System
+# Macro Mapper
 
 > Macros make it easy to write custom SQL, which is useful when you're writing complex multi-table associated queries, while keeping things simple and extensible
 
