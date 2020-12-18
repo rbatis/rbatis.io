@@ -2,7 +2,9 @@
 
 # Rbatis
 
-[GitHub](https://github.com/rbatis/rbatis)
+* [GitHub](https://github.com/rbatis/rbatis)
+
+* [中文](https://rbatis.github.io/rbatis.io/#/)
 
 > Rust ORM Framework Dynamic sql, No Runtime,No Garbage Collector, Low Memory,Async_std,Tokio.
 
