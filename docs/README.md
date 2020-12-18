@@ -1,7 +1,7 @@
-
 * [English](https://rbatis.github.io/rbatis.io/#/README_EN)
 
 ### 支持数据库
+
 | 数据库    | 已支持 |
 | ------ | ------ |
 | Mysql            | √     |   
@@ -12,11 +12,12 @@
 | TiDB(Mysql)             | √     |
 | CockroachDB(Postgres)      | √     |
 
-
 # Rbatis-初始化
 
 > 安装依赖
+
 ##### 安装依赖(Cargo.toml)，执行 cargo install
+
 ``` rust
 #json支持(必须)
 serde = { version = "1.0", features = ["derive"] }
@@ -37,8 +38,8 @@ rbatis =  { version = "1.8" }
 rbatis-macro-driver = { version = "1.8" }
 ```
 
-
 > 普通初始化
+
 ```rust
 let rb = Rbatis::new();
 ///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*","mssql://*"加载驱动   
@@ -53,6 +54,7 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 ```
 
 > 使用全局变量初始化（需依赖lazy_static这个库）
+
 ```rust
 lazy_static! {
   // Rbatis是线程、协程安全的，运行时的方法是Send+Sync，内部使用DashMap等等并发安全的map实现，无需担心线程竞争
@@ -69,20 +71,18 @@ async fn main() {
 
 ```
 
-
-
 # 表模型定义
 
->  CRUDEnable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
+> CRUDEnable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
 
-*  IdType(对应struct的id字段类型，必须声明)
-*  id_name()主键id的名称（非必填，默认id）
-*  table_name()表名(对应struct的蛇形命名，可选重写)
-*  table_columns()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
-*  format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
+* IdType(对应struct的id字段类型，必须声明)
+* id_name()主键id的名称（非必填，默认id）
+* table_name()表名(对应struct的蛇形命名，可选重写)
+* table_columns()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
+* format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
+> 使用derive宏实现CRUDEnable 好处是宏在编译器生成代码，性能较高.
 
->  使用derive宏实现CRUDEnable 好处是宏在编译器生成代码，性能较高.
 ```rust
 #[macro_use]
 extern crate rbatis_macro_driver;
@@ -112,6 +112,10 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 | id_type | 表主键类型 |
 | table_name | 表名称 |
 | table_columns | 表列成员用','分割 |
+| formats_pg,formats_postgres | Postgres列sql格式化，用于类型转换|
+| formats_mysql | mysql列sql格式化，用于类型转换|
+| formats_sqlite | sqlite列sql格式化，用于类型转换|
+| formats_mssql | mssql列sql格式化，用于类型转换|
 
 ```rust
 //例子1(全部自动判断):
@@ -148,8 +152,8 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     }
 ```
 
+> (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 
->  (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 ```rust
     impl CRUDEnable for BizActivity {
         type IdType = String; //默认提供IdType类型即可，接口里其他的method默认使用json序列化实现
@@ -159,18 +163,18 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     }
 ```
 
+## 数据库列格式化宏
 
-
-##  数据库列格式化宏
 > 例如Postgres数据库用UUID作为主键,在预编译的sql下传入参数为string的情况下预编译失败。
 > 因此需要使用Pg数据库 ::type 来强制类型转换，可以借助列格式化宏
-> 
-> 宏定义为 formats_数据库:"列名称:带有{}符号的格式化内容",例如formats_pg:"id:{}::uuid"
+>
+> 宏定义为 formats_数据库:列名称:带有{}符号的格式化内容
 > 宏定义多个可用逗号分隔
 > 例如
+
 ```rust
-#[crud_enable(formats_pg:"id:{}::uuid")]
-//#[crud_enable(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
+#[crud_enable(formats_pg:id:{}::uuid)]
+//#[crud_enable(formats_pg:id:{}::uuid,create_time:{}::timestamp)]
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]
@@ -226,9 +230,6 @@ pub struct BizUuid {
                                                                 [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
 ```
 
-
-
-
 # 使用Wrapper-Sql
 
 > Wrapper是对sql的一系列包装，注意结尾调用check()检查正确性
@@ -270,6 +271,7 @@ pub struct BizUuid {
 | do_match(&[method...])  |  wrapper.do_match(p.is_some(), *))    |    wrapper执行match条件匹配  |   
 
 > Wrapper使用例子
+
 ```rust
   //初始化Wrapper可以使用let rb=Rbatis::new();rb.new_wrapper()方法
   let w = Wrapper::new(&DriverType::Mysql).eq("id", 1)
@@ -285,7 +287,6 @@ pub struct BizUuid {
             .order_by(true, &["id", "name"])
             .check().unwrap();
 ```
-
 
 # Wrapper增删改查
 
@@ -376,14 +377,14 @@ rb.update_by_wrapper("", &activity, &w).await;
 |   <=     |  小于等于    | 
 |   <     |    小于  | 
 |   >     |    大于    | 
-|   >=     |  大于等于  | 
+|   > =     |  大于等于  | 
 |   !=     |   不等于   | 
 |   ==     |  等于    | 
 |   &&     |  且    | 
 |   &#124;&#124;       |  或     | 
 
-
 > 运算表达式语法案例
+
 ```
     #[test]
     fn test_node_run() {
@@ -441,8 +442,6 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
-
-
 # Py语法
 
 > py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
@@ -450,8 +449,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py语法支持加减乘除，if，for in,trim,include,where,set,choose等等语法(和mybatis使用的功能几乎一样)
 * py语法中，child的行空格必须大于father的空格。表示自己是它的child
 * py语法必须以 : 结尾
-* py语法支持同一行连续写(中间用': '分割)   例如   trim: for item in arg:
-
+* py语法支持同一行连续写(中间用': '分割)   例如 trim: for item in arg:
 
 | 方法    | rust代码 |
 | ------ | ------ |
@@ -465,7 +463,8 @@ rb.update_by_wrapper("", &activity, &w).await;
 | where : | sql:"WHERE" |
 | bind a,1+1: | let a = 1+1 |
 
->例如
+> 例如
+
 ```rust
     SELECT * FROM biz_activity
     if  name!=null:
@@ -491,6 +490,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > 1 直接使用Rbatis执行pysql
+
 ``` python
 //执行到远程mysql 并且获取结果。支持serde_json可序列化的任意类型
         let rb = Rbatis::new();
@@ -516,22 +516,24 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > 宏实现方法能非常方便的编写自定义的sql，这个在你编写复杂的多表关联查询时非常有用，同时保持简洁和扩展性
 
-*  sql宏的第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如 #[sql(RB, "select * from biz_activity where id = ?")]
-*  py_sql宏和sql宏类似，区别就是 使用#{}代替预编译参数（预编译较安全，防sql注入），${}代替直接替换参数（有sql注入风险）
-*  宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql 
-*  第一个参数 RB是本地依赖Rbatis引用的名称,例如  'dao::RB', 'com::xxx::RB'都可以
-*  第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
-*  宏会自动转换函数为  pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}
-*  宏支持分页插件
+* sql宏的第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如
+  #[sql(RB, "select * from biz_activity where id = ?")]
+* py_sql宏和sql宏类似，区别就是 使用#{}代替预编译参数（预编译较安全，防sql注入），${}代替直接替换参数（有sql注入风险）
+* 宏根据方法定义生成执行逻辑，又点类似于 java/mybatis的@select动态sql
+* 第一个参数 RB是本地依赖Rbatis引用的名称,例如  'dao::RB', 'com::xxx::RB'都可以
+* 第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
+* 宏会自动转换函数为 pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}
+* 宏支持分页插件
 
 > 宏映射 原生驱动sql
+
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
    }
 
     #[sql(RB, "select * from biz_activity where id = ?")]
-    fn select(name: &str) -> BizActivity {}
+    async fn select(name: &str) -> BizActivity {}
 
     #[async_std::test]
     pub async fn test_macro() {
@@ -543,6 +545,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > 宏映射 py_sql(传入Rbatis引用的模式)
+
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
@@ -551,7 +554,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[py_sql(rbatis, "select * from biz_activity where id = #{name}
                   if name != '':
                     and name=#{name}")]
-    fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
+    async fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
    
     #[async_std::test]
     pub async fn test_macro_py_select() {
@@ -563,6 +566,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > 宏映射 py_sql(传入事务tx_id的模式)
+
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
@@ -571,7 +575,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[py_sql(RB, "select * from biz_activity where id = #{name}
                   if name != '':
                     and name=#{name}")]
-    fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
+    async fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
     #[async_std::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
@@ -582,11 +586,12 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > 宏映射 py_sql (join表连接)
+
 ```rust
 #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time 
                   FROM test.biz_activity a1,biz_activity a2 
                   WHERE a1.id=a2.id and a1.name=#{name}")]
-    fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
 
     #[async_std::test]
     pub async fn test_join() {
@@ -598,28 +603,28 @@ rb.update_by_wrapper("", &activity, &w).await;
 ```
 
 > 宏映射 使用分页插件
+
 ```rust
 
 #[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
-fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+async fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 
 #[py_sql(RB, "select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
-fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
-
 > 禁用打印宏生成的Rust代码
+
 ```toml
 rbatis-macro-driver = { version = "替换版本号" ,default-features=false, features = ["no_print"]}
 ```
 
-
-
 # 事务
 
 > 普通事务
+
 ```rust
 #[async_std::test]
 pub async fn test_tx() {
@@ -640,6 +645,7 @@ pub async fn test_tx() {
 ```
 
 > 事务守卫
+
 ```rust
 #[async_std::test]
     pub async fn test_tx_commit_defer() {
@@ -662,14 +668,14 @@ pub async fn test_tx() {
 
 ```
 
-
 > 宏事务
+
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
-    fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
 
     #[async_std::test]
     pub async fn test_join() {
@@ -686,8 +692,8 @@ pub async fn test_tx() {
     }
 ```
 
-
 # 条件编译切换运行时
+
 > 条件编译可以选择指定的数据库、运行时编译，而不是编译全部数据库。条件编译可以缩减程序体积
 > 条件编译支持以下编译参数(单选任意其中一种)
 
@@ -716,12 +722,13 @@ pub async fn test_tx() {
 | actix-mssql | 使用actix版本运行时，mssql驱动 |
 
 > 例如单选actix-mysql
+
 ```rust
 rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
 ```
 
-
 # 插件：分页RbatisPagePlugin
+
 ```rust
         let mut rb = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -736,7 +743,9 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
         let data: Page<BizActivity> = rb.fetch_page_by_wrapper("", &wraper,  &req).await.unwrap();
         println!("{}", serde_json::to_string(&data).unwrap());
 ```
+
 > json result 运行结果
+
 ```json
 //2020-07-10T21:28:40.036506700+08:00 INFO rbatis::rbatis - [rbatis] Query ==> SELECT count(1) FROM biz_activity  WHERE delete_flag =  ? LIMIT 0,20
 //2020-07-10T21:28:40.040505200+08:00 INFO rbatis::rbatis - [rbatis] Args  ==> [1]
@@ -745,29 +754,33 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 //2020-07-10T21:28:40.073506+08:00 INFO rbatis::rbatis - [rbatis] Args  ==> [1]
 //2020-07-10T21:28:40.076506500+08:00 INFO rbatis::rbatis - [rbatis] Total <== 5
 {
-	"records": [{
-		"id": "12312",
-		"name": "null",
-		"pc_link": "null",
-		"h5_link": "null",
-		"pc_banner_img": "null",
-		"h5_banner_img": "null",
-		"sort": "null",
-		"status": 1,
-		"remark": "null",
-		"create_time": "2020-02-09T00:00:00+00:00",
-		"version": 1,
-		"delete_flag": 1
-	}],
-	"total": 5,
-	"size": 20,
-	"current": 1,
-	"serch_count": true
+  "records": [
+    {
+      "id": "12312",
+      "name": "null",
+      "pc_link": "null",
+      "h5_link": "null",
+      "pc_banner_img": "null",
+      "h5_banner_img": "null",
+      "sort": "null",
+      "status": 1,
+      "remark": "null",
+      "create_time": "2020-02-09T00:00:00+00:00",
+      "version": 1,
+      "delete_flag": 1
+    }
+  ],
+  "total": 5,
+  "size": 20,
+  "current": 1,
+  "serch_count": true
 }
 ```
 
 # 插件：逻辑删除RbatisLogicDeletePlugin
+
 > (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 list**(),remove**()，fetch**())
+
 ```rust
    let mut rb = init_rbatis().await;
    //rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new_opt("delete_flag",1,0)));//自定义已删除/未删除 写法
@@ -782,6 +795,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 # 插件：SQL拦截器SqlIntercept
 
 > 实现接口
+
 ```rust
 pub struct Intercept{}
 
@@ -797,12 +811,14 @@ impl SqlIntercept for Intercept{
 ```
 
 > 设置到Rbatis
+
 ```rust
 let mut rb=Rbatis::new();
 rb.sql_intercepts.push(Box::new(Intercept{}));
 ```
 
 # 插件：日志打印插件
+
 ```rust
 use log::{debug, error, info, LevelFilter, trace, warn};
 pub struct RbatisLog {}
@@ -834,16 +850,20 @@ impl LogPlugin for RbatisLog {
     }
 }
 ```
+
 > 日志插件设置到Rbatis
+
 ```rust
 let mut rb=Rbatis::new();
 rb.log_plugin = Box::new(RbatisLog{});
 ```
 
 # 插件：分布式唯一ID(雪花算法)
+
 ```toml
 rbatis = { version = "1.8", features = ["snowflake"] }
 ```
+
 ```rust
     use crate::plugin::snowflake::{async_snowflake_id, block_snowflake_id};
 
@@ -855,14 +875,14 @@ rbatis = { version = "1.8", features = ["snowflake"] }
     }
 ```
 
-
 ## 欢迎捐赠
+
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
 或者[GitHub](https://github.com/rbatis/rbatis) 点star
 
 ## 联系方式
-微信号: zxj347284221
-微信群：先加微信，然后拉进群
+
+微信号: zxj347284221 微信群：先加微信，然后拉进群
 
 
 
