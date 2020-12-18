@@ -787,6 +787,126 @@ pub async fn test_tx() {
     }
 ```
 
+
+## transaction guard
+
+```
+#[async_std::test]
+    pub async fn test_tx_commit_defer() {
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+        let rb: Rbatis = Rbatis::new();
+        rb.link(MYSQL_URL).await.unwrap();
+        //使用defer事务，你可以在任何函数结尾忘记提交或回滚事务，框架会在守卫被回收时帮助你提交，回滚事务
+        let guard = rb.begin_tx_defer(true).await.unwrap();
+        let v: serde_json::Value = rb.fetch(&guard.tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
+        // tx will be commit
+        drop(guard);
+        println!("{}", v.clone());
+        sleep(Duration::from_secs(1));
+    }
+
+2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
+2020-12-03 14:53:24.909074 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Query ==> SELECT count(1) FROM biz_activity;
+2020-12-03 14:53:24.912973 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] ReturnRows <== 1
+2020-12-03 14:53:24.914487 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Commit
+
+```
+
+## transaction macro
+
+```
+    #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
+                      FROM test.biz_activity a1,biz_activity a2
+                      WHERE a1.id=a2.id
+                      AND a1.name=#{name}")]
+    async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
+
+    #[async_std::test]
+    pub async fn test_join() {
+        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+
+        let tx_id = "1";
+        //begin
+        RB.begin(tx_id).await.unwrap();
+        let results = join_select(&RB,tx_id, "test").await.unwrap();
+        println!("data: {:?}", results);
+        //commit or rollback
+        RB.commit(tx_id).await.unwrap();
+    }
+```
+
+
+Conditional compilation switch runtime
+
+
+
+> conditional compilation can select the specified database, run time compilation, and not compile the entire database. Conditional compilation can reduce program size
+
+> conditional compilation supports any of the following compilation parameters (radio)
+
+
+
+| single option | explains |
+
+| ------ | ------ |
+
+| default | - runs with async-io(async-std) on all drivers |
+
+| async-io | uses async-io(async-std) run when all drivers |
+
+| actix | using the actix runtime, all drivers |
+
+| tokio02 | using the tokio02 version of the runtime, all drivers |
+
+| tokio03 | using the tokio03 version of the runtime, all drivers |
+
+| async-io-mysql | uses the async-std version run when mysql drives |
+
+| async-io-postgres | using async-std version run, pg drive |
+
+| async-io-sqlite | uses the async-std version run when sqlite drives |
+
+| async-io-mssql | uses async-std version to run while MSSQL drives |
+
+| tokio03-mysql | using the tokio03 version of the runtime, mysql drives |
+
+| tokio03-postgres | using the tokio03 version of the run time, pg drive |
+
+| tokio03-sqlite | using the tokio03 version of the run, sqlite driver |
+
+| tokio03- MSSQL | using the tokio03 version of the run time, MSSQL drive |
+
+| tokio02-mysql | uses the tokio02 version to run, mysql to drive |
+
+| tokio02-postgres | uses the tokio02 version to run, pg drives |
+
+| tokio02-sqlite | using the tokio02 version of the runtime, sqlite drives |
+
+| tokio02-mssql | using the tokio02 version run time, MSSQL drive |
+
+| actix-mysql | using the actix version of the runtime, mysql drives |
+
+| actix-postgres | runs with the actix version, pg drives |
+
+| actix-sqlite | using the actix version of the runtime, sqlite drives |
+
+| actix-mssql | using the actix version runs, MSSQL drives |
+
+
+
+> such as radio actix-mysql
+
+
+
+```rust
+
+rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
+
+` ` `
+
+
+
 # Plugin: RbatisLogicDeletePlugin
 
 > (Logical delete the query and delete methods provided for Rbatis are valid, such as list**(),remove**(), fetch**())
