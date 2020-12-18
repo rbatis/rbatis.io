@@ -181,8 +181,8 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 > for example:
 
 ```rust
-#[crud_enable(formats_pg:id:{}::uuid)]
-//#[crud_enable(formats_pg:id:{}::uuid,create_time:{}::timestamp)]
+#[crud_enable(formats_pg:"id:{}::uuid")]
+//#[crud_enable(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
 //#[crud_enable(formats_mysql:...)]
 //#[crud_enable(formats_sqlite:...)]
 //#[crud_enable(formats_mssql:...)]
