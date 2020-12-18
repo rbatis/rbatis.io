@@ -522,10 +522,10 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > Macros make it easy to write custom SQL, which is useful when you're writing complex multi-table associated queries, while keeping things simple and extensible
 
-* The first parameter to the SQL macro is the Rbatis instance name followed by SQL. Note that the SQL macro executes SQL
+* sql macro:   Used to write raw SQL.   Rule: The first parameter to the SQL macro is the Rbatis instance name followed by SQL. Note that the SQL macro executes SQL
   that is driven to run directly, so it must be a replacement symbol for a specific database, such as mysql(? ,?) ,pg(
   $1,$2) for example ``` #[sql(RB, "select * from biz_activity where id = ?")] ```
-* Py_sql macros are similar to SQL macros, except that ```#{}``` is used instead of precompiled parameters (precompiled is
+* py_sql macro:  For writing 'dynamic SQL'.  Rule:   ```#{}``` is used instead of precompiled parameters (precompiled is
   safer and anti-SQL injection), and ```${}``` is used instead of direct replacement parameters (SQL injection risk).
 * The macro generates execution logic based on the method definition, similar to @select dynamic SQL for Java/MybATIS
 * The first parameter, RB, is a name referenced locally by Rbatis, such as ``` 'RB','dao::RB', 'com:: XXX ::RB' ```
