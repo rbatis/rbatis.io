@@ -523,7 +523,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * 第一个参数 RB是本地依赖Rbatis引用的名称,例如 ``` 'dao::RB', 'com::xxx::RB' ```都可以
 * 第二个参数 是标准的驱动sql，注意对应数据库参数mysql为？,pg为$1...
 * 宏会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
-* 宏支持分页插件
+* 宏支持分页插件(参数传入PageRequest即可)
 
 > 宏映射 原生驱动sql
 

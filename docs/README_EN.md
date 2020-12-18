@@ -532,7 +532,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * The second parameter is the standard driver SQL, note that the corresponding database parameter mysql is? , pg is
   $1...
 * The macro automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
-* The macro support Page Plugin!
+* The macro support Page Plugin!(Just put PageRequest into parameter)
 
 > Macro mapping native driver SQL
 
