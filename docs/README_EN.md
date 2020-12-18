@@ -528,8 +528,9 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py_sql macro:  For writing 'dynamic SQL'.  Rule:   ```#{}``` is used instead of precompiled parameters (precompiled is
   safer and anti-SQL injection), and ```${}``` is used instead of direct replacement parameters (SQL injection risk).
 * py_sql can use arithmetic expressions of macros, such as ` ` ` # {1 + 1}, # {arg}, # {arg [0]}, # {arg [0] + 'string'} ` ` `
-* The macro automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
-* The macro support Page Plugin!(Just put PageRequest into parameter)
+* automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
+* support Page Plugin!(Just put PageRequest into parameter)
+* param support``` tx_id: &str ``` or ``` context_id: &str ```  
 * For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '
 
 > Macro mapping native driver SQL
