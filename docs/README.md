@@ -18,7 +18,7 @@
 
 ##### 安装依赖(Cargo.toml)，执行 cargo install
 
-``` rust
+``` toml
 #json支持(必须)
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
