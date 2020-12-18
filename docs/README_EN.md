@@ -529,7 +529,7 @@ rb.update_by_wrapper("", &activity, &w).await;
   safer and anti-SQL injection), and ```${}``` is used instead of direct replacement parameters (SQL injection risk).
 * py_sql can use arithmetic expressions of macros, such as ` ` ` # {1 + 1}, # {arg}, # {arg [0]}, # {arg [0] + 'string'} ` ` `
 * automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
-* support Page Plugin!(Just put PageRequest into parameter)
+* support Page Plugin!(Just put param ``` page_req: &PageRequest ```)
 * param support``` tx_id: &str ``` or ``` context_id: &str ```  
 * For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '
 
