@@ -625,7 +625,7 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 
 ## 普通事务
 
-```rust
+```
 #[async_std::test]
 pub async fn test_tx() {
     fast_log::init_log("requests.log", 1000,log::Level::Info,true);
@@ -646,7 +646,7 @@ pub async fn test_tx() {
 
 ## 事务守卫
 
-```rust
+```
 #[async_std::test]
     pub async fn test_tx_commit_defer() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
@@ -670,7 +670,7 @@ pub async fn test_tx() {
 
 ## 宏事务
 
-```rust
+```
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
