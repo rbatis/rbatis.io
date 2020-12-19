@@ -79,30 +79,8 @@ async fn main() {
 * format_chain() Field formatting chain (you can format fields such as Pg database string date to timestamp #{date}::
   Timestamp, optional override)
 
-> The benefit of implementing CRUDEnable using derive macros is that the macros generate code in the compiler and have higher performance.
-
-```rust
-#[macro_use]
-extern crate rbatis_macro_driver;
-
-#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
-pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
-    pub id: Option<String>, 
-    pub name: Option<String>,
-    pub pc_link: Option<String>,
-    pub h5_link: Option<String>,
-    pub pc_banner_img: Option<String>,
-    pub h5_banner_img: Option<String>,
-    pub sort: Option<String>,
-    pub status: Option<i32>,
-    pub remark: Option<String>,
-    pub create_time: Option<NaiveDateTime>,
-    pub version: Option<i32>,
-    pub delete_flag: Option<i32>,
-}
-```
-
-> Another option is to use the Attr attribute macro to achieve CRUDEnable, which is more scalable and allows you to customize table names and fields
+  
+> use the Attr attribute macro to achieve CRUDEnable, which is more scalable and allows you to customize table names and fields
 
 | attr    | doc |
 | ------ | ------ |
@@ -149,6 +127,29 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
         pub name: Option<String>,
         pub delete_flag: Option<i32>,
     }
+```
+
+> (Optional) derive macro impl CRUDEnable  is that the macros generate code in the compiler
+
+```rust
+#[macro_use]
+extern crate rbatis_macro_driver;
+
+#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
+pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
+    pub id: Option<String>, 
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<NaiveDateTime>,
+    pub version: Option<i32>,
+    pub delete_flag: Option<i32>,
+}
 ```
 
 > (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name

@@ -81,30 +81,8 @@ async fn main() {
 * table_columns()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
 * format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
-> 使用derive宏实现CRUDEnable 好处是宏在编译器生成代码，性能较高.
 
-```rust
-#[macro_use]
-extern crate rbatis_macro_driver;
-
-#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
-pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
-    pub id: Option<String>, 
-    pub name: Option<String>,
-    pub pc_link: Option<String>,
-    pub h5_link: Option<String>,
-    pub pc_banner_img: Option<String>,
-    pub h5_banner_img: Option<String>,
-    pub sort: Option<String>,
-    pub status: Option<i32>,
-    pub remark: Option<String>,
-    pub create_time: Option<NaiveDateTime>,
-    pub version: Option<i32>,
-    pub delete_flag: Option<i32>,
-}
-```
-
-> 另一种选择是使用Attr属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
+> 推荐使用#[crud_enable]属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
 
 | 属性    | 含义 |
 | ------ | ------ |
@@ -150,6 +128,29 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
         pub name: Option<String>,
         pub delete_flag: Option<i32>,
     }
+```
+
+> (可选)使用derive宏实现CRUDEnable 
+
+```rust
+#[macro_use]
+extern crate rbatis_macro_driver;
+
+#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
+pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
+    pub id: Option<String>, 
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<NaiveDateTime>,
+    pub version: Option<i32>,
+    pub delete_flag: Option<i32>,
+}
 ```
 
 > (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
