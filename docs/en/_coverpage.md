@@ -1,6 +1,6 @@
 ![logo](logo.png )
 
-# Rbatis First Choice Rust-ORM Library
+# Rbatis - The ORM Library
 
 * - Rich plug-ins, paging, logical deletion, SQL interceptor
 * - Field formatting, type conversion

@@ -1,6 +1,6 @@
 ![logo](logo.png )
 
-# Rbatis-首选Rust-ORM框架
+# Rbatis-首选RustORM框架
 
 * [English](en/)
 * -丰富插件，分页，逻辑删除，sql拦截器
