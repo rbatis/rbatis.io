@@ -615,27 +615,27 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 
 |Options | explanation|
 | ------ | ------ |
-|Default | when using async IO (async STD) runtime, all databases|
-|Async IO | when using async IO (async STD) runtime, all databases|
-|Actix | when using Actix runtime, all databases|
-|Tokio02 | when running with the version of tokio02, all databases|
-|Tokio03 | when running with the version of tokio03, all databases|
-|Async IO MySQL | when running with async STD version, MySQL database|
-|Async IO Postgres | when running with async STD version, PG database|
-|Async IO SQLite | when using async STD version, SQLite database|
-|Async IO MSSQL | when running with async STD version, MSSQL database|
-|Tokio03 MySQL | when running with the tokio03 version, MySQL database|
-|Tokio03 Postgres | using tokio03 version runtime, PG database|
-|Tokio03-sqlite |  Using tokio03 version runtime, SQLite database |
-|Tokio03 MSSQL | when running with the version of tokio03, MSSQL database|
-|Tokio02 MySQL | when running with the version of tokio02, MySQL database|
-|Tokio02 Postgres | using tokio02 version runtime, PG database|
-|Tokio02 SQLite | when using the tokio02 version runtime, SQLite database|
-|Tokio02 MSSQL | when running with the version of tokio02, MSSQL database|
-|Actix MySQL | when running with Actix version, MySQL database|
-|Actix Postgres | when running with Actix version, PG database|
-|Actix SQLite | when running with Actix version, SQLite database|
-|Actix MSSQL | when running with Actix version, MSSQL database|
+|default | when using async IO (async STD) runtime, all databases|
+|async-io | when using async IO (async STD) runtime, all databases|
+|actix | when using Actix runtime, all databases|
+|tokio02 | when running with the version of tokio02, all databases|
+|tokio03 | when running with the version of tokio03, all databases|
+|async-io-mysql | when running with async STD version, MySQL database|
+|async-io-postgres | when running with async STD version, PG database|
+|async-io-sqlite | when using async STD version, SQLite database|
+|async-io-mssql | when running with async STD version, MSSQL database|
+|tokio03-mysql | when running with the tokio03 version, MySQL database|
+|tokio03-postgres | using tokio03 version runtime, PG database|
+|tokio03-sqlite |  Using tokio03 version runtime, SQLite database |
+|tokio03-mssql | when running with the version of tokio03, MSSQL database|
+|tokio02-mysql | when running with the version of tokio02, MySQL database|
+|tokio02-postgres | using tokio02 version runtime, PG database|
+|tokio02-sqlite | when using the tokio02 version runtime, SQLite database|
+|tokio02-mssql | when running with the version of tokio02, MSSQL database|
+|actix-mysql | when running with Actix version, MySQL database|
+|actix-postgres | when running with Actix version, PG database|
+|actix-sqlite | when running with Actix version, SQLite database|
+|actix-mssql  | when running with Actix version, MSSQL database|
 
 > for example,use 'actix-mysql'
 
