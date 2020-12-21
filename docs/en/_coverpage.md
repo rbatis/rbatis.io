@@ -1,6 +1,6 @@
 ![logo](logo.png )
 
-# Rbatis - The ORM Library
+# Rbatis - The Rust ORM
 
 * - Field formatting, type conversion
 * - Rich plug-ins, paging, logical deletion, SQL interceptor
