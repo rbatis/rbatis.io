@@ -443,7 +443,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
-# Py语法
+# PySQL语法
 
 > py语法是使用在sql中，用于修改sql的语法，也是动态sql的一个形式
 
