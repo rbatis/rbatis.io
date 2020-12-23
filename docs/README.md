@@ -878,6 +878,16 @@ rbatis = { version = "1.8", features = ["snowflake"] }
     }
 ```
 
+
+## 常见问题
+
+> mysql8 连接的时候被拒绝（即使用户名密码正确的情况下） caching_sha2_password加密方式在远程访问时候不支持。
+* 解决办法1 mysql使用navcat登录后，插件选项改成：mysql_native_password
+* 解决办法2 如果是localhost访问,使用navcat客户端登录后，点击对应用户，点击权限(不是服务器权限)，勾选全部权限  
+
+
+
+
 ## 欢迎捐赠
 
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
