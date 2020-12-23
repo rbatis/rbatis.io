@@ -446,8 +446,8 @@ rb.update_by_wrapper("", &activity, &w).await;
 | set : | sql:"SET" |
 | choose : | match |
 | when : | match expr |
-| otherwise : | match default value |
-| _: | match default value(v1.8.54 later) |
+| otherwise : | match { _ =>{} } |
+| _: | match { _ =>{} }(v1.8.54 later) |
 | where : | sql:"WHERE" |
 | bind a=1+1: | let a = 1+1 |
 | let  a=1+1:  | let a = 1+1(v1.8.54 later)|
