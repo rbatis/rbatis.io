@@ -450,7 +450,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 | _: | match default value(v1.8.54 later) |
 | where : | sql:"WHERE" |
 | bind a=1+1: | let a = 1+1 |
-| let  a=1+1  | let a = 1+1(v1.8.54 later)|
+| let  a=1+1:  | let a = 1+1(v1.8.54 later)|
 
 > example
 
