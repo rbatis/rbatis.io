@@ -460,9 +460,11 @@ rb.update_by_wrapper("", &activity, &w).await;
 | set : | sql:"SET" |
 | choose : | match |
 | when : | match expr |
-| otherwise : | match default value |
+| otherwise : | match default value|
+| _: | match default value(1.8.54版本之后) |
 | where : | sql:"WHERE" |
-| bind a=1+1: | let a = 1+1 |
+| bind a=1+1: | let a = 1+1|
+| let a=1+1: | let a = 1+1(1.8.54之后版本) |
 
 > 例如
 
