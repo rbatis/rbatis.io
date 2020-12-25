@@ -893,7 +893,7 @@ rbatis = { version = "1.8", features = ["snowflake"] }
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
 或者[GitHub](https://github.com/rbatis/rbatis) 点star
 
-## 联系方式
+# 联系方式
 
 微信号: zxj347284221 微信群：先加微信，然后拉进群
 
