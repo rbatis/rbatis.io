@@ -879,7 +879,7 @@ rbatis = { version = "1.8", features = ["snowflake"] }
 ```
 
 
-## 常见问题
+# 常见问题
 
 > mysql8 连接的时候access denied访问受限（即使用户名密码正确的情况下） caching_sha2_password加密方式在远程访问时候不支持。
 * 解决办法1 mysql使用navcat登录后，插件选项改成：mysql_native_password
@@ -888,7 +888,7 @@ rbatis = { version = "1.8", features = ["snowflake"] }
 
 
 
-## 欢迎捐赠
+# 欢迎捐赠
 
 ![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
 或者[GitHub](https://github.com/rbatis/rbatis) 点star
