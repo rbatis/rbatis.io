@@ -462,7 +462,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 | when : | match expr |
 | otherwise : | match default value |
 | where : | sql:"WHERE" |
-| bind a,1+1: | let a = 1+1 |
+| bind a=1+1: | let a = 1+1 |
 
 > 例如
 
