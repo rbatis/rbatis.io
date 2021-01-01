@@ -2,10 +2,9 @@
 
 # Rbatis - The Rust ORM
 
-* - Field Formatting, Type conversion
-* - Multi Plugins, Paging, Logical deletion, SQL interceptor
-* - 100% Safe Code Implementation,based on Future/Tokio/AcyncStd
-* - Super easy,built-in PagePlugin,Wrapper,PY_SQL/SQL macro,FourInOne driver
+* - High performance, completely asynchronous, underlying Future based design
+* - Security, memory security, protocol security, transaction security (guard against forget-commit transaction), 100% safe security code implementation
+* - Super easy to use, a variety of plug-ins (paging, logical deletion, SQL interception), built-in common CRUD+Wrapper+ innovative PySQL syntax
 
 [GitHub](https://github.com/rbatis/rbatis)
 [Get Started](#Rbatis-init)
