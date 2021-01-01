@@ -260,6 +260,7 @@ pub struct BizUuid {
 > Wrapper use case
 
 ```rust
+  //should use for example:    let RB=Rbatis::new();   RB.new_wrapper() or RB.new_wrapper_table()
   let w = Wrapper::new(&DriverType::Mysql).eq("id", 1)
             .ne("id", 1)
             .r#in("id", &[1, 2, 3])
@@ -279,20 +280,6 @@ pub struct BizUuid {
 ```rust
 let rb = Rbatis::new();
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-
-let wrapper = rb.new_wrapper()
-            .eq("id", 1)                    //sql:  id = 1
-            .and()                          //sql:  and 
-            .ne("id", 1)                    //sql:  id <> 1
-            .r#in("id", &[1, 2, 3])     //sql:  id in (1,2,3)
-            .not_in("id", &[1, 2, 3])       //sql:  id not in (1,2,3)
-            .like("name", 1)                //sql:  name like 1
-            .or()                           //sql:  or
-            .not_like("name", "asdf")       //sql:  name not like 'asdf'
-            .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")//sql:  create_time between '2020-01-01 00:00:00' and '2020-01-01 00:00:00'
-            .group_by(&["id"])              //sql:  group by id
-            .order_by(true, &["id", "name"])//sql:  group by id,name
-            .check().unwrap();
 
 let activity = BizActivity {
                 id: Some("12312".to_string()),
@@ -322,7 +309,7 @@ let result: Vec<BizActivity> = rb.list("").await.unwrap();
 let result: Vec<BizActivity> = rb.list_by_ids("",&["1".to_string()]).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
-///custom  query
+///custom  query(use Wrapper)
 let w = rb.new_wrapper().eq("id", "1").check().unwrap();
 let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
@@ -335,7 +322,7 @@ rb.remove_by_id::<BizActivity>("", &"1".to_string()).await;
 rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
-///update
+///update(use Wrapper)
 let w = rb.new_wrapper().eq("id", "12312").check().unwrap();
 rb.update_by_wrapper("", &activity, &w).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
