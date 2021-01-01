@@ -9,4 +9,4 @@
 
 [新闻](blog.md)
 [GitHub](https://github.com/rbatis/rbatis)
-[Get Started](#Rbatis-初始化)
+[开始](#Rbatis-初始化)
