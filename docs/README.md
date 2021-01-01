@@ -289,7 +289,7 @@ pub struct BizUuid {
             .check().unwrap();
 ```
 
-# Wrapper增删改查
+# 内置增删改查和Wrapper使用
 
 ```rust
 let rb = Rbatis::new();
