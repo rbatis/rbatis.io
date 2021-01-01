@@ -633,7 +633,7 @@ pub async fn test_tx() {
 }
 ```
 
-## 事务守卫
+## 事务守卫(Drop机制-预防忘记提交/回滚)
 
 ```rust
 #[async_std::test]
@@ -657,7 +657,7 @@ pub async fn test_tx() {
 
 ```
 
-## 宏事务
+## 宏事务(在py_sql宏中传递事务)
 
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
