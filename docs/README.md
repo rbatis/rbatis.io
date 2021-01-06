@@ -45,6 +45,7 @@ let rb = Rbatis::new();
 ///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*","mssql://*"加载驱动   
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///自定义连接池参数。(可选)
+// use crate::core::db::DBPoolOptions;
 // let mut opt =DBPoolOptions::new();
 // opt.max_connections=100;
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();

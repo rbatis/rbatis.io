@@ -43,6 +43,7 @@ let rb = Rbatis::new();
 ///Connect to the database, automatic judgment drive type "mysql: / / *", "postgres: / / *", "sqlite: / / *","mssql://*"  load driver  
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///Customize connection pool parameters. (optional)
+// use crate::core::db::DBPoolOptions;
 // let mut opt =DBPoolOptions::new();
 // opt.max_connections=100;
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
