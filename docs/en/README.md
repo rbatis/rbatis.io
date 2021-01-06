@@ -44,7 +44,7 @@ let rb = Rbatis::new();
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///Customize connection pool parameters. (optional)
 // let mut opt =DBPoolOptions::new();
-// opt.max_size=100;
+// opt.max_connections=100;
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //With log output enabled, you can also use other logging frameworks, which are not qualified
