@@ -31,9 +31,8 @@ fast_log="1.2.9"
 #BigDecimal support(not must)
 bigdecimal = "0.2"
 
-#rbatis support,Keep the same version(must)
-rbatis =  { version = "1.8" } 
-rbatis-macro-driver = { version = "1.8" }
+#rbatis support(must)
+rbatis =  { version = "1.8" }
 ```
 
 > Ordinary init
@@ -134,7 +133,7 @@ async fn main() {
 
 ```rust
 #[macro_use]
-extern crate rbatis_macro_driver;
+extern crate rbatis;
 
 #[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
 pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"

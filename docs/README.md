@@ -33,9 +33,8 @@ fast_log="1.2.9"
 #BigDecimal支持(可选)
 bigdecimal = "0.2"
 
-#rbatis支持，版本保持一致(必须)
+#rbatis支持
 rbatis =  { version = "1.8" } 
-rbatis-macro-driver = { version = "1.8" }
 ```
 
 > 普通初始化
@@ -135,7 +134,7 @@ async fn main() {
 
 ```rust
 #[macro_use]
-extern crate rbatis_macro_driver;
+extern crate rbatis;
 
 #[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
 pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
