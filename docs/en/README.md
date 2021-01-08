@@ -362,11 +362,11 @@ rb.update_by_wrapper("", &activity, &w).await;
 ``` rust
     #[test]
     fn test_node_run() {
+        let runtime = RExprRuntime::new();
         let arg = json!({"a":1,"b":2,"c":"c", "d":null,});
         let exec_expr = |arg: &serde_json::Value, expr: &str| -> serde_json::Value{
-            println!("{}", expr.clone());
-            let box_node = lexer::parse(expr, &OptMap::new()).unwrap();
-            box_node.eval(arg).unwrap()
+            println!("{}", expr);
+            runtime.eval(expr, arg).unwrap()
         };
         assert_eq!(exec_expr(&arg, "-1 == -a"), json!(true));
         assert_eq!(exec_expr(&arg, "d.a == null"), json!(true));
