@@ -38,6 +38,9 @@ rbatis =  { version = "1.8" }
 > Ordinary init
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 let rb = Rbatis::new();
 ///Connect to the database, automatic judgment drive type "mysql: / / *", "postgres: / / *", "sqlite: / / *","mssql://*"  load driver  
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -54,6 +57,9 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 > Initialize with a global variable (depending on the library lazy_static)
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 lazy_static! {
   // Rbatis is thread-safe, and the runtime method is Send+Sync. Internally, DashMap and other concurrent and safe map implementations are used, so there is no need to worry about thread contention
   static ref RB:Rbatis=Rbatis::new();

@@ -40,6 +40,9 @@ rbatis =  { version = "1.8" }
 > 普通初始化
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 let rb = Rbatis::new();
 ///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*","mssql://*"加载驱动   
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -56,6 +59,9 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 > 使用全局变量初始化（需依赖lazy_static这个库）
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 lazy_static! {
   // Rbatis是线程、协程安全的，运行时的方法是Send+Sync，内部使用DashMap等等并发安全的map实现，无需担心线程竞争
   static ref RB:Rbatis=Rbatis::new();
