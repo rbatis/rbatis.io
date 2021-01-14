@@ -26,7 +26,7 @@ chrono = { version = "0.4", features = ["serde"] }
 
 #log support(must)
 log = "0.4"
-fast_log="1.2.9"
+fast_log="1.3"
 
 #BigDecimal support(not must)
 bigdecimal = "0.2"

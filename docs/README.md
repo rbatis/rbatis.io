@@ -28,7 +28,7 @@ chrono = { version = "0.4", features = ["serde"] }
 
 #log日志支持(必须)
 log = "0.4"
-fast_log="1.2.9"
+fast_log="1.3"
 
 #BigDecimal支持(可选)
 bigdecimal = "0.2"
