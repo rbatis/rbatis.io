@@ -33,20 +33,23 @@ fast_log="1.3"
 #BigDecimal支持(可选)
 bigdecimal = "0.2"
 
-#rbatis支持，版本保持一致(必须)
+#rbatis支持
 rbatis =  { version = "1.8" } 
-rbatis-macro-driver = { version = "1.8" }
 ```
 
 > 普通初始化
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 let rb = Rbatis::new();
 ///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*","mssql://*"加载驱动   
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///自定义连接池参数。(可选)
-// let mut opt =PoolOptions::new();
-// opt.max_size=100;
+// use crate::core::db::DBPoolOptions;
+// let mut opt =DBPoolOptions::new();
+// opt.max_connections=100;
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //启用日志输出，你也可以使用其他日志框架，这个不限定的
@@ -56,6 +59,9 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 > 使用全局变量初始化（需依赖lazy_static这个库）
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 lazy_static! {
   // Rbatis是线程、协程安全的，运行时的方法是Send+Sync，内部使用DashMap等等并发安全的map实现，无需担心线程竞争
   static ref RB:Rbatis=Rbatis::new();
@@ -134,7 +140,7 @@ async fn main() {
 
 ```rust
 #[macro_use]
-extern crate rbatis_macro_driver;
+extern crate rbatis;
 
 #[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
 pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
@@ -375,11 +381,11 @@ rb.update_by_wrapper("", &activity, &w).await;
 ``` rust
     #[test]
     fn test_node_run() {
+        let runtime = RExprRuntime::new();
         let arg = json!({"a":1,"b":2,"c":"c", "d":null,});
         let exec_expr = |arg: &serde_json::Value, expr: &str| -> serde_json::Value{
-            println!("{}", expr.clone());
-            let box_node = lexer::parse(expr, &OptMap::new()).unwrap();
-            box_node.eval(arg).unwrap()
+            println!("{}", expr);
+            runtime.eval(expr, arg).unwrap()
         };
         assert_eq!(exec_expr(&arg, "-1 == -a"), json!(true));
         assert_eq!(exec_expr(&arg, "d.a == null"), json!(true));

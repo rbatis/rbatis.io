@@ -31,20 +31,23 @@ fast_log="1.3"
 #BigDecimal support(not must)
 bigdecimal = "0.2"
 
-#rbatis support,Keep the same version(must)
-rbatis =  { version = "1.8" } 
-rbatis-macro-driver = { version = "1.8" }
+#rbatis support(must)
+rbatis =  { version = "1.8" }
 ```
 
 > Ordinary init
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 let rb = Rbatis::new();
 ///Connect to the database, automatic judgment drive type "mysql: / / *", "postgres: / / *", "sqlite: / / *","mssql://*"  load driver  
 rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 ///Customize connection pool parameters. (optional)
-// let mut opt =PoolOptions::new();
-// opt.max_size=100;
+// use crate::core::db::DBPoolOptions;
+// let mut opt =DBPoolOptions::new();
+// opt.max_connections=100;
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //With log output enabled, you can also use other logging frameworks, which are not qualified
@@ -54,6 +57,9 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 > Initialize with a global variable (depending on the library lazy_static)
 
 ```rust
+#[macro_use]
+extern crate rbatis;
+
 lazy_static! {
   // Rbatis is thread-safe, and the runtime method is Send+Sync. Internally, DashMap and other concurrent and safe map implementations are used, so there is no need to worry about thread contention
   static ref RB:Rbatis=Rbatis::new();
@@ -133,7 +139,7 @@ async fn main() {
 
 ```rust
 #[macro_use]
-extern crate rbatis_macro_driver;
+extern crate rbatis;
 
 #[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
 pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
@@ -361,11 +367,11 @@ rb.update_by_wrapper("", &activity, &w).await;
 ``` rust
     #[test]
     fn test_node_run() {
+        let runtime = RExprRuntime::new();
         let arg = json!({"a":1,"b":2,"c":"c", "d":null,});
         let exec_expr = |arg: &serde_json::Value, expr: &str| -> serde_json::Value{
-            println!("{}", expr.clone());
-            let box_node = lexer::parse(expr, &OptMap::new()).unwrap();
-            box_node.eval(arg).unwrap()
+            println!("{}", expr);
+            runtime.eval(expr, arg).unwrap()
         };
         assert_eq!(exec_expr(&arg, "-1 == -a"), json!(true));
         assert_eq!(exec_expr(&arg, "d.a == null"), json!(true));
