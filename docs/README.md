@@ -63,7 +63,7 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 extern crate rbatis;
 
 lazy_static! {
-  // Rbatis是线程、协程安全的，运行时的方法是Send+Sync，内部使用DashMap等等并发安全的map实现，无需担心线程竞争
+  // Rbatis是线程、协程安全的，运行时的方法是Send+Sync，无需担心线程竞争
   static ref RB:Rbatis=Rbatis::new();
 }
 //这里使用async_std的main方法，你可以选择actix,tokio等等其他runtime运行时的main方法或者 spawn

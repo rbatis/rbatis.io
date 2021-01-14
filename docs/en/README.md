@@ -61,7 +61,7 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 extern crate rbatis;
 
 lazy_static! {
-  // Rbatis is thread-safe, and the runtime method is Send+Sync. Internally, DashMap and other concurrent and safe map implementations are used, so there is no need to worry about thread contention
+  // Rbatis is thread-safe, and the runtime method is Send+Sync. there is no need to worry about thread contention
   static ref RB:Rbatis=Rbatis::new();
 }
 //Use the async_STd main method here, you can select actix, ToKIO, and other runtime main methods or spawn
