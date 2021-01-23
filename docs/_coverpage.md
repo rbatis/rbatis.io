@@ -1,6 +1,6 @@
 ![logo](logo.png )
 
-# Rbatis-Rust随心所欲的ORM
+# Rbatis-随心所欲的Rust-ORM
 
 * 高性能，完全异步，底层基于Future设计
 * 安全，内存安全，协程安全，事务安全(防忘提交)，百分百safe代码
