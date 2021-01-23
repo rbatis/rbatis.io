@@ -620,6 +620,8 @@ rbatis-macro-driver = { version = "替换版本号" ,default-features=false, fea
 
 ## 普通事务
 
+> 普通事务，纯手动管理的一个事务。调用Rbatis.begin方法后会把事务缓存于‘Rbatis事务管理器中’
+
 ```rust
 #[async_std::test]
 pub async fn test_tx() {
@@ -640,6 +642,8 @@ pub async fn test_tx() {
 ```
 
 ## 事务守卫(Drop机制-预防忘记提交/回滚)
+
+> 守卫-顾名思义是对事务tx的一个守卫者、保护者（守卫结构体包裹被保护的事务对象）。当保护者被销毁(Drop之前)，守卫会立即释放(提交or回滚)事务tx
 
 ```rust
 #[async_std::test]
@@ -664,6 +668,8 @@ pub async fn test_tx() {
 ```
 
 ## 宏事务(在py_sql宏中传递事务)
+
+> 让事务可以传递于你的宏代码中（因为Rbatis事务使用了‘线程安全的hashmap’方式管理事务，这里传入事务id号即可绑定事务）
 
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
