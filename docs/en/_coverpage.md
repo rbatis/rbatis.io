@@ -1,6 +1,6 @@
 ![logo](logo.png )
 
-# Rbatis - The Rust ORM
+# Rbatis-The Rust/ORM  
 
 * - High performance, completely asynchronous, underlying Future based design
 * - Security, memory security, protocol security, transaction security (guard against forget-commit transaction), 100% safe security code implementation
