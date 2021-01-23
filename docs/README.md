@@ -721,7 +721,10 @@ pub async fn test_tx() {
 | actix-postgres | 使用actix版本运行时，pg驱动 |
 | actix-sqlite | 使用actix版本运行时，sqlite驱动 |
 | actix-mssql | 使用actix版本运行时，mssql驱动 |
-
+| tokio1-mysql | 使用tokio1.0版本运行时，mysql驱动(即将到来) |
+| tokio1-postgres | 使用tokio1.0版本运行时，pg驱动(即将到来) |
+| tokio1-sqlite | 使用tokio1.0版本运行时，sqlite驱动(即将到来) |
+| tokio1-mssql | 使用tokio1.0版本运行时，mssql驱动(即将到来) |
 > 例如单选actix-mysql
 
 ```rust

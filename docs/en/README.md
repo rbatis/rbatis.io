@@ -631,7 +631,10 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 |actix-postgres | when running with Actix version, PG database|
 |actix-sqlite | when running with Actix version, SQLite database|
 |actix-mssql  | when running with Actix version, MSSQL database|
-
+|tokio1-mysql | tokio1.0 mysql(up coming) |
+|tokio1-postgres | tokio1.0，PG database(up coming) |
+|tokio1-sqlite | tokio1.0，sqlite(up coming) |
+|tokio1-mssql | tokio1.0，mssql(up coming) |
 > for example,use 'actix-mysql'
 
 ```rust
