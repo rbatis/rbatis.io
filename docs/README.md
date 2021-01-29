@@ -886,7 +886,7 @@ rbatis = { version = "1.8", features = ["snowflake"] }
 
 * 取出记录时，获取当前version
 * 更新时，带上这个version
-* 执行更新时， set version = newVersion(newVersion = version + 1) where version = oldVersion
+* 执行更新时， set version = newVersion(newVersion = oldVersion + 1) where version = oldVersion
 * 如果version不对，就没有更新
 
 ```rust
