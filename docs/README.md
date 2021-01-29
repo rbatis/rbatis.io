@@ -894,8 +894,23 @@ rbatis = { version = "1.8", features = ["snowflake"] }
  let mut rb = Rbatis::new();
  rb.version_lock_plugin = Some(Box::new(RbatisVersionLockPlugin::new("version")));
  rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+ 
+ let mut activity = BizActivity {
+            id: Some("12312".to_string()),
+            name: None,
+            pc_link: None,
+            h5_link: None,
+            pc_banner_img: None,
+            h5_banner_img: None,
+            sort: None,
+            status: Some(1),
+            remark: None,
+            create_time: Some(NaiveDateTime::now()),
+            version: Some(BigDecimal::from(1)),
+            delete_flag: Some(1),
+        };
  let w = rb.new_wrapper().eq("id", "12312");
- let r = rb.update_by_wrapper("", &activity, &w, false).await;
+ let r = rb.update_by_wrapper("", &mut activity, &w, false).await;
  //[rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
  //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
 ```
