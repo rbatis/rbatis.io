@@ -980,7 +980,7 @@ Optimistic locking implementation:
 * note:
 - Supported data types are: i8,i32,i64... ,u32,u64... , string (integer) "i32" for example "0"..." 99999"
 - Integer or string integer newVersion = oldVersion + 1
-- newVersion is not written back to entity!
+- newVersion is written back to entity!
 - Only the Update * method is supported
 
 # Contact information
