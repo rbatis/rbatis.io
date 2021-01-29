@@ -917,7 +917,7 @@ rbatis = { version = "1.8", features = ["snowflake"] }
 
 * 说明:
 - 乐观锁字段为null则不起作用，非null起作用
-- 支持的数据类型只有: i8,i32,i64...,u32,u64..., 字符串(整数) "i32"例如 "0"..."99999"
+- 支持的数据类型只有: i8,i32,i64...,u32,u64..., 字符串(整数或者BigDecimal(也是string)) "i32"例如 "0"..."99999"
 - 整数或字符串整数类型下 newVersion = oldVersion + 1
 - newVersion 会回写到 entity 中！
 - 仅支持 update* 方法
