@@ -963,7 +963,7 @@ Optimistic locking implementation:
 
 * Retrieves the current version when the record is fetched
 * When updating, bring this version with you
-* When updating, set version = newVersion where version = oldVersion
+* When updating, set version = newVersion(newVersion = version + 1) where version = oldVersion
 * If the version is incorrect, it is not updated
 
 ```rust
