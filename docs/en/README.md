@@ -631,10 +631,10 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 |actix-postgres | when running with Actix version, PG database|
 |actix-sqlite | when running with Actix version, SQLite database|
 |actix-mssql  | when running with Actix version, MSSQL database|
-|tokio1-mysql | tokio1.0 mysql(up coming) |
-|tokio1-postgres | tokio1.0，PG database(up coming) |
-|tokio1-sqlite | tokio1.0，sqlite(up coming) |
-|tokio1-mssql | tokio1.0，mssql(up coming) |
+|tokio1-mysql | tokio1.0 mysql |
+|tokio1-postgres | tokio1.0，PG database |
+|tokio1-sqlite | tokio1.0，sqlite |
+|tokio1-mssql | tokio1.0，mssql |
 > for example,use 'actix-mysql'
 
 ```rust
@@ -955,6 +955,33 @@ let mut rb=Rbatis::new();
 rb.sql_intercepts.push(Box::new(Intercept{}));
 ```
 
+
+# Plug-in：Version lock/optimistic lock
+
+> When updating a record, it is hoped that the record has not been updated by someone else
+Optimistic locking implementation:
+
+* Retrieves the current version when the record is fetched
+* When updating, bring this version with you
+* When updating, set version = newVersion where version = oldVersion
+* If the version is incorrect, it is not updated
+
+```rust
+ fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+ let mut rb = Rbatis::new();
+ rb.version_lock_plugin = Some(Box::new(RbatisVersionLockPlugin::new("version")));
+ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+ let w = rb.new_wrapper().eq("id", "12312");
+ let r = rb.update_by_wrapper("", &activity, &w, false).await;
+ //[rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
+ //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
+```
+
+* note:
+- Supported data types are: i8,i32,i64... ,u32,u64... , string (integer) "i32" for example "0"..." 99999"
+- Integer or string integer newVersion = oldVersion + 1
+- newVersion is not written back to entity!
+- Only the Update * method is supported
 
 # Contact information
 WeChat ID: ``` zxj347284221  ```

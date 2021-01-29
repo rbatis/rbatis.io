@@ -721,10 +721,10 @@ pub async fn test_tx() {
 | actix-postgres | 使用actix版本运行时，pg驱动 |
 | actix-sqlite | 使用actix版本运行时，sqlite驱动 |
 | actix-mssql | 使用actix版本运行时，mssql驱动 |
-| tokio1-mysql | 使用tokio1.0版本运行时，mysql驱动(即将到来) |
-| tokio1-postgres | 使用tokio1.0版本运行时，pg驱动(即将到来) |
-| tokio1-sqlite | 使用tokio1.0版本运行时，sqlite驱动(即将到来) |
-| tokio1-mssql | 使用tokio1.0版本运行时，mssql驱动(即将到来) |
+| tokio1-mysql | 使用tokio1.0版本运行时，mysql驱动 |
+| tokio1-postgres | 使用tokio1.0版本运行时，pg驱动 |
+| tokio1-sqlite | 使用tokio1.0版本运行时，sqlite驱动 |
+| tokio1-mssql | 使用tokio1.0版本运行时，mssql驱动 |
 > 例如单选actix-mysql
 
 ```rust
@@ -879,6 +879,32 @@ rbatis = { version = "1.8", features = ["snowflake"] }
     }
 ```
 
+# 插件：版本锁/乐观锁
+
+> 当要更新一条记录的时候，希望这条记录没有被别人更新
+乐观锁实现方式：
+
+* 取出记录时，获取当前version
+* 更新时，带上这个version
+* 执行更新时， set version = newVersion where version = oldVersion
+* 如果version不对，就没有更新
+
+```rust
+ fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+ let mut rb = Rbatis::new();
+ rb.version_lock_plugin = Some(Box::new(RbatisVersionLockPlugin::new("version")));
+ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+ let w = rb.new_wrapper().eq("id", "12312");
+ let r = rb.update_by_wrapper("", &activity, &w, false).await;
+ //[rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
+ //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
+```
+
+* 说明:
+- 支持的数据类型只有: i8,i32,i64...,u32,u64..., 字符串(整数) "i32"例如 "0"..."99999"
+- 整数或字符串整数类型下 newVersion = oldVersion + 1
+- newVersion 不会回写到 entity 中！
+- 仅支持 update* 方法
 
 # 常见问题
 
