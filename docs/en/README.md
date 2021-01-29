@@ -991,7 +991,7 @@ Optimistic locking implementation:
  //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
 ```
 
-* note:
+#### note:
 - If the optimistic lock field is NULL, it will not work. If it is not NULL, it will work
 - Supported data types are: i8,i32,i64... ,u32,u64... , string (integer or bigDecimal string) "i32" for example "0"..." 99999"
 - Integer or string integer newVersion = oldVersion + 1
