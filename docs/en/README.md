@@ -992,6 +992,7 @@ Optimistic locking implementation:
 ```
 
 * note:
+- If the optimistic lock field is NULL, it will not work. If it is not NULL, it will work
 - Supported data types are: i8,i32,i64... ,u32,u64... , string (integer) "i32" for example "0"..." 99999"
 - Integer or string integer newVersion = oldVersion + 1
 - newVersion is written back to entity!
