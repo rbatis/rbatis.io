@@ -239,8 +239,6 @@ pub struct BizUuid {
 
 # 使用Wrapper-Sql
 
-> Wrapper是对sql的一系列包装，注意结尾调用check()检查正确性
-
 | 方法    | sql |
 | ------ | ------ |
 | and            |  AND     |   
@@ -741,9 +739,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 
         let req = PageRequest::new(1, 20);//分页请求，页码，条数
         let wraper= rb.new_wrapper()
-                    .eq("delete_flag",1)
-                    .check()
-                    .unwrap();
+                    .eq("delete_flag",1);
         let data: Page<BizActivity> = rb.fetch_page_by_wrapper("", &wraper,  &req).await.unwrap();
         println!("{}", serde_json::to_string(&data).unwrap());
 ```
