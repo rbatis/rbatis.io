@@ -14,7 +14,7 @@
 
 # Rbatis-初始化
 
-> 安装依赖(建议初学者使用[Clion](https://www.jetbrains.com/clion/) 下载安装rust插件使用！因为该Ide提供导入包选型和debug支持)
+> 安装依赖(建议初学者使用[Clion](https://www.jetbrains.com/clion/) 下载安装rust插件使用！因为该Ide提供debug支持，智能提示，导入包路径比较方便)
 
 ##### 安装依赖(Cargo.toml)，执行 cargo install
 
