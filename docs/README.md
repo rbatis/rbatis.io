@@ -909,8 +909,11 @@ rbatis = { version = "1.8", features = ["snowflake"] }
         };
  let w = rb.new_wrapper().eq("id", "12312");
  let r = rb.update_by_wrapper("", &mut activity, &w, false).await;
- //[rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
- //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
+```
+* 执行结果
+```log
+ [rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
+ [rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
 ```
 
 #### 说明:
