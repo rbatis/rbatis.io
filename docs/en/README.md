@@ -59,6 +59,7 @@ fast_log::init_log("requests.log", 1000,log::Level::Info,true);
 ```rust
 #[macro_use]
 extern crate rbatis;
+use rbatis::crud::CRUD;
 
 lazy_static! {
   // Rbatis is thread-safe, and the runtime method is Send+Sync. there is no need to worry about thread contention
@@ -161,6 +162,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 > (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name
 
 ```rust
+    use rbatis::crud::CRUDEnable;
     impl CRUDEnable for BizActivity {
         type IdType = String; //By default, IdType is provided; other methods in the interface use JSON serialization by default
         //fn table_name() -> String {} //Can be rewritten

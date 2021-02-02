@@ -14,7 +14,7 @@
 
 # Rbatis-初始化
 
-> 安装依赖
+> 安装依赖(建议初学者使用[Clion](https://www.jetbrains.com/clion/) 下载安装rust插件使用！因为该Ide提供导入包选型和debug支持)
 
 ##### 安装依赖(Cargo.toml)，执行 cargo install
 
@@ -42,6 +42,7 @@ rbatis =  { version = "1.8" }
 ```rust
 #[macro_use]
 extern crate rbatis;
+use rbatis::crud::CRUD;
 
 let rb = Rbatis::new();
 ///连接数据库,自动判断驱动类型"mysql://*","postgres://*","sqlite://*","mssql://*"加载驱动   
@@ -162,6 +163,7 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 > (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 
 ```rust
+    use rbatis::crud::CRUDEnable;
     impl CRUDEnable for BizActivity {
         type IdType = String; //默认提供IdType类型即可，接口里其他的method默认使用json序列化实现
         //fn table_name() -> String {} //可重写
