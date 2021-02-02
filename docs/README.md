@@ -292,7 +292,7 @@ pub struct BizUuid {
             .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
             .group_by(&["id"])
             .order_by(true, &["id", "name"])
-            .check().unwrap();
+            .;
 ```
 
 # 内置增删改查和Wrapper使用
@@ -330,7 +330,7 @@ let result: Vec<BizActivity> = rb.list_by_ids("",&["1".to_string()]).await.unwra
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
 ///自定义查询(使用wrapper)
-let w = rb.new_wrapper().eq("id", "1").check().unwrap();
+let w = rb.new_wrapper().eq("id", "1").;
 let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
@@ -343,7 +343,7 @@ rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).aw
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
 ///修改(使用wrapper)
-let w = rb.new_wrapper().eq("id", "12312").check().unwrap();
+let w = rb.new_wrapper().eq("id", "12312").;
 rb.update_by_wrapper("", &activity, &w).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
 }
