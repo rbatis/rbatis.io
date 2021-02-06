@@ -8,4 +8,5 @@
 * 超强易用，多种插件(分页，逻辑删除，sql拦截)，内置CRUD、Wrapper、PySQL语法
 
 [English](en/)
+[GitHub](https://github.com/rbatis/rbatis)
 [立即开始](#Rbatis-初始化)
