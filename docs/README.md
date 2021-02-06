@@ -80,7 +80,7 @@ async fn main() {
 
 # 表模型定义
 
-> CRUDEnable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
+> CRUDTable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
 
 * IdType(对应struct的id字段类型，必须声明)
 * id_name()主键id的名称（非必填，默认id）
@@ -89,7 +89,7 @@ async fn main() {
 * format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
 
-> 推荐使用#[crud_enable]属性宏实现CRUDEnable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
+> 推荐使用#[crud_enable]属性宏实现CRUDTable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
 
 | 属性    | 含义 |
 | ------ | ------ |
@@ -137,13 +137,13 @@ async fn main() {
     }
 ```
 
-> (可选)使用derive宏实现CRUDEnable 
+> (可选)使用derive宏实现CRUDTable 
 
 ```rust
 #[macro_use]
 extern crate rbatis;
 
-#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
+#[derive(CRUDTable,Serialize, Deserialize, Clone, Debug)] 
 pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
     pub id: Option<String>, 
     pub name: Option<String>,
@@ -160,12 +160,13 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 }
 ```
 
-> (可选)或者使用impl实现CRUDEnable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
+> (可选)或者使用impl实现CRUDTable 好处是自定义可控性高，如果重写field_name等方法可以减少json序列化
 
 ```rust
-    use rbatis::crud::CRUDEnable;
-    impl CRUDEnable for BizActivity {
+    use rbatis::crud::CRUDTable;
+    impl CRUDTable for BizActivity {
         type IdType = String; //默认提供IdType类型即可，接口里其他的method默认使用json序列化实现
+        fn get_id(&self) -> Option<&Self::IdType>; // 必须实现获取id值，可以使用return self.id.as_ref();
         //fn table_name() -> String {} //可重写
         //fn table_columns() -> String {}  //可重写
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //可重写
@@ -322,11 +323,11 @@ let result: Option<BizActivity> = rb.fetch_by_id("", &"1".to_string()).await.unw
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///查询-全部
-let result: Vec<BizActivity> = rb.list("").await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list("").await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1
 
 ///批量-查询id
-let result: Vec<BizActivity> = rb.list_by_ids("",&["1".to_string()]).await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list_by_ids("",&["1".to_string()]).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
 ///自定义查询(使用wrapper)
@@ -781,7 +782,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 
 # 插件：逻辑删除RbatisLogicDeletePlugin
 
-> (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 list**(),remove**()，fetch**())
+> (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 fetch_list**(),remove**()，fetch**())
 
 ```rust
    let mut rb = init_rbatis().await;

@@ -74,9 +74,9 @@ async fn main() {
 
 ```
 
-# CRUDEnable
+# CRUDTable
 
-> CRUDEnable An interface is a Trait that helps define the table structure, and it provides the following methods
+> CRUDTable An interface is a Trait that helps define the table structure, and it provides the following methods
 
 * IdType (The id field type corresponding to the struct must be declared)
 * id_name() The name of the primary key ID (non-mandatory, default ID)
@@ -87,7 +87,7 @@ async fn main() {
   Timestamp, optional override)
 
   
-> use the Attr attribute macro to achieve CRUDEnable, which is more scalable and allows you to customize table names and fields
+> use the Attr attribute macro to achieve CRUDTable, which is more scalable and allows you to customize table names and fields
 
 | attr    | doc |
 | ------ | ------ |
@@ -136,13 +136,13 @@ async fn main() {
     }
 ```
 
-> (Optional) derive macro impl CRUDEnable  is that the macros generate code in the compiler
+> (Optional) derive macro impl CRUDTable  is that the macros generate code in the compiler
 
 ```rust
 #[macro_use]
 extern crate rbatis;
 
-#[derive(CRUDEnable,Serialize, Deserialize, Clone, Debug)] 
+#[derive(CRUDTable,Serialize, Deserialize, Clone, Debug)] 
 pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     pub id: Option<String>, 
     pub name: Option<String>,
@@ -159,12 +159,13 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 }
 ```
 
-> (Optional) Or using IMPL to achieve CRUDEnable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name
+> (Optional) Or using IMPL to achieve CRUDTable has the benefit of high custom controllability and can reduce JSON serialization if you override methods such as field_name
 
 ```rust
-    use rbatis::crud::CRUDEnable;
-    impl CRUDEnable for BizActivity {
+    use rbatis::crud::CRUDTable;
+    impl CRUDTable for BizActivity {
         type IdType = String; //By default, IdType is provided; other methods in the interface use JSON serialization by default
+        fn get_id(&self) -> Option<&Self::IdType>; // must be add impl this
         //fn table_name() -> String {} //Can be rewritten
         //fn table_columns() -> String {}  //Can be rewritten
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //Can be rewritten
@@ -308,11 +309,11 @@ let result: Option<BizActivity> = rb.fetch_by_id("", &"1".to_string()).await.unw
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///query all
-let result: Vec<BizActivity> = rb.list("").await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list("").await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1
 
 ///query id vec, return vec result
-let result: Vec<BizActivity> = rb.list_by_ids("",&["1".to_string()]).await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list_by_ids("",&["1".to_string()]).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
 ///custom  query(use Wrapper)
@@ -856,7 +857,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql","s
 
 # Plugin: RbatisLogicDeletePlugin
 
-> (Logical delete the query and delete methods provided for Rbatis are valid, such as list**(),remove**(), fetch**())
+> (Logical delete the query and delete methods provided for Rbatis are valid, such as fetch_list**(),remove**(), fetch**())
 
 ```rust
    let mut rb = init_rbatis().await;
