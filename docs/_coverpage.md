@@ -1,4 +1,4 @@
-![logo](logo.png){:height="270" width="400"}
+![logo](logo.png)
 
 # Rbatis-首选灵活/智能ORM
 
