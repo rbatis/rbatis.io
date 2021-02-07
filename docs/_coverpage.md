@@ -1,6 +1,6 @@
 ![logo](logo.png )
 
-# Rbatis-随心所欲的Rust-ORM
+# Rbatis-首选灵活/智能ORM
 
 * [点我进入-博客](blog.md)
 * 高性能，完全异步，底层基于Future设计
