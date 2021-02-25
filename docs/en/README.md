@@ -773,7 +773,7 @@ pub async fn test_tx() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb: Rbatis = Rbatis::new();
         rb.link(MYSQL_URL).await.unwrap();
-        //使用defer事务，你可以在任何函数结尾忘记提交或回滚事务，框架会在守卫被回收时帮助你提交，回滚事务
+        //use defer,tx will be commit or rollback when function end
         let guard = rb.begin_tx_defer(true).await.unwrap();
         let v: serde_json::Value = rb.fetch(&guard.tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
         // tx will be commit
