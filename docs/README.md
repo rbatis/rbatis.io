@@ -875,6 +875,9 @@ rbatis = { version = "1.8", features = ["snowflake"] }
     #[test]
     fn test_new_async_id() {
         crate::core::runtime::block_on(async {
+            //Snowflake::new();  //直接创建(必须是单例或全局变量)
+            
+            //一般来说请使用new_snowflake_id()，即使用内部的Snowflake全局变量单例
             println!("{}", new_snowflake_id().to_string());
         });
     }

@@ -950,6 +950,9 @@ rbatis = { version = "1.8", features = ["snowflake"] }
     #[test]
     fn test_new_async_id() {
         crate::core::runtime::block_on(async {
+            //Snowflake::new()  //Snowflake::new(Must be a singleton or global variable)
+            
+            //default use
             println!("{}", new_snowflake_id().to_string());
         });
     }
