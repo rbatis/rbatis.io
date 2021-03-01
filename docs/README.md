@@ -864,11 +864,6 @@ rb.log_plugin = Box::new(RbatisLog{});
 
 # 插件：分布式唯一ID(雪花算法(i64))
 
-```toml
-//老版本需要加features = ["snowflake"]，新版本已内置无锁版本雪花算法实现
-rbatis = { version = "1.8", features = ["snowflake"] }
-```
-
 ```rust
     use crate::plugin::snowflake::{new_snowflake_id};
 

@@ -939,11 +939,6 @@ rb.log_plugin = Box::new(RbatisLog{});
 
 # Plug-in: distributed unique ID (snowflake algorithm(i64))
 
-```toml
-//old version need features = ["snowflake"]
-rbatis = { version = "1.8", features = ["snowflake"] }
-```
-
 ```rust
     use crate::plugin::snowflake::{new_snowflake_id};
 
