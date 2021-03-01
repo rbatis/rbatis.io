@@ -849,7 +849,7 @@ pub async fn test_tx() {
 
 ```toml
 
-rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
+rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 ` ` `
 
@@ -886,6 +886,13 @@ impl SqlIntercept for Intercept{
     /// is_prepared_sql: if is run in prepared_sql=ture
     fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
 }
+```
+
+> Set to Rbatis
+
+```rust
+let mut rb=Rbatis::new();
+rb.sql_intercepts.push(Box::new(Intercept{}));
 ```
 
 # Plug-in: LogPlugin
@@ -930,30 +937,34 @@ let mut rb=Rbatis::new();
 rb.log_plugin = Box::new(RbatisLog{});
 ```
 
-# Plug-in: distributed unique ID (snowflake algorithm)
+# Plug-in: distributed unique ID (snowflake algorithm(i64))
 
 ```toml
+//old version need features = ["snowflake"]
 rbatis = { version = "1.8", features = ["snowflake"] }
 ```
 
 ```rust
-    use crate::plugin::snowflake::{async_snowflake_id, block_snowflake_id};
+    use crate::plugin::snowflake::{new_snowflake_id};
 
     #[test]
     fn test_new_async_id() {
         crate::core::runtime::block_on(async {
-            println!("{}", async_snowflake_id().await);
+            println!("{}", new_snowflake_id().to_string());
         });
     }
 ```
 
-> Set to Rbatis
+# Plug-in: distributed unique ID (MongoDB object id algorithm(String))
 
 ```rust
-let mut rb=Rbatis::new();
-rb.sql_intercepts.push(Box::new(Intercept{}));
+    #[test]
+    fn test_new_async_id() {
+        crate::core::runtime::block_on(async {
+            println!("{}", rbatis::plugin::object_id::ObjectId::new().to_string());
+        });
+    }
 ```
-
 
 # Plug-in：Version lock/optimistic lock
 

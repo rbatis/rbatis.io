@@ -730,7 +730,7 @@ pub async fn test_tx() {
 > 例如单选actix-mysql
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
+rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 ```
 
 # 插件：分页RbatisPagePlugin
@@ -862,19 +862,31 @@ let mut rb=Rbatis::new();
 rb.log_plugin = Box::new(RbatisLog{});
 ```
 
-# 插件：分布式唯一ID(雪花算法)
+# 插件：分布式唯一ID(雪花算法(i64))
 
 ```toml
+//老版本需要加features = ["snowflake"]，新版本已内置无锁版本雪花算法实现
 rbatis = { version = "1.8", features = ["snowflake"] }
 ```
 
 ```rust
-    use crate::plugin::snowflake::{async_snowflake_id, block_snowflake_id};
+    use crate::plugin::snowflake::{new_snowflake_id};
 
     #[test]
     fn test_new_async_id() {
         crate::core::runtime::block_on(async {
-            println!("{}", async_snowflake_id().await);
+            println!("{}", new_snowflake_id().to_string());
+        });
+    }
+```
+
+# 插件：分布式唯一ID(MongoDB object id算法(string))
+
+```rust
+    #[test]
+    fn test_new_async_id() {
+        crate::core::runtime::block_on(async {
+            println!("{}", rbatis::plugin::object_id::ObjectId::new().to_string());
         });
     }
 ```
