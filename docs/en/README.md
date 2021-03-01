@@ -639,7 +639,7 @@ rbatis-macro-driver = { version = "last version" , default-features=false, featu
 > for example,use 'actix-mysql'
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["actix-mysql","snowflake"] }
+rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 ```
 
 # Plugin: RbatisPagePlugin
