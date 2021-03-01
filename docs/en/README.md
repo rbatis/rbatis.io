@@ -601,7 +601,9 @@ async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity>
 > Disable generate Rust code print
 
 ```toml
-rbatis-macro-driver = { version = "last version" , default-features=false, features = ["no_print"]}
+//just delete Cargo.toml features "debug_mode"
+//rbatis = {  features = ["debug_mode"]}
+rbatis = { ...}
 ```
 
 # Conditional compilation choose Runtime or driver

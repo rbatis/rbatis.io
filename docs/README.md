@@ -615,7 +615,9 @@ async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity>
 > 禁用打印宏生成的Rust代码
 
 ```toml
-rbatis-macro-driver = { version = "替换版本号" ,default-features=false, features = ["no_print"]}
+//Cargo.toml 去除 features =  ["debug_mode"] 即可
+//rbatis = {  features = ["debug_mode"]}
+rbatis = { ...}
 ```
 
 # 事务
