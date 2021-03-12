@@ -69,7 +69,7 @@ lazy_static! {
   static ref RB:Rbatis=Rbatis::new();
 }
 //这里使用async_std的main方法，你可以选择actix,tokio等等其他runtime运行时的main方法或者 spawn
-#[async_std::main]
+#[tokio::main]
 async fn main() {
       //启用日志输出，你也可以使用其他日志框架，这个不限定的
       fast_log::init_log("requests.log", 1000,log::Level::Info,true);
@@ -200,7 +200,7 @@ pub struct BizUuid {
     pub id: Option<Uuid>,
     pub name: Option<String>,
 }
-#[async_std::test]
+#[tokio::test]
     pub async fn test_postgres_uuid() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb = Rbatis::new();
@@ -532,7 +532,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[sql(RB, "select * from biz_activity where id = ?")]
     async fn select(name: &str) -> BizActivity {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_macro() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -553,7 +553,7 @@ rb.update_by_wrapper("", &activity, &w).await;
                     and name=#{name}")]
     async fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
    
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -573,7 +573,7 @@ rb.update_by_wrapper("", &activity, &w).await;
                   if name != '':
                     and name=#{name}")]
     async fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -590,7 +590,7 @@ rb.update_by_wrapper("", &activity, &w).await;
                   WHERE a1.id=a2.id and a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -627,7 +627,7 @@ rbatis = { ...}
 > 普通事务，纯手动管理的一个事务。调用Rbatis.begin方法后会把事务缓存于‘Rbatis事务管理器中’
 
 ```rust
-#[async_std::test]
+#[tokio::test]
 pub async fn test_tx() {
     fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
@@ -650,7 +650,7 @@ pub async fn test_tx() {
 > 守卫-顾名思义是对事务tx的一个守卫者、保护者（守卫结构体包裹被保护的事务对象）。当保护者被销毁(Drop之前)，守卫会立即释放(提交or回滚)事务tx
 
 ```rust
-#[async_std::test]
+#[tokio::test]
     pub async fn test_tx_commit_defer() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb: Rbatis = Rbatis::new();
@@ -682,7 +682,7 @@ pub async fn test_tx() {
                       AND a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();

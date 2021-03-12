@@ -66,7 +66,7 @@ lazy_static! {
   static ref RB:Rbatis=Rbatis::new();
 }
 //Use the async_STd main method here, you can select actix, ToKIO, and other runtime main methods or spawn
-#[async_std::main]
+#[tokio::main]
 async fn main() {
       fast_log::init_log("requests.log", 1000,log::Level::Info,true);
       RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -197,7 +197,7 @@ pub struct BizUuid {
     pub id: Option<Uuid>,
     pub name: Option<String>,
 }
-#[async_std::test]
+#[tokio::test]
     pub async fn test_postgres_uuid() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb = Rbatis::new();
@@ -519,7 +519,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     #[sql(RB, "select * from biz_activity where id = ?")]
     async fn select(name: &str) -> BizActivity {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_macro() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -540,7 +540,7 @@ rb.update_by_wrapper("", &activity, &w).await;
                     and name=#{name}")]
     async fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
    
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -560,7 +560,7 @@ rb.update_by_wrapper("", &activity, &w).await;
                   if name != '':
                     and name=#{name}")]
     async fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -577,7 +577,7 @@ rb.update_by_wrapper("", &activity, &w).await;
                   WHERE a1.id=a2.id and a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -697,7 +697,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 ## default transaction
 
 ```rust
-#[async_std::test]
+#[tokio::test]
 pub async fn test_tx() {
     fast_log::init_log("requests.log", 1000,log::Level::Info,true);
     let RB = Rbatis::new();
@@ -719,7 +719,7 @@ pub async fn test_tx() {
 ## TxGuard
 
 ```rust
-#[async_std::test]
+#[tokio::test]
     pub async fn test_tx_commit_defer() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb: Rbatis = Rbatis::new();
@@ -749,7 +749,7 @@ pub async fn test_tx() {
                       AND a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
@@ -770,7 +770,7 @@ pub async fn test_tx() {
 ## transaction guard
 
 ```rust
-#[async_std::test]
+#[tokio::test]
     pub async fn test_tx_commit_defer() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb: Rbatis = Rbatis::new();
@@ -800,7 +800,7 @@ pub async fn test_tx() {
                       AND a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
 
-    #[async_std::test]
+    #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
