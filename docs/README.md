@@ -705,7 +705,7 @@ pub async fn test_tx() {
 | 单选    | 解释 |
 | ------ | ------ |
 | default  | 默认-使用aysnc-io运行时，所有驱动 |
-| async-io | 使用async-io(async-std)0运行时 |
+| async-io | 使用async-io(async-std)运行时 |
 | tokio1 | 使用tokio1.0运行时 |
 | tokio02 | 使用tokio0.2运行时 |
 | tokio03 | 使用tokio0.3运行时 |
