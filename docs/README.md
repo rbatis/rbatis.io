@@ -721,7 +721,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 
 
-# 宏
+# 内置宏
 
 * ``` make_table```  通过依赖Default 特性简化表的构造
 * ``` make_table_field_vec ``` 取目标Vec成员属性Vec集合为例

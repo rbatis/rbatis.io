@@ -856,7 +856,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 ```
 
 
-# macros
+# macro-built-in
 for example:
 ```rust
     #[crud_enable]
