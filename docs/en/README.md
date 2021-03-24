@@ -609,35 +609,18 @@ rbatis = { ...}
 # Conditional compilation choose Runtime or driver
 
 > Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
-> Conditional compilation supports any of the following compilation parameters
 
 |Options | explanation|
 | ------ | ------ |
-|default | when using async IO (async STD) runtime, all databases|
-|async-io | when using async IO (async STD) runtime, all databases|
-|actix | when using Actix runtime, all databases|
-|tokio02 | when running with the version of tokio02, all databases|
-|tokio03 | when running with the version of tokio03, all databases|
-|async-io-mysql | when running with async STD version, MySQL database|
-|async-io-postgres | when running with async STD version, PG database|
-|async-io-sqlite | when using async STD version, SQLite database|
-|async-io-mssql | when running with async STD version, MSSQL database|
-|tokio03-mysql | when running with the tokio03 version, MySQL database|
-|tokio03-postgres | using tokio03 version runtime, PG database|
-|tokio03-sqlite |  Using tokio03 version runtime, SQLite database |
-|tokio03-mssql | when running with the version of tokio03, MSSQL database|
-|tokio02-mysql | when running with the version of tokio02, MySQL database|
-|tokio02-postgres | using tokio02 version runtime, PG database|
-|tokio02-sqlite | when using the tokio02 version runtime, SQLite database|
-|tokio02-mssql | when running with the version of tokio02, MSSQL database|
-|actix-mysql | when running with Actix version, MySQL database|
-|actix-postgres | when running with Actix version, PG database|
-|actix-sqlite | when running with Actix version, SQLite database|
-|actix-mssql  | when running with Actix version, MSSQL database|
-|tokio1-mysql | tokio1.0 mysql |
-|tokio1-postgres | tokio1.0，PG database |
-|tokio1-sqlite | tokio1.0，sqlite |
-|tokio1-mssql | tokio1.0，mssql |
+| default  | default,aysnc-io runtime，all database |
+| async-io | async-io(async-std)runtime |
+| tokio1 | tokio1.0runtime |
+| tokio02 | tokio0.2runtime |
+| tokio03 | tokio0.3runtime |
+| mysql | mysql driver |
+| postgres | pg driver |
+| sqlite | sqlite driver |
+| mssql | mssql driver |
 > for example,use 'actix-mysql'
 
 ```rust

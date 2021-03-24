@@ -700,35 +700,19 @@ pub async fn test_tx() {
 # 条件编译切换运行时
 
 > 条件编译可以选择指定的数据库、运行时编译，而不是编译全部数据库。条件编译可以缩减程序体积
-> 条件编译支持以下编译参数(单选任意其中一种)
+> 条件编译支持以下编译参数(单选或多选)
 
 | 单选    | 解释 |
 | ------ | ------ |
-| default  | 默认-使用async-io(async-std)运行时，所有驱动 |
-| async-io | 使用async-io(async-std)运行时，所有驱动 |
-| actix | 使用actix运行时，所有驱动 |
-| tokio02 | 使用tokio02版本运行时，所有驱动 |
-| tokio03 | 使用tokio03版本运行时，所有驱动 |
-| async-io-mysql | 使用async-std版本运行时，mysql驱动 |
-| async-io-postgres | 使用async-std版本运行时，pg驱动 |
-| async-io-sqlite | 使用async-std版本运行时，sqlite驱动 |
-| async-io-mssql | 使用async-std版本运行时，mssql驱动 |
-| tokio03-mysql | 使用tokio03版本运行时，mysql驱动 |
-| tokio03-postgres | 使用tokio03版本运行时，pg驱动 |
-| tokio03-sqlite | 使用tokio03版本运行时，sqlite驱动 |
-| tokio03-mssql | 使用tokio03版本运行时，mssql驱动 |
-| tokio02-mysql | 使用tokio02版本运行时，mysql驱动 |
-| tokio02-postgres | 使用tokio02版本运行时，pg驱动 |
-| tokio02-sqlite | 使用tokio02版本运行时，sqlite驱动 |
-| tokio02-mssql | 使用tokio02版本运行时，mssql驱动 |
-| actix-mysql | 使用actix版本运行时，mysql驱动 |
-| actix-postgres | 使用actix版本运行时，pg驱动 |
-| actix-sqlite | 使用actix版本运行时，sqlite驱动 |
-| actix-mssql | 使用actix版本运行时，mssql驱动 |
-| tokio1-mysql | 使用tokio1.0版本运行时，mysql驱动 |
-| tokio1-postgres | 使用tokio1.0版本运行时，pg驱动 |
-| tokio1-sqlite | 使用tokio1.0版本运行时，sqlite驱动 |
-| tokio1-mssql | 使用tokio1.0版本运行时，mssql驱动 |
+| default  | 默认-使用aysnc-io运行时，所有驱动 |
+| async-io | 使用async-io(async-std)0运行时 |
+| tokio1 | 使用tokio1.0运行时 |
+| tokio02 | 使用tokio0.2运行时 |
+| tokio03 | 使用tokio0.3运行时 |
+| mysql | mysql驱动 |
+| postgres | pg驱动 |
+| sqlite | sqlite驱动 |
+| mssql | mssql驱动 |
 > 例如单选actix-mysql
 
 ```rust
