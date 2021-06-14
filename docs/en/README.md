@@ -32,7 +32,7 @@ fast_log="1.3"
 bigdecimal = "0.2"
 
 #rbatis support(must)
-rbatis =  { version = "1.8" }
+rbatis =  { version = "2.0" }
 ```
 
 > Ordinary init
@@ -77,9 +77,6 @@ async fn main() {
 # CRUDTable
 
 > CRUDTable An interface is a Trait that helps define the table structure, and it provides the following methods
-
-* IdType (The id field type corresponding to the struct must be declared)
-* id_name() The name of the primary key ID (non-mandatory, default ID)
 * table_name() Table name (serpentine name corresponding to struct, optional rewrite)
 * table_columns() Comma-separated string of table fields (all field names corresponding to the struct, optionally
   overridden)
@@ -91,8 +88,6 @@ async fn main() {
 
 | attr    | doc |
 | ------ | ------ |
-| id_name | the table id name |
-| id_type | the table id type |
 | table_name | table name |
 | table_columns | table columns use ',' split |
 | formats_pg,formats_postgres | Postgres Column SQL formatting for type conversion|
@@ -102,8 +97,7 @@ async fn main() {
 
 ```rust
 //for example-1(All automatic generation):
-
-    #[crud_enable]
+    #[crud_table]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -111,7 +105,7 @@ async fn main() {
         pub delete_flag: Option<i32>,
     }
 // for example-2（Only the table name is changed, the rest is generated automatically）:
-    #[crud_enable(table_name:biz_activity)]
+    #[crud_table(table_name:biz_activity)]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -119,7 +113,7 @@ async fn main() {
         pub delete_flag: Option<i32>,
     }
 //for example-3（Full customization）:
-    #[crud_enable( id_name:"id" |  id_type:"String" | table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
+    #[crud_table(table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -127,7 +121,7 @@ async fn main() {
         pub delete_flag: Option<i32>,
     }
     //for example-4（Full customization）:
-    #[crud_enable( id_name:"id" |  id_type:"String" | table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
+    #[crud_table(table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -181,17 +175,17 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 > for example:
 
 ```rust
-#[crud_enable(formats_pg:"id:{}::uuid")]
-//#[crud_enable(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
-//#[crud_enable(formats_mysql:...)]
-//#[crud_enable(formats_sqlite:...)]
-//#[crud_enable(formats_mssql:...)]
-//#[crud_enable(formats_mssql:...|formats_pg:...)|...]
+#[crud_table(formats_pg:"id:{}::uuid")]
+//#[crud_table(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
+//#[crud_table(formats_mysql:...)]
+//#[crud_table(formats_sqlite:...)]
+//#[crud_table(formats_mssql:...)]
+//#[crud_table(formats_mssql:...|formats_pg:...)|...]
 ```
 
 ```rust
 //this is example format.
-#[crud_enable(formats_pg:"id:{}::uuid")]
+#[crud_table(formats_pg:"id:{}::uuid")]
 #[derive(Clone, Debug)]
 pub struct BizUuid {
     pub id: Option<Uuid>,
@@ -208,12 +202,12 @@ pub struct BizUuid {
         //insert table
         rb.save("", &BizUuid { id: Some(uuid), name: Some("test".to_string()) }).await;
         //update table
-        rb.update_by_id("",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
+        rb.update_by_column::<BizUuid,_>("id",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
         //query table
-        let data: BizUuid = rb.fetch_by_id("", &uuid).await.unwrap();
+        let data: BizUuid = rb.fetch_by_column("id", &uuid).await.unwrap();
         println!("{:?}", data);
         //delete table
-        rb.remove_by_id::<BizUuid>("",&uuid).await;
+        rb.remove_by_column::<BizUuid,_>("id",&uuid).await;
     }
 2020-12-14 14:26:58.072638 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));
 2020-12-14 14:26:58.084423 +08:00    INFO rbatis::plugin::log - [rbatis] [] Exec  ==> INSERT INTO biz_uuid (id,name) VALUES ($1::uuid,$2)
@@ -305,7 +299,7 @@ rb.save_batch("", &vec![activity]).await;
 //Exec ==> INSERT INTO biz_activity (create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ),( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )
 
 ///The query, Option wrapper, is None if the data is not found
-let result: Option<BizActivity> = rb.fetch_by_id("", &"1".to_string()).await.unwrap();
+let result: Option<BizActivity> = rb.fetch_by_column("id", &"1".to_string()).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///query all
@@ -313,7 +307,7 @@ let result: Vec<BizActivity> = rb.fetch_list("").await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1
 
 ///query id vec, return vec result
-let result: Vec<BizActivity> = rb.fetch_list_by_ids("",&["1".to_string()]).await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list_by_column("id",&["1".to_string()]).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
 ///custom  query(use Wrapper)
@@ -322,11 +316,11 @@ let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///delete
-rb.remove_by_id::<BizActivity>("", &"1".to_string()).await;
+rb.remove_by_column::<BizActivity,_>("id", &"1".to_string()).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id = 1
 
 ///delete batch
-rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).await;
+rb.remove_batch_by_column::<BizActivity,_>("id", &["1".to_string(), "2".to_string()]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
 ///update(use Wrapper)
@@ -506,7 +500,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * py_sql can use arithmetic expressions of macros, such as ` ` ` # {1 + 1}, # {arg}, # {arg [0]}, # {arg [0] + 'string'} ` ` `
 * automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
 * support Page Plugin!(Just put param ``` page_req: &PageRequest ```)
-* param support``` tx_id: &str ``` or ``` context_id: &str ```  
+* param support ``` rb: &mut RbatisExecutor<'_> ```or ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....more
 * For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '
 
 > Macro mapping native driver SQL
@@ -849,7 +843,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
    //rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new_opt("delete_flag",1,0)));//Customize deleted/undeleted writing
    rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new("delete_flag")));
    rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-           let r = rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).await;
+           let r = rb.remove_batch_by_column::<BizActivity>("id", &["1".to_string(), "2".to_string()]).await;
            if r.is_err() {
                println!("{}", r.err().unwrap().to_string());
    }
@@ -859,7 +853,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 # macro-built-in
 for example:
 ```rust
-    #[crud_enable]
+    #[crud_table]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -926,65 +920,6 @@ for example:
         println!("{:#?}", names);
         assert_eq!(names.len(), table_vec.len());
     }
-```
-
-*  add FatherChildRelationship trait, support  Parent-child relational mapping for example:
-```rust
-    #[crud_enable]
-    #[derive(Clone, Debug)]
-    pub struct FatherChildVO {
-        pub id: Option<i32>,
-        pub father_id: Option<i32>,
-        pub childs: Vec<FatherChildVO>,
-    }
-
-    impl FatherChildRelationship for FatherChildVO {
-        fn get_father_id(&self) -> Option<&Self::IdType> {
-            self.father_id.as_ref()
-        }
-        fn set_childs(&mut self, arg: Vec<Self>) {
-            self.childs = arg;
-        }
-    }
-
-    #[test]
-    fn test_to_father_child_relationship() {
-        let mut father = FatherChildVO {
-            id: Some(1),
-            father_id: None,
-            childs: vec![],
-        };
-        let child = FatherChildVO {
-            id: Some(2),
-            father_id: Some(1),
-            childs: vec![],
-        };
-        // or childs = rbatis.fetch_list****() get all of  childs data.
-        let childs=vec![child];
-        let all_record = rbatis::make_table_field_map!(childs,id);
-        father.recursive_set_childs(&all_record);
-        println!("{:#?}", father);
-    }
-```
-
-``` rust
-FatherChildVO {
-    id: Some(
-        1,
-    ),
-    father_id: None,
-    childs: [
-        FatherChildVO {
-            id: Some(
-                2,
-            ),
-            father_id: Some(
-                1,
-            ),
-            childs: [],
-        },
-    ],
-}
 ```
 
 * ``` make_table```  Simplifies table construction by relying on the Default trait

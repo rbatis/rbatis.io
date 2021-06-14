@@ -35,7 +35,7 @@ fast_log="1.3"
 bigdecimal = "0.2"
 
 #rbatis支持
-rbatis =  { version = "1.8" } 
+rbatis =  { version = "2.0" } 
 ```
 
 > 普通初始化
@@ -83,19 +83,15 @@ async fn main() {
 
 > CRUDTable 接口 是一个辅助定义表结构的Trait，它提供了以下方法
 
-* IdType(对应struct的id字段类型，必须声明)
-* id_name()主键id的名称（非必填，默认id）
 * table_name()表名(对应struct的蛇形命名，可选重写)
 * table_columns()表字段逗号分隔的字符串(对应struct的所有字段名称，可选重写)
 * format_chain() 字段格式化链（可以对字段做format例如Pg数据库的字符串date转timestamp #{date}::timestamp，可选重写)
 
 
-> 推荐使用#[crud_enable]属性宏实现CRUDTable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
+> 推荐使用#[crud_table]属性宏实现CRUDTable，它的扩展性更高，可以自定义表名称，字段.同样在编译器生成代码，性能较高.
 
 | 属性    | 含义 |
 | ------ | ------ |
-| id_name | 表主键id名称 |
-| id_type | 表主键类型 |
 | table_name | 表名称 |
 | table_columns | 表列成员用','分割 |
 | formats_pg,formats_postgres | Postgres列sql格式化，用于类型转换|
@@ -105,7 +101,7 @@ async fn main() {
 
 ```rust
 //例子1(全部自动判断):
-    #[crud_enable]
+    #[crud_table]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -113,7 +109,7 @@ async fn main() {
         pub delete_flag: Option<i32>,
     }
 // 例子2（只自定义表名，其他自动）:
-    #[crud_enable(table_name:biz_activity)]
+    #[crud_table(table_name:biz_activity)]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -121,7 +117,7 @@ async fn main() {
         pub delete_flag: Option<i32>,
     }
 // 例子3（全部自定义，其他自动）:
-    #[crud_enable( id_name:"id" |  id_type:"String" |  table_name:"biz_activity" |  table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
+    #[crud_table( table_name:"biz_activity" |  table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -129,7 +125,7 @@ async fn main() {
         pub delete_flag: Option<i32>,
     }
 // 例子-4（使用引号）:
-    #[crud_enable( id_name:"id" |  id_type:"String" | table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
+    #[crud_table( table_name:"biz_activity" | table_columns:"id,name,delete_flag" | formats_pg:"id:{}::uuid")]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -166,8 +162,6 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 ```rust
     use rbatis::crud::CRUDTable;
     impl CRUDTable for BizActivity {
-        type IdType = String; //默认提供IdType类型即可，接口里其他的method默认使用json序列化实现
-        fn get_id(&self) -> Option<&Self::IdType>; // 必须实现获取id值，可以使用return self.id.as_ref();
         //fn table_name() -> String {} //可重写
         //fn table_columns() -> String {}  //可重写
         //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //可重写
@@ -184,17 +178,17 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 > 例如
 
 ```rust
-#[crud_enable(formats_pg:"id:{}::uuid")]
-//#[crud_enable(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
-//#[crud_enable(formats_mysql:...)]
-//#[crud_enable(formats_sqlite:...)]
-//#[crud_enable(formats_mssql:...)]
-//#[crud_enable(formats_mssql:...|formats_pg:...)|...]
+#[crud_table(formats_pg:"id:{}::uuid")]
+//#[crud_table(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
+//#[crud_table(formats_mysql:...)]
+//#[crud_table(formats_sqlite:...)]
+//#[crud_table(formats_mssql:...)]
+//#[crud_table(formats_mssql:...|formats_pg:...)|...]
 ```
 
 ```rust
 // 这是格式化宏的例子
-#[crud_enable(formats_pg:"id:{}::uuid")]
+#[crud_table(formats_pg:"id:{}::uuid")]
 #[derive(Clone, Debug)]
 pub struct BizUuid {
     pub id: Option<Uuid>,
@@ -209,7 +203,7 @@ pub struct BizUuid {
         //'formats_pg' use postgres format
         //'id' ->  table column 'id'
         //'{}::uuid' -> format data str
-        #[crud_enable(formats_pg:"id:{}::uuid")]
+        #[crud_table(formats_pg:"id:{}::uuid")]
         #[derive(Clone, Debug)]
         pub struct BizUuid {
             pub id: Option<Uuid>,
@@ -221,12 +215,12 @@ pub struct BizUuid {
         //insert table
         rb.save("", &BizUuid { id: Some(uuid), name: Some("test".to_string()) }).await;
         //update table
-        rb.update_by_id("",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
+        rb.update_by_column::<BizUuid,_>("id",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
         //query table
-        let data: BizUuid = rb.fetch_by_id("", &uuid).await.unwrap();
+        let data: BizUuid = rb.fetch_by_column("id", &uuid).await.unwrap();
         println!("{:?}", data);
         //delete table
-        rb.remove_by_id::<BizUuid>("",&uuid).await;
+        rb.remove_by_column::<BizUuid>("",&uuid).await;
     }
     
     
@@ -320,7 +314,7 @@ rb.save_batch("", &vec![activity]).await;
 //Exec ==> INSERT INTO biz_activity (create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ),( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )
 
 ///查询, Option包装，有可能查不到数据则为None
-let result: Option<BizActivity> = rb.fetch_by_id("", &"1".to_string()).await.unwrap();
+let result: Option<BizActivity> = rb.fetch_by_column("id", &"1".to_string()).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///查询-全部
@@ -328,7 +322,7 @@ let result: Vec<BizActivity> = rb.fetch_list("").await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1
 
 ///批量-查询id
-let result: Vec<BizActivity> = rb.fetch_list_by_ids("",&["1".to_string()]).await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list_by_column("id",&["1".to_string()]).await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
 ///自定义查询(使用wrapper)
@@ -337,11 +331,11 @@ let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///删除
-rb.remove_by_id::<BizActivity>("", &"1".to_string()).await;
+rb.remove_by_column::<BizActivity,_>("id", &"1".to_string()).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id = 1
 
 ///批量删除
-rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).await;
+rb.remove_batch_by_column::<BizActivity>("id", &["1".to_string(), "2".to_string()]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
 ///修改(使用wrapper)
@@ -519,7 +513,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 * 其中，py_sql宏中的py_sql可以使用运算表达式，例如 ``` #{1+1},#{arg},#{arg[0]},#{arg[0] + 'string'} ```
 * 会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
 * 支持分页插件(参数传入``` page_req: &PageRequest ```即可)
-* 支持传入``` tx_id: &str ```或者 ``` context_id: &str ```
+* 支持传入``` rb: &mut RbatisExecutor<'_> ```或者 ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....等等
 * 对于PostgresSQL数据库,默认使用预编译SQL。特殊类型例如UUID 需使用::type强制转换类型。例如``` #{arg}::uuid ```
 
 > 宏映射 原生驱动sql
@@ -730,7 +724,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 例如 :
 ```rust
-    #[crud_enable]
+    #[crud_table]
     #[derive(Clone, Debug)]
     pub struct BizActivity {
         pub id: Option<String>,
@@ -801,7 +795,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 *  父子关系特征，例如支持父子关系映射:
 ```rust
-    #[crud_enable]
+    #[crud_table]
     #[derive(Clone, Debug)]
     pub struct FatherChildVO {
         pub id: Option<i32>,
@@ -916,7 +910,7 @@ FatherChildVO {
    //rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new_opt("delete_flag",1,0)));//自定义已删除/未删除 写法
    rb.logic_plugin = Some(Box::new(RbatisLogicDeletePlugin::new("delete_flag")));
    rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-           let r = rb.remove_batch_by_id::<BizActivity>("", &["1".to_string(), "2".to_string()]).await;
+           let r = rb.remove_batch_by_column::<BizActivity,_>("id", &["1".to_string(), "2".to_string()]).await;
            if r.is_err() {
                println!("{}", r.err().unwrap().to_string());
    }

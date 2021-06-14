@@ -5,7 +5,7 @@
 * 升级 sqlx-core 到 0.5.1
 * 性能优化格式宏，它将被转换为函数
 ```rust
-#[crud_enable(formats_pg: "id:{}::uuid")] 
+#[crud_table(formats_pg: "id:{}::uuid")] 
 ```
 to
 ```rust
@@ -17,7 +17,7 @@ to
 * 将CRUDEnable重命名为CRUDTable，并添加get_id（）方法
 * 为所有集合类型添加get_ids（）方法
 ```rust
-   #[crud_enable]
+   #[crud_table]
 #[derive(Clone, Debug)]
 pub struct BizActivity {
     pub id: Option<String>,
