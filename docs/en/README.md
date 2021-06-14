@@ -529,16 +529,17 @@ rb.update_by_wrapper("", &activity, &w).await;
      static ref RB:Rbatis=Rbatis::new();
    }
 
-    #[py_sql(rbatis, "select * from biz_activity where id = #{name}
+    #[py_sql(rb,"select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
-    async fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
-   
+    async fn py_select_page(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
     #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-        let a = py_select(&RB,"1").await.unwrap();
+        let a = py_select_page(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+            .await
+            .unwrap();
         println!("{:?}", a);
     }
 ```
@@ -696,18 +697,16 @@ pub async fn test_tx() {
 ## TxGuard
 
 ```rust
-#[tokio::test]
-    pub async fn test_tx_commit_defer() {
-        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
-        let rb: Rbatis = Rbatis::new();
-        rb.link(MYSQL_URL).await.unwrap();
-        //use defer tx，You can forget to commit or roll back the transaction at the end of any function, and the framework will help you commit and roll back the transaction when the guard is reclaimed
-        let guard = rb.begin_tx_defer(true).await.unwrap();
-        let v: serde_json::Value = rb.fetch(&guard.tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
-        // tx will be commit
-        drop(guard);
-        println!("{}", v.clone());
-        sleep(Duration::from_secs(1));
+  pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+         // tx will be commit.when func end
+        let tx = rb.acquire_begin().await?.defer(|tx|{
+            println!("tx is drop!");
+            async_std::task::block_on(async{ tx.rollback().await; });
+        });
+        let v: serde_json::Value = tx
+            .fetch( "select count(1) from biz_activity;",&vec![])
+            .await?;
+        return Ok(v);
     }
 
 2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
@@ -720,27 +719,28 @@ pub async fn test_tx() {
 ## macro transaction
 
 ```rust
+    ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
-    async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &mut RbatisExecutor<'_> ,name: &str) -> Option<Vec<BizActivity>> {}
 
     #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
-        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+        let rb: Rbatis = Rbatis::new();
+        rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 
-        //let (tx_id,_)=rb.begin_tx().await.unwrap(); //1.8.40 start using begin_tx() to return automatically generated TX_ID
-        //The transaction format is'tx:transactionID', and non-tx: starting ids are executed in normal mode
-        let tx_id = "tx:1";
+
         //begin
-        RB.begin(tx_id).await.unwrap();
-        let results = join_select(&RB, "test").await.unwrap();
-        println!("data: {:?}",tx_id, results);
+        let mut tx = rb.acquire_begin().await.unwrap();
+        let results = join_select((&mut tx).into(), "test").await.unwrap();
+        println!("data: {:?}", results);
         //commit or rollback
-        RB.commit(tx_id).await.unwrap();
+        tx.commit().await.unwrap();
     }
+```
 ```
 
 
@@ -748,17 +748,16 @@ pub async fn test_tx() {
 
 ```rust
 #[tokio::test]
-    pub async fn test_tx_commit_defer() {
-        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
-        let rb: Rbatis = Rbatis::new();
-        rb.link(MYSQL_URL).await.unwrap();
-        //use defer,tx will be commit or rollback when function end
-        let guard = rb.begin_tx_defer(true).await.unwrap();
-        let v: serde_json::Value = rb.fetch(&guard.tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
-        // tx will be commit
-        drop(guard);
-        println!("{}", v.clone());
-        sleep(Duration::from_secs(1));
+  pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+         // tx will be commit.when func end
+        let tx = rb.acquire_begin().await?.defer(|tx|{
+            println!("tx is drop!");
+            async_std::task::block_on(async{ tx.rollback().await; });
+        });
+        let v: serde_json::Value = tx
+            .fetch( "select count(1) from biz_activity;",&vec![])
+            .await?;
+        return Ok(v);
     }
 
 2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
@@ -768,29 +767,6 @@ pub async fn test_tx() {
 
 ```
 
-## transaction macro
-
-```rust
-    #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
-                      FROM test.biz_activity a1,biz_activity a2
-                      WHERE a1.id=a2.id
-                      AND a1.name=#{name}")]
-    async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
-
-    #[tokio::test]
-    pub async fn test_join() {
-        fast_log::log::init_log("requests.log", &RuntimeType::Std);
-        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-
-        let tx_id = "1";
-        //begin
-        RB.begin(tx_id).await.unwrap();
-        let results = join_select(&RB,tx_id, "test").await.unwrap();
-        println!("data: {:?}", results);
-        //commit or rollback
-        RB.commit(tx_id).await.unwrap();
-    }
-```
 
 
 # Conditional compilation switch runtime

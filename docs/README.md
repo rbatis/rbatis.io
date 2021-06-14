@@ -556,22 +556,24 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
-> 宏映射 py_sql(传入事务tx_id的模式)
+> 宏映射 py_sql(传入事务)
 
 ```rust
     lazy_static! {
      static ref RB:Rbatis=Rbatis::new();
    }
 
-    #[py_sql(RB, "select * from biz_activity where id = #{name}
+    #[py_sql(rb,"select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
-    async fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
+    async fn py_select_page(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
     #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-        let a = py_select("","1").await.unwrap();
+        let a = py_select_page(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+            .await
+            .unwrap();
         println!("{:?}", a);
     }
 ```
@@ -621,22 +623,20 @@ rbatis = { ...}
 > 普通事务，纯手动管理的一个事务。调用Rbatis.begin方法后会把事务缓存于‘Rbatis事务管理器中’
 
 ```rust
-#[tokio::test]
-pub async fn test_tx() {
-    fast_log::init_log("requests.log", 1000,log::Level::Info,true);
-    let RB = Rbatis::new();
-    RB.link(MYSQL_URL).await.unwrap();
-
-    //let (tx_id,_)=rb.begin_tx().await.unwrap();//1.8.40开始使用begin_tx()可返回自动生成的tx_id
-    //事务格式是'tx:事务id',非tx:开头的id以普通模式执行
-    let tx_id = "tx:1";
-    //begin
-    RB.begin(tx_id).await.unwrap();
-    let v: serde_json::Value = RB.fetch(tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
-    println!("{}", v.clone());
-    //commit or rollback
-    RB.commit(tx_id).await.unwrap();
-}
+    pub async fn test_tx_commit() {
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+        let rb: Rbatis = Rbatis::new();
+        rb.link("mysql://root:123456@localhost:3306/test")
+            .await
+            .unwrap();
+        let tx = rb.acquire_begin().await.unwrap();
+        let v: serde_json::Value = tx
+            .fetch("select count(1) from biz_activity;", &vec![])
+            .await
+            .unwrap();
+        println!("{}", v.clone());
+        tx.commit().await.unwrap();
+    }
 ```
 
 ## 事务守卫(Drop机制-预防忘记提交/回滚)
@@ -644,18 +644,16 @@ pub async fn test_tx() {
 > 守卫-顾名思义是对事务tx的一个守卫者、保护者（守卫结构体包裹被保护的事务对象）。当保护者被销毁(Drop之前)，守卫会立即释放(提交or回滚)事务tx
 
 ```rust
-#[tokio::test]
-    pub async fn test_tx_commit_defer() {
-        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
-        let rb: Rbatis = Rbatis::new();
-        rb.link(MYSQL_URL).await.unwrap();
-        //使用defer事务，你可以在任何函数结尾忘记提交或回滚事务，框架会在守卫被回收时帮助你提交，回滚事务
-        let guard = rb.begin_tx_defer(true).await.unwrap();
-        let v: serde_json::Value = rb.fetch(&guard.tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
-        // tx will be commit
-        drop(guard);
-        println!("{}", v.clone());
-        sleep(Duration::from_secs(1));
+  pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+         // tx will be commit.when func end
+        let tx = rb.acquire_begin().await?.defer(|tx|{
+            println!("tx is drop!");
+            async_std::task::block_on(async{ tx.rollback().await; });
+        });
+        let v: serde_json::Value = tx
+            .fetch( "select count(1) from biz_activity;",&vec![])
+            .await?;
+        return Ok(v);
     }
 
 2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
@@ -674,20 +672,21 @@ pub async fn test_tx() {
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
-    async fn join_select(rbatis: &Rbatis , tx_id:&str , name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &mut RbatisExecutor<'_> ,name: &str) -> Option<Vec<BizActivity>> {}
 
     #[tokio::test]
     pub async fn test_join() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
-        RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
+        let rb: Rbatis = Rbatis::new();
+        rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 
-        let tx_id = "1";
+
         //begin
-        RB.begin(tx_id).await.unwrap();
-        let results = join_select(&RB,tx_id, "test").await.unwrap();
+        let mut tx = rb.acquire_begin().await.unwrap();
+        let results = join_select((&mut tx).into(), "test").await.unwrap();
         println!("data: {:?}", results);
         //commit or rollback
-        RB.commit(tx_id).await.unwrap();
+        tx.commit().await.unwrap();
     }
 ```
 
