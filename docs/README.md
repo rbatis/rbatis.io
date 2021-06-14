@@ -471,6 +471,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 
 ```rust
+    ///这里，方法名称对应xml里面标签id，例如id="select_by_condition" 对应  async fn select_by_condition
     #[html_sql(rb, "example/example.html")]
     async fn select_by_condition(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
 

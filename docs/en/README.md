@@ -436,6 +436,7 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 
 ```rust
+    ///Here, the name of the method corresponds to the ID of the tag inside the XML. For example, id="select_by_condition" corresponds to async fn select_by_condition
     #[html_sql(rb, "example/example.html")]
     async fn select_by_condition(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
 
