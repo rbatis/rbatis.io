@@ -422,28 +422,8 @@ rb.update_by_wrapper("", &activity, &w).await;
     WHERE id  = '2';
 ```
 
-> 1 直接使用Rbatis执行pysql
 
-``` python
-//执行到远程mysql 并且获取结果。支持serde_json可序列化的任意类型
-        let rb = Rbatis::new();
-        rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-            let py = r#"
-        SELECT * FROM biz_activity
-        WHERE delete_flag = #{delete_flag}
-        if name != null:
-          AND name like #{name+'%'}
-        if ids != null:
-          AND id in (
-          trim ',':
-             for item in ids:
-               #{item},
-          )"#;
-            let data: serde_json::Value = rb.py_fetch("", py, &json!({   "delete_flag": 1 })).await.unwrap();
-            println!("{}", data);
-```
-
-> 2使用宏映射执行pysql，见 #Macro-智能宏映射
+> 使用宏映射执行pysql，见 #Macro-智能宏映射
 
 # html_sql语法(类似mybatis xml格式)
 
