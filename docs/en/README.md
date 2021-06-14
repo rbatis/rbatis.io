@@ -362,6 +362,8 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 > The PySQL syntax is used in SQL to modify the SYNTAX of SQL and is a form of dynamic SQL
 
+> PySql syntax and the HTML_SQL syntax underlie the same Rust code compile-time generator, and since there is no expression engine, the compiled code is close to the performance of handwritten SQL
+
 * py syntax, support for addition, subtraction, multiplication, and division if, for, in the trim, include, where, the
   set, choose, and so on syntax (and mybatis using the functions are almost the same)In the
 * PY syntax, the line space for Child must be greater than that for father. It says it's its child
