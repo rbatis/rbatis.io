@@ -1,56 +1,74 @@
 # [返回主页](https://rbatis.github.io/rbatis.io/)
 
-## v1.8.69版本发布
+## v2.0 版本发布
 
-* 升级 sqlx-core 到 0.5.1
-* 性能优化格式宏，它将被转换为函数
+* 重要更新
+> （pysql去掉runtime，直接编译成静态rust代码）这意味着使用py_sql,html_sql生成的SQL的性能与手写代码大致相似。
 ```rust
-#[crud_table(formats_pg: "id:{}::uuid")] 
+#[py_sql(
+    rb,
+    "select * from biz_activity where delete_flag = 0
+                  if name != '':
+                    and name=#{name}","mysql")]
+    async fn py_sql_tx(rb: &Rbatis, tx_id: &String, name: &str) -> Vec<BizActivity> { todo!() }
 ```
-to
+> 添加了 html_sql 支持，一种类似于 MyBatis 的组织形式，方便 Java 系统向 Rust 的迁移（注意它在构建时也编译为 Rust 代码，执行接近手写代码）这非常快
 ```rust
- |arg:&str|->String{
-    format!("{}::uuid",arg)
-}
-```
-* update_by_id（）的性能优化，因为它使用方法get_id（）代替了Json序列化
-* 将CRUDEnable重命名为CRUDTable，并添加get_id（）方法
-* 为所有集合类型添加get_ids（）方法
-```rust
-   #[crud_table]
-#[derive(Clone, Debug)]
-pub struct BizActivity {
-    pub id: Option<String>,
-    pub name: Option<String>,
-}
-    let biz_activitys = rbatis.fetch_list::<BizActivity>("").await.unwrap();
-    /// to_ids() support HashSet.to_ids(),Vec.to_ids(),Array.to_ids(),HashMap.to_ids(),LinkedList.to_ids()，BtreeMap.to_ids()....
-    let ids = biz_activitys.to_ids();
-    println("{}",ids);//->   ["1","2","3"]
-```
-* CRUD 接口 原先的 list**函数名称更改为 fetch_list** 例如:
-```rust
-    async fn fetch_by_id<T>(&self, context_id: &str, id: &T::IdType) -> Result<T> where  T: CRUDTable;
-    async fn fetch_by_wrapper<T>(&self, context_id: &str, w: &Wrapper) -> Result<T>
-    where
-        T: CRUDTable;
-    async fn fetch_page_by_wrapper<T>(
-        &self,
-        context_id: &str,
-        w: &Wrapper,
-        page: &dyn IPageRequest,
-    ) -> Result<Page<T>> where  T: CRUDTable;
-    async fn fetch_list<T>(&self, context_id: &str) -> Result<Vec<T>>  where  T: CRUDTable;
-    async fn fetch_list_by_ids<T>(&self, context_id: &str, ids: &[T::IdType]) -> Result<Vec<T>>where   T: CRUDTable;
-    async fn fetch_list_by_wrapper<T>(&self, context_id: &str, w: &Wrapper) -> Result<Vec<T>> where T: CRUDTable;
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
+<mapper>
+    <sql id="select_self">(id,name,age,tag)</sql>
+    <insert id="insert">
+        insert into biz_activity
+        <foreach collection="arg" index="key" item="item" open="(" close=")" separator=",">
+            ${key}
+        </foreach>
+         values
+        <foreach collection="arg" index="key" item="item" open="(" close=")" separator=",">
+            ${item}
+        </foreach>
+    </insert>
+    <select id="select_by_condition">
+        select * from biz_activity where
+        <if test="name != ''">
+            name like #{name}
+        </if>
+    </select>
+    <select id="test_include">
+      <include refid="select_self"></include>
+      <include refid="page_sql?file=example/example_include.html"></include>
+    </select>
+</mapper>
 ```
 
+* 删除 id,id_name（使用列动态字段代替静态方法）
+  例如：
+```rust
+rb.fetch_by_column::<Option<BizActivity>,_>( "id",&"1").await
+rb.fetch_by_column::<Option<BizActivity>,_>( "name",&"joke").await
+rb.fetch_by_column::<Option<BizActivity>,_>( "age",1).await
+```
+* 删除 context_id,tx_id,TxManager（使用事务结构体传输事务，conn）
+```rust
+let tx = rb.acquire_begin().await.unwrap();
+        let v: serde_json::Value = tx
+            .fetch("select count(1) from biz_activity;",&vec![])
+            .await
+            .unwrap();
+        println!("{}", v.clone());
+        tx.commit().await.unwrap();
+```
+> 使用defer防止忘记提交事务
 
-
-
-## 1.8.67版本发布
-
-* 新增版本号锁（乐观锁）插件，乐观锁是处理并发的一种手段, 甚至比逻辑删除更常用. 请查阅[乐观锁](# 插件：版本锁/乐观锁)
-* 新增tokio1.0特性支持。因为框架给予async—std因此完美兼容tokio任意版本。请查阅[运行时切换](# 条件编译切换运行时)
-* Wrapper 删除了check函数，框架内部会尝试处理sql 拼接错误！因此老版本需要修改删除check！
-* Py_SQL新版本增加一个结构体缓存的步骤，缓存于当期节点node中，避免了从缓存map存取，经测试单次调用响应时间可减少50%以上（因为之前的版本大部分从map存取缓存）
+```rust
+    pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+        // tx will be commit.when func end
+        let tx = rb.acquire_begin().await?.defer(|tx|{
+            println!("tx is drop!");
+            async_std::task::block_on(async{ tx.rollback().await; });
+        });
+        let v: serde_json::Value = tx
+            .fetch( "select count(1) from biz_activity;",&vec![])
+            .await?;
+        return Ok(v);
+    }
+```
