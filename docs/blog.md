@@ -78,6 +78,18 @@ let tx = rb.acquire_begin().await.unwrap();
 ###  前言
 > 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
 
+v1.8版本依靠rust提供的高性能，sql驱动依赖sqlx-core，未作特殊优化性能即超过了go、java之类的orm
+v1.8版本一经发布，受到了许多网友的肯定和采纳，并应用于诸多生产系统之上。
+v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py_sql简化组织编写sql的心理压力，同时增加一系列常用插件，极大的方便了广大网友。
+
+> 同时1.8版本也具备了某些网友提出的问题，例如：
+* 当操作的表结构具备多给主键时，by_id*()的方式似乎不那么适用
+* 当使用TxManager外加tx_id管理事务的方式，因为用到了锁，似乎影响性能
+* py_sql使用ast+解释执行的方式，不但存在 运行时，运行时解析阶段，运行时解释执行阶段，能否优化为完全0开销的方式？
+* 能否加入xml格式的动态sql存储，实现sql和代码解耦分离，适当兼容从java迁移过来的系统并适当复用之前的mybais xml？
+
+经过一段时间的思考和整理，于是推出v2.0版本，实现完全0开销的动态sql，sql构建性能提高N倍（只生成sql），完整查询QPS（组织sql到得到结果）性能提高至少2倍以上，并解决以上问题
+
 > 介绍Java最普遍的ORM框架前世今生 - Mybatis、MybatisPlus，XML，ONGL表达式，dtd文件
 
 * MyBatis在java和sql之间提供更灵活的映射方案,MyBatis将sql语句和方法实现，直接写到xml文件中，实现和java程序解耦
