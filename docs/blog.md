@@ -79,6 +79,8 @@ let tx = rb.acquire_begin().await.unwrap();
 > 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
 
 
+### 介绍java最普遍的ORM框架-Mybatis，XML，ONGL表达式，dtd文件
+
 
 ### 走弯路-尝试基于wasm
 
