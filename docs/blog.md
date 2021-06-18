@@ -78,13 +78,13 @@ let tx = rb.acquire_begin().await.unwrap();
 ###  前言
 > 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
 
+### 介绍Java最普遍的ORM框架前世今生 -  Mybatis，XML，ONGL表达式，dtd文件
 
-### 介绍java最普遍的ORM框架-Mybatis，XML，ONGL表达式，dtd文件
+### 探索实现架构走弯路-最初版本基于AST+解释执行
 
+### 探索实现架构走弯路-尝试基于wasm
 
-### 走弯路-尝试基于wasm
-
-### 走弯路end-尝试过程宏，是元编程也是高性能的关键
+### 探索实现架构走弯路-尝试过程宏，是元编程也是高性能的关键
 
 > 过程宏框架，syn和quote（分别解析和生成词条流）
 
