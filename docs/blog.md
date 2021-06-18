@@ -75,6 +75,11 @@ let tx = rb.acquire_begin().await.unwrap();
 
 ## Rbatis ORM（v2.0）次世代 零开销、编译时动态SQL ORM方面的探索
 
+* 什么是动态SQL？
+
+在某种高级语言中，如果嵌入了SQL语句，而这个SQL语句的主体结构已经明确，例如在Java的一段代码中有一个待执行的SQL“select * from t1 where c1>5”，在Java编译阶段，就可以将这段SQL交给数据库管理系统去分析，数据库软件可以对这段SQL进行语法解析，生成数据库方面的可执行代码，这样的SQL称为静态SQL，即在编译阶段就可以确定数据库要做什么事情。
+而如果嵌入的SQL没有明确给出，如在Java中定义了一个字符串类型的变量sql：String sql;，然后采用preparedStatement对象的execute方法去执行这个sql，该sql的值可能等于从文本框中读取的一个SQL或者从键盘输入的SQL，但具体是什么，在编译时无法确定，只有等到程序运行起来，在执行的过程中才能确定，这种SQL叫做动态SQL
+
 ###  前言
 > 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
 
@@ -148,12 +153,7 @@ v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py
 为何这样说,MyBatis将接口和SQL映射文件进行分离,相互独立,但又通过反射机制将其进行动态绑定。
 其实它底层就是Mapper代理工厂[MapperRegistry]和Mapper标签映射[MapperStatement],它们两个说穿了就是Map容器,就是我们常见的HashMap、ConcurrentHashMap。
 所以说,MyBatis使用面向接口的方式这种思想很好的实现了解耦和的方式,同时易于开发者进行定制和扩展,比如我们熟悉的通用Mapper和分页插件pageHelper,方式也非常简单。
-
-* 什么是动态SQL？
-
-在某种高级语言中，如果嵌入了SQL语句，而这个SQL语句的主体结构已经明确，例如在Java的一段代码中有一个待执行的SQL“select * from t1 where c1>5”，在Java编译阶段，就可以将这段SQL交给数据库管理系统去分析，数据库软件可以对这段SQL进行语法解析，生成数据库方面的可执行代码，这样的SQL称为静态SQL，即在编译阶段就可以确定数据库要做什么事情。
-而如果嵌入的SQL没有明确给出，如在Java中定义了一个字符串类型的变量sql：String sql;，然后采用preparedStatement对象的execute方法去执行这个sql，该sql的值可能等于从文本框中读取的一个SQL或者从键盘输入的SQL，但具体是什么，在编译时无法确定，只有等到程序运行起来，在执行的过程中才能确定，这种SQL叫做动态SQL
-
+  
 * 什么是DTD文件？
 
 文档类型定义（DTD）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。同样，它可以作用于xml文件也可以作用于html文件.
