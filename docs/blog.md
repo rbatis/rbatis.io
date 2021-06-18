@@ -73,12 +73,13 @@ let tx = rb.acquire_begin().await.unwrap();
     }
 ```
 
-## Rbatis ORM（v2.0）在 零开销、编译时动态SQL方面的探索
+## Rbatis ORM（v2.0）次世代 零开销、编译时动态SQL ORM方面的探索
 
 ###  前言
 > 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
 
-### 介绍Java最普遍的ORM框架前世今生 -  Mybatis，XML，ONGL表达式，dtd文件
+> 介绍Java最普遍的ORM框架前世今生 -  Mybatis，XML，ONGL表达式，dtd文件
+
 
 ### 探索实现架构走弯路-最初版本基于AST+解释执行
 
