@@ -86,7 +86,7 @@ let tx = rb.acquire_begin().await.unwrap();
 
 > 过程宏的玄冥二老，syn和quote（分别解析和生成词条流）
 
-> 设计语法糖
+> 语法糖语义
 
 > 关键点-使用Cow避免过度克隆
 
