@@ -78,8 +78,45 @@ let tx = rb.acquire_begin().await.unwrap();
 ###  前言
 > 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
 
-> 介绍Java最普遍的ORM框架前世今生 -  Mybatis，XML，ONGL表达式，dtd文件
+> 介绍Java最普遍的ORM框架前世今生 - Mybatis、MybatisPlus，XML，ONGL表达式，dtd文件
 
+* MyBatis在java和sql之间提供更灵活的映射方案,MyBatis将sql语句和方法实现，直接写到xml文件中，实现和java程序解耦
+为何这样说,MyBatis将接口和SQL映射文件进行分离,相互独立,但又通过反射机制将其进行动态绑定。
+其实它底层就是Mapper代理工厂[MapperRegistry]和Mapper标签映射[MapperStatement],它们两个说穿了就是Map容器,就是我们常见的HashMap、ConcurrentHashMap。
+所以说,MyBatis使用面向接口的方式这种思想很好的实现了解耦和的方式,同时易于开发者进行定制和扩展,比如我们熟悉的通用Mapper和分页插件pageHelper,方式也非常简单。
+
+* 什么是动态SQL？
+
+在某种高级语言中，如果嵌入了SQL语句，而这个SQL语句的主体结构已经明确，例如在Java的一段代码中有一个待执行的SQL“select * from t1 where c1>5”，在Java编译阶段，就可以将这段SQL交给数据库管理系统去分析，数据库软件可以对这段SQL进行语法解析，生成数据库方面的可执行代码，这样的SQL称为静态SQL，即在编译阶段就可以确定数据库要做什么事情。
+而如果嵌入的SQL没有明确给出，如在Java中定义了一个字符串类型的变量sql：String sql;，然后采用preparedStatement对象的execute方法去执行这个sql，该sql的值可能等于从文本框中读取的一个SQL或者从键盘输入的SQL，但具体是什么，在编译时无法确定，只有等到程序运行起来，在执行的过程中才能确定，这种SQL叫做动态SQL
+
+* 什么是DTD文件？
+
+文档类型定义（DTD）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。同样，它可以作用于xml文件也可以作用于html文件.
+Intellij IDEA,CLion,VSCode等等ide均具备该文件合法模块，标签智能提示的能力
+例如:
+```dtd
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!ELEMENT mapper (sql* | insert* | update* | delete* | select* )+>
+        <!ATTLIST mapper
+                >
+```
+
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
+<mapper>
+</mapper>
+```
+
+* 什么是ONGL表达式？
+
+OGNL(Object-Graph Navigation Language)大概可以理解为:对象图形化导航语言。是一种可以方便地操作对象属性的开源表达式语言.
+Rbatis在html，py_sql内部借鉴部分ognl表达式的设计，但是rbatis实际操作的是json对象。
+
+例如(#{name},表示从参数中获取name参数，#符号表示放如预编译sql参数并替换为mysql的'?'或者pg的‘$1’，如果是$符号表示直接插入并替换sql):
+```html
+<select id="select_by_condition">select * from table where name like #{name}</select>
+```
 
 ### 探索实现架构走弯路-最初版本基于AST+解释执行
 
