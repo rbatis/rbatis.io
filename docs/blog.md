@@ -133,25 +133,122 @@ Rbatis在html，py_sql内部借鉴部分ognl表达式的设计，但是rbatis实
 
 ### 探索实现架构走弯路-最初版本基于AST+解释执行
 
+AST抽象语法树，可以参考其他博客 <https://blog.csdn.net/weixin_39408343/article/details/95984062>
+![](https://cdn.learnku.com/uploads/images/202006/21/65201/3S3U7Tdvx0.png!large)
+
+* AST结构体大概长这样
+```rust
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct Node {
+    pub left: Option<Box<Node>>,
+    pub value: Value,
+    pub right: Option<Box<Node>>,
+    pub node_type: NodeType,
+}
+impl Node{
+    #[inline]
+    pub fn eval(&self, env: &Value) -> Result<Value, crate::error::Error> {
+        if self.equal_node_type(&NBinary) {
+            let left_v = self.left.as_ref().unwrap().eval(env)?;
+            let right_v = self.right.as_ref().unwrap().eval(env)?;
+            let token = self.to_string();
+            return eval(&left_v, &right_v, token);
+        } else if self.equal_node_type(&NArg) {
+            return self.value.access_field(env);
+        }
+        return Result::Ok(self.value.clone());
+    }
+}
+```
+
+> 表达式是如何运行的？
+* 例如执行表达式‘1+1’，首先经过框架解析成3个Node节点的二叉树,‘+’符号节点左叶子节点为1，右叶子节点为1
+* 执行时，执行‘+’节点的eval方法，这时它会执行叶子节点的eval（）方法得到2给值(这里eval方法实际执行了clone操作)，并根据符号‘+’对2给值累加，并返回。
+
+> 结论： 这种架构下，其实存在一些弊端，例如存在很多不必要的clone操作，node需要在程序运行阶段 解析->生成AST->逐行解释执行AST。这些都是存在一些时间和cpu、内存开销的
+
 ### 探索实现架构走弯路-尝试基于wasm
 
-### 探索实现架构走弯路-尝试过程宏，是元编程也是高性能的关键
+* 什么是wasm？
+WebAssembly/wasm WebAssembly 或者 wasm 是一个可移植、体积小、加载快并且兼容 Web 的全新格式。
+
+rust也有一些wasm运行时，这类框架可以进行某些JIT编译优化工作。例如 wasmtime/cranelift/
+曾经发现调用cranelift 运行时调用开销 800ns/op，对于频繁进出宿主-wasm运行时调用的话，似乎并不是特别适合ORM。况且接近800ns的延迟，说实话挺难接受的。参见issues
+https://github.com/bytecodealliance/wasmtime/issues/2644
+经过一些时间等待，该问题被解决后，仍然需要耗费至少50ns的时间开销。对于sql中出现参数动则20次的调用，时间延迟依然会进一步拉大
+
+### 探索实现架构-真正的0开销抽象，尝试过程宏，是元编程也是高性能的关键
+
+我们一直在说0开销，C++的实现遵循“零开销原则”：如果你不使用某个抽象，就不用为它付出开销[Stroustrup，1994]。而如果你确实需要使用该抽象，可以保证这是开销最小的使用方式。
+— Stroustrup
+
+* 如果我们使用过程宏直接把表达式编译为纯rust函数代码，那么就实现了真正意义上令人兴奋的0开销！不但降低cpu使用率，同时提升性能
 
 > 过程宏框架，syn和quote（分别解析和生成词条流）
 
-> 语法糖语义
+我们知道syn和quote结合起来是实现过程宏的主要方式，但是syn和quote仅支持rust语法规范。
+如何让它能变相解析我们自定义的语法糖呢？
+* 答案就是让我们的语法糖转换为符合rust规范的语法，让syn和quote能够正常解析和生成词条流
 
 > 关于扩展性-包装serde_json还是拷贝serde_json源码？
+
+我们执行的表达式参数都是json参数，这里涉及使用到serde_json。但是serde_json其实不具备 类似 serde_json::Value + 1 的语法规则，你会得到编译错误！
+
+* （语法不支持）解决方案： impl std::ops::Add for serde_json::Value{} 实现标准库的接口即可支持。
+  
+* 但是碍于 孤儿原则（当你为某类型实现某 trait 的时候，必须要求类型或者 trait 至少有一个是在当前 crate 中定义的。你不能为第三方的类型实现第三方的 trait ）你会得到编译错误！
+
+> 语法糖语义和实现trait 支持扩展
+
+* （孤儿原则）解决方案: 实现自定义结构体，并依赖serde_json::Value对象，并实现该结构体的语法规则支持！
+
+自定义的结构体张这样
+```rust
+#[derive(Eq, PartialEq, Clone, Debug)]
+pub struct Value<'a> {
+    pub inner: Cow<'a, serde_json::Value>,
+}
+```
 
 > 性能优化1-写时复制Cow-避免不必要的克隆
 * 科普：写时复制（Copy on Write）技术是一种程序中的优化策略，多应用于读多写少的场景。主要思想是创建对象的时候不立即进行复制，而是先引用（借用）原有对象进行大量的读操作，只有进行到少量的写操作的时候，才进行复制操作，将原有对象复制后再写入。这样的好处是在读多写少的场景下，减少了复制操作，提高了性能。
 
+实现表达式解析时，并不是所有操作都存在‘写’的，大部分场景是基于‘读’
+例如表达式:
+
+```html
+ <if test="id > 0 || id == 1">
+            id = ${id}
+</if>
+```
+* 这里，读取id并判断是否大于0或等于1
+
 > 性能优化2-重复变量利用优化
+
+* 表达式定义了变量参数id，进行2次访问，那我们生成的fn函数中即要判断是否已存在变量id，第二次直接访问而不是重复生成
+例如:
+```html
+ <select id="select_by_condition">
+        select * from table where
+        id != #{id}
+        and 1 != #{id}
+</select>
+```
 
 > 性能优化3-sql预编译参数替换算法优化
 
 * 字符串替换性能的关键-rust的string存储于堆内存 
 
-* 巧用char进行字符串替换
+rust的String对象是支持变长的字符串，我们知道Vec是存储于堆内存（因为计算机堆内存容量更大，而栈空间是有限的）大概长这样
+```rust
+#[stable(feature = "rust1", since = "1.0.0")]
+pub struct String {
+    vec: Vec<u8>,
+}
+```
+
+* 性能优化-不使用format！等生成String结构体的函数，减少访问堆内存
+
+* 巧用char进行字符串替换，因为单个char存储于栈，栈的速度快于堆
 
 ### 最后的验证阶段，（零开销、编译时动态SQL）执行效率压测
