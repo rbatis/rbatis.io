@@ -247,11 +247,11 @@ pub struct String {
 }
 ```
 
-* 性能优化-不使用format！等生成String结构体的函数，减少访问堆内存
+* 性能优化-不使用format！宏等生成String结构体的函数，减少访问堆内存。
 
 * 巧用char进行字符串替换，因为单个char存储于栈，栈的速度快于堆
 
-* 替换算法优化内容长这样.(这里我们使用new_sql.push(char),只访问栈内存空间)
+* 替换算法优化内容长这样.(这里我们使用``` new_sql.push(char)```,只访问栈内存空间)
 
 ```rust
     macro_rules! push_index {
