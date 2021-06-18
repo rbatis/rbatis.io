@@ -429,9 +429,19 @@ rb.update_by_wrapper("", &activity, &w).await;
 
 # html_sql语法(类似mybatis xml格式)
 
+* 文件:example/example_include.html
 ```html
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
 <mapper>
+    <sql id="page_sql"> select * from include </sql>
+</mapper>
+```
+
+* 文件:example.html
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
+<mapper>
+    <sql id="select_self">(id,name,age,tag)</sql>
     <insert id="insert">
         insert into biz_activity
         <foreach collection="arg" index="key" item="item" open="(" close=")" separator=",">
@@ -447,6 +457,10 @@ rb.update_by_wrapper("", &activity, &w).await;
         <if test="name != ''">
             name like #{name}
         </if>
+    </select>
+    <select id="test_include">
+      <include refid="select_self"></include>
+      <include refid="page_sql?file=example/example_include.html"></include>
     </select>
 </mapper>
 ```
