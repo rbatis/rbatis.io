@@ -82,6 +82,57 @@ v1.8版本依靠rust提供的高性能，sql驱动依赖sqlx-core，未作特殊
 v1.8版本一经发布，受到了许多网友的肯定和采纳，并应用于诸多生产系统之上。
 v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py_sql简化组织编写sql的心理压力，同时增加一系列常用插件，极大的方便了广大网友。
 
+兼顾方便和性能，例如这里使用html_sql查询分页代码片段：
+* html文件
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
+<mapper>
+    <select id="select_by_condition">
+        select * from biz_activity where
+        <if test="name != ''">
+            name like #{name}
+        </if>
+    </select>
+</mapper>
+```
+* main.rs文件
+```rust
+    #[crud_table]
+    #[derive(Clone, Debug)]
+    pub struct BizActivity {
+        pub id: Option<String>,
+        pub name: Option<String>,
+        pub pc_link: Option<String>,
+        pub h5_link: Option<String>,
+        pub pc_banner_img: Option<String>,
+        pub h5_banner_img: Option<String>,
+        pub sort: Option<String>,
+        pub status: Option<i32>,
+        pub remark: Option<String>,
+        pub create_time: Option<NaiveDateTime>,
+        pub version: Option<i32>,
+        pub delete_flag: Option<i32>,
+    }
+    
+    #[html_sql(rb, "example/example.html")]
+    async fn select_by_condition(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
+    
+    #[async_std::main]
+    pub async fn main() {
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
+        //use static ref
+        let rb = Rbatis::new();
+        rb.link("mysql://root:123456@localhost:3306/test")
+            .await
+            .unwrap();
+        let a = select_by_condition(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+            .await
+            .unwrap();
+        println!("{:?}", a);
+    }
+```
+
+
 > 同时1.8版本也具备了某些网友提出的问题，例如：
 * by_id*()的方式，局限性很大，只能操作具有该id的表，能否更改为 by_column*(column:&str,arg:xxx)；传入需要操作的column的形式？
 * CRUDTable trait 能否不要指定id主键（因为有的表有可能不止一个主键）？ 
