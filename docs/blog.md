@@ -72,3 +72,24 @@ let tx = rb.acquire_begin().await.unwrap();
         return Ok(v);
     }
 ```
+
+## Rbatis ORM（v2.0）在编译时动态SQL方面的探索
+
+* 前言
+> 笔者曾经在2020年发布基于rust的orm第一版，参见文章https://rustcc.cn/article?id=1f29044e-247b-441e-83f0-4eb86e88282c
+
+
+
+* 走弯路-尝试基于wasm
+  
+* 走弯路end-尝试过程宏，是元编程也是高性能的关键
+
+> 过程宏的玄冥二老，syn和quote（分别解析和生成词条流）
+
+> 设计语法糖
+
+> 关键点-使用Cow避免过度克隆
+
+> 关键点-重复变量优化
+
+> 关键点-sql预编译替换算法优化
