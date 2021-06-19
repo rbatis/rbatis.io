@@ -149,7 +149,7 @@ v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py
 
 
 
-> 介绍Java最普遍的ORM框架前世今生 - Mybatis、MybatisPlus，XML，ONGL表达式，dtd文件
+> 介绍Java最普遍的ORM框架前世今生 - Mybatis、MybatisPlus，XML，OGNL表达式，dtd文件
 
 * MyBatis在java和sql之间提供更灵活的映射方案,MyBatis将sql语句和方法实现，直接写到xml文件中，实现和java程序解耦
   为何这样说,MyBatis将接口和SQL映射文件进行分离,相互独立,但又通过反射机制将其进行动态绑定。
