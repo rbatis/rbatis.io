@@ -73,7 +73,7 @@ let tx = rb.acquire_begin().await.unwrap();
     }
 ```
 
-## Rbatis ORM（v2.0）次世代 零开销、编译时动态SQL ORM方面的探索
+##  零开销、编译时动态SQL ORM方面的探索(Rbatis ORM（v2.0）)
 
 * 什么是动态SQL？
 
@@ -87,7 +87,17 @@ v1.8版本依靠rust提供的高性能，sql驱动依赖sqlx-core，未作特殊
 v1.8版本一经发布，受到了许多网友的肯定和采纳，并应用于诸多生产系统之上。
 v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py_sql简化组织编写sql的心理压力，同时增加一系列常用插件，极大的方便了广大网友。
 
-兼顾方便和性能，例如这里使用html_sql查询分页代码片段：
+
+> 同时1.8版本也具备了某些网友提出的问题，例如：
+* by_id*()的方式，局限性很大，只能操作具有该id的表，能否更改为 by_column*(column:&str,arg:xxx)；传入需要操作的column的形式？
+* CRUDTable trait 能否不要指定id主键（因为有的表有可能不止一个主键）？
+* 当使用TxManager外加tx_id管理事务的方式，因为用到了锁，似乎影响性能
+* py_sql使用ast+解释执行的方式，不但存在 运行时，运行时解析阶段，运行时解释执行阶段，能否优化为完全0开销的方式？
+* 能否加入xml格式的动态sql存储，实现sql和代码解耦分离，不要使用CDATA转义（太麻烦了），适当兼容从java迁移过来的系统并适当复用之前的mybais xml？
+
+经过一段时间的思考和整理，于是推出v2.0版本，实现完全0开销的动态sql，sql构建性能提高N倍（只生成sql），完整查询QPS（组织sql到得到结果）性能提高至少2倍以上，并解决以上问题
+
+兼顾方便和性能，例如这里使用html_sql查询(v2.0版本)分页代码片段：
 * html文件
 ```html
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
@@ -138,22 +148,14 @@ v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py
 ```
 
 
-> 同时1.8版本也具备了某些网友提出的问题，例如：
-* by_id*()的方式，局限性很大，只能操作具有该id的表，能否更改为 by_column*(column:&str,arg:xxx)；传入需要操作的column的形式？
-* CRUDTable trait 能否不要指定id主键（因为有的表有可能不止一个主键）？ 
-* 当使用TxManager外加tx_id管理事务的方式，因为用到了锁，似乎影响性能
-* py_sql使用ast+解释执行的方式，不但存在 运行时，运行时解析阶段，运行时解释执行阶段，能否优化为完全0开销的方式？
-* 能否加入xml格式的动态sql存储，实现sql和代码解耦分离，不要使用CDATA转义（太麻烦了），适当兼容从java迁移过来的系统并适当复用之前的mybais xml？
-
-经过一段时间的思考和整理，于是推出v2.0版本，实现完全0开销的动态sql，sql构建性能提高N倍（只生成sql），完整查询QPS（组织sql到得到结果）性能提高至少2倍以上，并解决以上问题
 
 > 介绍Java最普遍的ORM框架前世今生 - Mybatis、MybatisPlus，XML，ONGL表达式，dtd文件
 
 * MyBatis在java和sql之间提供更灵活的映射方案,MyBatis将sql语句和方法实现，直接写到xml文件中，实现和java程序解耦
-为何这样说,MyBatis将接口和SQL映射文件进行分离,相互独立,但又通过反射机制将其进行动态绑定。
-其实它底层就是Mapper代理工厂[MapperRegistry]和Mapper标签映射[MapperStatement],它们两个说穿了就是Map容器,就是我们常见的HashMap、ConcurrentHashMap。
-所以说,MyBatis使用面向接口的方式这种思想很好的实现了解耦和的方式,同时易于开发者进行定制和扩展,比如我们熟悉的通用Mapper和分页插件pageHelper,方式也非常简单。
-  
+  为何这样说,MyBatis将接口和SQL映射文件进行分离,相互独立,但又通过反射机制将其进行动态绑定。
+  其实它底层就是Mapper代理工厂[MapperRegistry]和Mapper标签映射[MapperStatement],它们两个说穿了就是Map容器,就是我们常见的HashMap、ConcurrentHashMap。
+  所以说,MyBatis使用面向接口的方式这种思想很好的实现了解耦和的方式,同时易于开发者进行定制和扩展,比如我们熟悉的通用Mapper和分页插件pageHelper,方式也非常简单。
+
 * 什么是DTD文件？
 
 文档类型定义（DTD）可定义合法的XML文档构建模块。它使用一系列合法的元素来定义文档的结构。同样，它可以作用于xml文件也可以作用于html文件.
@@ -172,7 +174,7 @@ Intellij IDEA,CLion,VSCode等等ide均具备该文件合法模块，标签智能
 </mapper>
 ```
 
-* 什么是ONGL表达式？
+* 什么是OGNL表达式？
 
 OGNL(Object-Graph Navigation Language)大概可以理解为:对象图形化导航语言。是一种可以方便地操作对象属性的开源表达式语言.
 Rbatis在html，py_sql内部借鉴部分ognl表达式的设计，但是rbatis实际操作的是json对象。
@@ -221,7 +223,7 @@ impl Node{
 ### 探索实现架构走弯路-尝试基于wasm
 
 * 什么是wasm？
-WebAssembly/wasm WebAssembly 或者 wasm 是一个可移植、体积小、加载快并且兼容 Web 的全新格式。
+  WebAssembly/wasm WebAssembly 或者 wasm 是一个可移植、体积小、加载快并且兼容 Web 的全新格式。
 
 rust也有一些wasm运行时，这类框架可以进行某些JIT编译优化工作。例如 wasmtime/cranelift/
 曾经发现调用cranelift 运行时调用开销 800ns/op，对于频繁进出宿主-wasm运行时调用的话，似乎并不是特别适合ORM。况且接近800ns的延迟，说实话挺难接受的。参见issues
@@ -246,14 +248,14 @@ https://github.com/bytecodealliance/wasmtime/issues/2644
 我们执行的表达式参数都是json参数，这里涉及使用到serde_json。但是serde_json其实不具备 类似 serde_json::Value + 1 的语法规则，你会得到编译错误！
 
 * （语法不支持）解决方案： impl std::ops::Add for serde_json::Value{} 实现标准库的接口即可支持。
-  
+
 * 但是碍于 孤儿原则（当你为某类型实现某 trait 的时候，必须要求类型或者 trait 至少有一个是在当前 crate 中定义的。你不能为第三方的类型实现第三方的 trait ）你会得到编译错误！
 
 > 语法糖语义和实现trait 支持扩展
 
 * （孤儿原则）解决方案: 实现自定义结构体，并依赖serde_json::Value对象，并实现该结构体的语法规则支持！
 
-自定义的结构体张这样
+自定义的结构体大概长这样
 ```rust
 #[derive(Eq, PartialEq, Clone, Debug)]
 pub struct Value<'a> {
@@ -264,7 +266,7 @@ pub struct Value<'a> {
 > 性能优化1-写时复制Cow-避免不必要的克隆
 * 科普：写时复制（Copy on Write）技术是一种程序中的优化策略，多应用于读多写少的场景。主要思想是创建对象的时候不立即进行复制，而是先引用（借用）原有对象进行大量的读操作，只有进行到少量的写操作的时候，才进行复制操作，将原有对象复制后再写入。这样的好处是在读多写少的场景下，减少了复制操作，提高了性能。
 
-实现表达式解析时，并不是所有操作都存在‘写’的，大部分场景是基于‘读’
+实现表达式执行时，并不是所有操作都存在‘写’的，大部分场景是基于‘读’
 例如表达式:
 
 ```html
@@ -277,7 +279,7 @@ pub struct Value<'a> {
 > 性能优化2-重复变量利用优化
 
 * 表达式定义了变量参数id，进行2次访问，那我们生成的fn函数中即要判断是否已存在变量id，第二次直接访问而不是重复生成
-例如:
+  例如:
 ```html
  <select id="select_by_condition">
         select * from table where
@@ -290,7 +292,7 @@ pub struct Value<'a> {
 
 预编译的sql需要把参数替换为例如 mysql:'?',postgres:'$1'等符号。
 
-* 字符串替换性能的关键-rust的string存储于堆内存 
+* 字符串替换性能的关键-rust的string存储于堆内存
 
 rust的String对象是支持变长的字符串，我们知道Vec是存储于堆内存（因为计算机堆内存容量更大，而栈空间是有限的）大概长这样
 ```rust
@@ -366,3 +368,19 @@ pub struct String {
 
 
 ### 最后的验证阶段，（零开销、编译时动态SQL）执行效率压测
+
+
+v2.0请求耗时
+耗时:3923900800
+耗时:3576816000
+耗时:3248177800
+耗时:3372922200
+
+
+v1.8请求耗时
+耗时:6372459300
+耗时:7709288000
+耗时:6739494900
+耗时:6590053200
+
+结论： v2.0相对于老版本，qps至少快一倍
