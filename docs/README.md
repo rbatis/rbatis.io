@@ -486,6 +486,10 @@ rb.update_by_wrapper("", &activity, &w).await;
     }
 ```
 
+* 增量编译导致修改html文件后未触发重新编译？
+
+（在root仓库中，随便修改一行代码，或增删换行，即可出发重新编译）
+
 
 # Mapper宏映射
 
