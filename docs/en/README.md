@@ -1023,6 +1023,16 @@ Optimistic locking implementation:
 - newVersion is written back to entity!
 - Only the Update * method is supported
 
+
+
+# Frequently Asked Questions
+
+> Incremental Compile Causes Modifying HTML Files Without Triggering #[HTML_SQL] Recompile?
+
+Because the prerequisite for triggering a procedural macro recompile is a change in the current repository code
+
+(In the root repository, a recompile can be triggered by changing a single line of code, or adding or deleting a new line. If not, force the cache to be removed using cargo clean.)
+
 # Contact information
 WeChat ID: ``` zxj347284221  ```
 WeChat group: add WeChat first, then pull in the group
