@@ -11,12 +11,11 @@
     font-size: 36px;
     color: rgba(0,0,0,.9);
     padding-left: 7px;
-    margin-left: 5px;" >Rbatis-灵活.智能.高效的ORM</h1>
+    margin-left: 5px;" >灵活.智能.高效的ORM</h1>
 
-
-* 基于Future高性能、全异步、编译时（动态sql）
+* 基于Rust/Future高性能、全异步、编译时（动态sql）
 * 内存安全，协程安全，事务安全(防忘提交)，百分百safe代码
-* 多种内置插件，分页，逻辑删除，sql拦截器，CRUD、Wrapper、PySQL、HtmlSQL
+* 多种插件，分页/逻辑删除/sql拦截器/CRUD/Wrapper/PySQL/HtmlSQL
 
 
 
