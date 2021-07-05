@@ -31,5 +31,5 @@ text-align: center;
 [English](en/)
 [立即开始](#Rbatis-初始化)
 
-![color](#ffffff)
 
+![color](#92b983)
