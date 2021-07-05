@@ -22,7 +22,7 @@ text-align: center;
 
 
 <ul style="padding-left: 40px" >
-<li align="left" >- 基于Rust+Future. 高性能、全异步、编译时（动态sql）</li>
+<li align="left" >- 高性能(编译时)、全异步(Future)、生产实践(abs_admin)、</li>
 <li align="left" >- 内存安全，协程安全，事务安全(防忘提交)，百分百safe代码</li>
 <li align="left" >- 多种插件，分页/逻辑删除/sql拦截器/CRUD/Wrapper/PySQL/HtmlSQL</li>
 </ul>
