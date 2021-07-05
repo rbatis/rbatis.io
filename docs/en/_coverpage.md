@@ -13,4 +13,4 @@
 [Projects](https://github.com/rbatis)
 [Get Started](#Rbatis-init)
 
-![color](#ffffff)
+![color](#92d1aa)
