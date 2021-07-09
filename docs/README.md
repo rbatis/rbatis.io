@@ -775,66 +775,6 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
     }
 ```
 
-*  父子关系特征，例如支持父子关系映射:
-```rust
-    #[crud_table]
-    #[derive(Clone, Debug)]
-    pub struct FatherChildVO {
-        pub id: Option<i32>,
-        pub father_id: Option<i32>,
-        pub childs: Vec<FatherChildVO>,
-    }
-
-    impl FatherChildRelationship for FatherChildVO {
-        fn get_father_id(&self) -> Option<&Self::IdType> {
-            self.father_id.as_ref()
-        }
-        fn set_childs(&mut self, arg: Vec<Self>) {
-            self.childs = arg;
-        }
-    }
-
-    #[test]
-    fn test_to_father_child_relationship() {
-        let mut father = FatherChildVO {
-            id: Some(1),
-            father_id: None,
-            childs: vec![],
-        };
-        let child = FatherChildVO {
-            id: Some(2),
-            father_id: Some(1),
-            childs: vec![],
-        };
-        // or childs = rbatis.fetch_list****() get all of  childs data.
-        let childs=vec![child];
-        let all_record = rbatis::make_table_field_map!(childs,id);
-        father.recursive_set_childs(&all_record);
-        println!("{:#?}", father);
-    }
-```
-
-``` rust
-FatherChildVO {
-    id: Some(
-        1,
-    ),
-    father_id: None,
-    childs: [
-        FatherChildVO {
-            id: Some(
-                2,
-            ),
-            father_id: Some(
-                1,
-            ),
-            childs: [],
-        },
-    ],
-}
-```
-
-
 # 插件：分页RbatisPagePlugin
 
 ```rust
