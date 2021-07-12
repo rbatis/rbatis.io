@@ -615,7 +615,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
         //The framework defaults to the RbatisPagePlugin. If customization is needed, the structure must implement Impl PagePlugin for Plugin***{}, for example:
         //rb.page_plugin = Box::new(RbatisPagePlugin {});
 
-        let req = PageRequest::new(1, 20);//分页请求，页码，条数
+        let req = PageRequest::new(1, 20);//PageRequest(page,size)
         let wraper= rb.new_wrapper()
                     .eq("delete_flag",1);
         let data: Page<BizActivity> = rb.fetch_page_by_wrapper("", &wraper,  &req).await.unwrap();
