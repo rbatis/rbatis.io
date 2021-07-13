@@ -211,9 +211,9 @@ pub struct BizUuid {
         }
         let uuid = Uuid::from_str("df07fea2-b819-4e05-b86d-dfc15a5f52a9").unwrap();
         //create table
-        rb.exec("", "CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;
+        rb.exec("CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;
         //insert table
-        rb.save("", &BizUuid { id: Some(uuid), name: Some("test".to_string()) }).await;
+        rb.save(&BizUuid { id: Some(uuid), name: Some("test".to_string()) },&[]).await;
         //update table
         rb.update_by_column::<BizUuid,_>("id",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
         //query table
@@ -306,11 +306,11 @@ let activity = BizActivity {
                 delete_flag: Some(1),
             };
 ///保存
-rb.save("",&activity).await;
+rb.save(&activity,&[]).await;
 //Exec ==> INSERT INTO biz_activity (create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )
 
 ///批量保存
-rb.save_batch("", &vec![activity]).await;
+rb.save_batch(&vec![activity],&[]).await;
 //Exec ==> INSERT INTO biz_activity (create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ),( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )
 
 ///查询, Option包装，有可能查不到数据则为None
