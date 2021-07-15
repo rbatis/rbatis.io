@@ -628,15 +628,19 @@ rbatis = { ...}
 
 ```rust
   pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
-         // tx will be commit.when func end
-        let tx = rb.acquire_begin().await?.defer(|tx|{
-            println!("tx is drop!");
-            async_std::task::block_on(async{ tx.rollback().await; });
+        // tx will be commit.when func end
+        let mut tx = rb.acquire_begin().await?.defer_async(|tx| async {
+            if !tx.is_done() {
+                tx.rollback().await;
+                println!("tx rollback success!");
+            } else {
+                println!("do success,don't need rollback!");
+            }
         });
-        let v: serde_json::Value = tx
-            .fetch( "select count(1) from biz_activity;",&vec![])
-            .await?;
-        return Ok(v);
+        let v = tx
+            .exec("update biz_activity set name = '6' where id = 1;", &vec![])
+            .await;
+        return Ok(());
     }
 
 2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
