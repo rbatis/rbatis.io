@@ -211,9 +211,9 @@ pub struct BizUuid {
         }
         let uuid = Uuid::from_str("df07fea2-b819-4e05-b86d-dfc15a5f52a9").unwrap();
         //create table
-        rb.exec("", "CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;
+        rb.exec("CREATE TABLE biz_uuid( id uuid, name VARCHAR, PRIMARY KEY(id));").await;
         //insert table
-        rb.save("", &BizUuid { id: Some(uuid), name: Some("test".to_string()) }).await;
+        rb.save(&BizUuid { id: Some(uuid), name: Some("test".to_string()) },&[]).await;
         //update table
         rb.update_by_column::<BizUuid,_>("id",&BizUuid{ id: Some(uuid.clone()), name: Some("test_updated".to_string()) }).await;
         //query table
@@ -306,11 +306,11 @@ let activity = BizActivity {
                 delete_flag: Some(1),
             };
 ///保存
-rb.save("",&activity).await;
+rb.save(&activity,&[]).await;
 //Exec ==> INSERT INTO biz_activity (create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )
 
 ///批量保存
-rb.save_batch("", &vec![activity]).await;
+rb.save_batch(&vec![activity],&[]).await;
 //Exec ==> INSERT INTO biz_activity (create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version) VALUES ( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ),( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )
 
 ///查询, Option包装，有可能查不到数据则为None
@@ -629,18 +629,20 @@ rbatis = { ...}
 ```rust
   pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
         // tx will be commit.when func end
-        let mut tx = rb.acquire_begin().await?.defer_async(|tx| async {
-            if !tx.is_done() {
-                tx.rollback().await;
-                println!("tx rollback success!");
-            } else {
-                println!("do success,don't need rollback!");
-            }
+        let tx = rb
+        .acquire_begin().await?
+        .defer_async(|tx| async {
+            tx.rollback().await; 
         });
-        let v = tx
-            .exec("update biz_activity set name = '6' where id = 1;", &vec![])
-            .await;
-        return Ok(());
+        /// or use defer
+        ///.defer(|tx|{
+        ///    println!("tx is drop!");
+        ///   async_std::task::block_on(async{ tx.rollback().await; });
+        ///});
+        let v: serde_json::Value = tx
+            .fetch( "select count(1) from biz_activity;",&vec![])
+            .await?;
+        return Ok(v);
     }
 
 2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
@@ -829,7 +831,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 # 插件：逻辑删除RbatisLogicDeletePlugin
 
-> (逻辑删除针对Rbatis提供的删除方法有效，例如方法 remove**())
+> (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 fetch_list**(),remove**()，fetch**())
 
 ```rust
    let mut rb = init_rbatis().await;
