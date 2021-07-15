@@ -797,7 +797,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 # Plugin: RbatisLogicDeletePlugin
 
-> (Logical delete the query and delete methods provided for Rbatis are valid, such as fetch_list**(),remove**(), fetch**())
+> (Logical delete the delete methods provided for Rbatis are valid, such as remove**())
 
 ```rust
    let mut rb = init_rbatis().await;

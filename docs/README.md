@@ -825,7 +825,7 @@ rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
 
 # 插件：逻辑删除RbatisLogicDeletePlugin
 
-> (逻辑删除针对Rbatis提供的查询方法和删除方法有效，例如方法 fetch_list**(),remove**()，fetch**())
+> (逻辑删除针对Rbatis提供的删除方法有效，例如方法 remove**())
 
 ```rust
    let mut rb = init_rbatis().await;
