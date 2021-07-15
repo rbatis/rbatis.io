@@ -627,19 +627,20 @@ rbatis = { ...}
 > 守卫-顾名思义是对事务tx的一个守卫者、保护者（守卫结构体包裹被保护的事务对象）。当保护者被销毁(Drop之前)，守卫会立即释放(提交or回滚)事务tx
 
 ```rust
-  pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+    pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<()> {
         // tx will be commit.when func end
-        let mut tx = rb.acquire_begin().await?.defer_async(|tx| async {
-            if !tx.is_done() {
-                tx.rollback().await;
+        let mut tx = rb.acquire_begin().await?.defer_async(|mut tx1| async move {
+            if !tx1.is_done() {
+                tx1.rollback().await;
                 println!("tx rollback success!");
             } else {
-                println!("do success,don't need rollback!");
+                println!("don't need rollback!");
             }
         });
         let v = tx
             .exec("update biz_activity set name = '6' where id = 1;", &vec![])
             .await;
+        //tx.commit().await;  //if commit, print 'don't need rollback!' ,if not,print 'tx rollback success!'
         return Ok(());
     }
 
