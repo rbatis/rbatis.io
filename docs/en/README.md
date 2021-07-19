@@ -601,10 +601,11 @@ rbatis = { ...}
 | postgres | pg driver |
 | sqlite | sqlite driver |
 | mssql | mssql driver |
-> for example,use 'actix-mysql'
+
+> for example
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
+rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
 ```
 
 # Plugin: RbatisPagePlugin
