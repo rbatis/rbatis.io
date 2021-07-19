@@ -682,7 +682,7 @@ rbatis = { ...}
 # 条件编译切换运行时
 
 > 条件编译可以选择指定的数据库、运行时编译，而不是编译全部数据库。条件编译可以缩减程序体积
-> 条件编译支持以下编译参数(单选或多选)
+> 条件编译支持以下编译参数(多选)
 
 | 单选    | 解释 |
 | ------ | ------ |
@@ -695,10 +695,10 @@ rbatis = { ...}
 | postgres | pg驱动 |
 | sqlite | sqlite驱动 |
 | mssql | mssql驱动 |
-> 例如单选actix-mysql
+> 例如单选（框架actix-web+mysql数据库）
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
+rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
 ```
 
 
