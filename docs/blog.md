@@ -60,16 +60,21 @@ let tx = rb.acquire_begin().await.unwrap();
 > 使用defer防止忘记提交事务
 
 ```rust
-    pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+    pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<()> {
         // tx will be commit.when func end
-        let tx = rb.acquire_begin().await?.defer(|tx|{
-            println!("tx is drop!");
-            async_std::task::block_on(async{ tx.rollback().await; });
+        let mut tx = rb.acquire_begin().await?.defer_async(|mut tx1| async move {
+            if !tx1.is_done() {
+                tx1.rollback().await;
+                println!("tx rollback success!");
+            } else {
+                println!("don't need rollback!");
+            }
         });
-        let v: serde_json::Value = tx
-            .fetch( "select count(1) from biz_activity;",&vec![])
-            .await?;
-        return Ok(v);
+        let v = tx
+            .exec("update biz_activity set name = '6' where id = 1;", &vec![])
+            .await;
+        //tx.commit().await;  //if commit, print 'don't need rollback!' ,if not,print 'tx rollback success!'
+        return Ok(());
     }
 ```
 

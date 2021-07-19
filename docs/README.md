@@ -627,22 +627,21 @@ rbatis = { ...}
 > 守卫-顾名思义是对事务tx的一个守卫者、保护者（守卫结构体包裹被保护的事务对象）。当保护者被销毁(Drop之前)，守卫会立即释放(提交or回滚)事务tx
 
 ```rust
-  pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<serde_json::Value> {
+    pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<()> {
         // tx will be commit.when func end
-        let tx = rb
-        .acquire_begin().await?
-        .defer_async(|tx| async {
-            tx.rollback().await; 
+        let mut tx = rb.acquire_begin().await?.defer_async(|mut tx1| async move {
+            if !tx1.is_done() {
+                tx1.rollback().await;
+                println!("tx rollback success!");
+            } else {
+                println!("don't need rollback!");
+            }
         });
-        /// or use defer
-        ///.defer(|tx|{
-        ///    println!("tx is drop!");
-        ///   async_std::task::block_on(async{ tx.rollback().await; });
-        ///});
-        let v: serde_json::Value = tx
-            .fetch( "select count(1) from biz_activity;",&vec![])
-            .await?;
-        return Ok(v);
+        let v = tx
+            .exec("update biz_activity set name = '6' where id = 1;", &vec![])
+            .await;
+        //tx.commit().await;  //if commit, print 'don't need rollback!' ,if not,print 'tx rollback success!'
+        return Ok(());
     }
 
 2020-12-03 14:53:24.908263 +08:00    INFO rbatis::plugin::log - [rbatis] [tx:4b190951-7a94-429a-b253-3ec3df487b57] Begin
