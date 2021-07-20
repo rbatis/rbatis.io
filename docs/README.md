@@ -55,7 +55,7 @@ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //启用日志输出，你也可以使用其他日志框架，这个不限定的
-fast_log::init_log("requests.log", 1000,log::Level::Info,true);
+fast_log::init_log("requests.log", 1000, log::Level::Info, None, false);
 ```
 
 > 使用全局变量初始化（需依赖lazy_static这个库）
