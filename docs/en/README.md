@@ -272,8 +272,7 @@ pub struct BizUuid {
             .not_like("name", "asdf")
             .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
             .group_by(&["id"])
-            .order_by(true, &["id", "name"])
-            .;
+            .order_by(true, &["id", "name"]);
 ```
 
 # CRUD
