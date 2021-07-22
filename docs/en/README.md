@@ -221,7 +221,7 @@ pub struct BizUuid {
                                                                 [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
 ```
 
-# Wrapper( the Conditional constructor)
+# Wrapper( the sql Conditional constructor)
 
 | method    | sql |
 | ------ | ------ |
@@ -274,6 +274,9 @@ pub struct BizUuid {
             .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
             .group_by(&["id"])
             .order_by(true, &["id", "name"]);
+  //Second step, pass in method arguments to an Rbatis object with a ***_wrapper(**), for example         
+  let w = rb.new_wrapper().eq("id", "1").;
+  let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;     
 ```
 
 # CRUD

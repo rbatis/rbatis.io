@@ -289,6 +289,9 @@ pub struct BizUuid {
             .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
             .group_by(&["id"])
             .order_by(true, &["id", "name"]);
+  //第二步，传入带有***_wrapper(**)的rbatis对象的方法参数中,例如          
+  let w = rb.new_wrapper().eq("id", "1").;
+  let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;          
 ```
 
 # 内置增删改查和Wrapper使用
