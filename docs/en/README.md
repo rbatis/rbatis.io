@@ -35,7 +35,7 @@ bigdecimal = "0.2"
 rbatis =  { version = "2.0" }
 ```
 
-# Conditional compilation choose Runtime or driver
+# Conditional compilation choose async Runtime or driver
 
 > Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
 
