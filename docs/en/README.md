@@ -274,7 +274,7 @@ pub struct BizUuid {
             .between("create_time", "2020-01-01 00:00:00", "2020-12-12 00:00:00")
             .group_by(&["id"])
             .order_by(true, &["id", "name"]);
-  //Second step, pass in method arguments to an Rbatis object with a ***_wrapper(**), for example         
+  //Second step,send this into method arguments to an Rbatis object with a ***_wrapper(**), for example         
   let w = rb.new_wrapper().eq("id", "1").;
   let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;     
 ```
