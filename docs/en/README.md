@@ -51,7 +51,7 @@ rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 // rb.link_opt("mysql://root:123456@localhost:3306/test",&opt).await.unwrap();
 
 //With log output enabled, you can also use other logging frameworks, which are not qualified
-fast_log::init_log("requests.log", 1000,log::Level::Info,true);
+fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
 ```
 
 > Initialize with a global variable (depending on the library lazy_static)
@@ -68,7 +68,7 @@ lazy_static! {
 //Use the async_STd main method here, you can select actix, ToKIO, and other runtime main methods or spawn
 #[tokio::main]
 async fn main() {
-      fast_log::init_log("requests.log", 1000,log::Level::Info,true);
+      fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
       RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 }
 
@@ -662,7 +662,7 @@ rbatis = { version = "*", default-features = false, features = ["tokio02","tokio
 ```rust
 #[tokio::test]
 pub async fn test_tx() {
-    fast_log::init_log("requests.log", 1000,log::Level::Info,true);
+    fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
     let RB = Rbatis::new();
     RB.link(MYSQL_URL).await.unwrap();
     
