@@ -276,7 +276,7 @@ pub struct BizUuid {
             .order_by(true, &["id", "name"]);
   //Second step, pass in method arguments to an Rbatis object with a ***_wrapper(**), for example         
   let w = rb.new_wrapper().eq("id", "1").;
-  let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;     
+  let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;     
 ```
 
 # CRUD
@@ -315,7 +315,7 @@ let result: Vec<BizActivity> = rb.fetch_list_by_column("id",&["1".to_string()]).
 
 ///custom  query(use Wrapper)
 let w = rb.new_wrapper().eq("id", "1");
-let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;
+let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///delete
@@ -328,7 +328,7 @@ rb.remove_batch_by_column::<BizActivity,_>("id", &["1".to_string(), "2".to_strin
 
 ///update(use Wrapper)
 let w = rb.new_wrapper().eq("id", "12312");
-rb.update_by_wrapper("", &activity, &w).await;
+rb.update_by_wrapper( &activity, &w).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
 }
 
@@ -547,7 +547,7 @@ rb.update_by_wrapper("", &activity, &w).await;
     pub async fn test_macro_py_select() {
         fast_log::log::init_log("requests.log", &RuntimeType::Std);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-        let a = py_select("","1").await.unwrap();
+        let a = py_select("1").await.unwrap();
         println!("{:?}", a);
     }
 ```
@@ -622,7 +622,7 @@ rbatis = { version = "*", default-features = false, features = ["tokio02","tokio
         let req = PageRequest::new(1, 20);//PageRequest(page,size)
         let wraper= rb.new_wrapper()
                     .eq("delete_flag",1);
-        let data: Page<BizActivity> = rb.fetch_page_by_wrapper("", &wraper,  &req).await.unwrap();
+        let data: Page<BizActivity> = rb.fetch_page_by_wrapper( &wraper,  &req).await.unwrap();
         println!("{}", serde_json::to_string(&data).unwrap());
 ```
 
@@ -1025,7 +1025,7 @@ Optimistic locking implementation:
             delete_flag: Some(1),
         };
  let w = rb.new_wrapper().eq("id", "12312");
- let r = rb.update_by_wrapper("", &mut activity, &w, false).await;
+ let r = rb.update_by_wrapper( &mut activity, &w, false).await;
  //[rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
  //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
 ```
