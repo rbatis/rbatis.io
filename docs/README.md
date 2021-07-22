@@ -1001,12 +1001,13 @@ rb.log_plugin = Box::new(RbatisLog{});
 
 # 欢迎捐赠
 
-![Image text](https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg)
+<img style="width: 400px;height: 600px;" src="https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg"/>
 或者[GitHub](https://github.com/rbatis/rbatis) 点star
 
 # 联系方式(添加好友请备注'rbatis')
 
-![wechat](wechat.jpg)
+<img style="width: 400px;height: 500px;" src="wechat.jpg"/>
+
 
 * 微信群：先加微信，然后拉进群
 
