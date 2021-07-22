@@ -1053,7 +1053,7 @@ Because the prerequisite for triggering a procedural macro recompile is a change
 # Contact information
 > WeChat ID: ``` zxj347284221  ```,WeChat group: add WeChat first, then pull in the group
 
-<img style="width: 400px;height: 500px;" src="wechat.jpg"/>
+<img style="width: 400px;height: 500px;" src="../_media/wechat.jpg"/>
 
 
 
