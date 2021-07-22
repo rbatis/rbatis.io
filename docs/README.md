@@ -325,7 +325,7 @@ let result: Vec<BizActivity> = rb.fetch_list_by_column("id",&["1".to_string()]).
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id IN  (?) 
 
 ///自定义查询(使用wrapper)
-let w = rb.new_wrapper().eq("id", "1").;
+let w = rb.new_wrapper().eq("id", "1");
 let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper("", &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
@@ -338,7 +338,7 @@ rb.remove_batch_by_column::<BizActivity>("id", &["1".to_string(), "2".to_string(
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
 ///修改(使用wrapper)
-let w = rb.new_wrapper().eq("id", "12312").;
+let w = rb.new_wrapper().eq("id", "12312");
 rb.update_by_wrapper("", &activity, &w).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
 }
