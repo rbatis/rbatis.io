@@ -179,7 +179,8 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 
 ```rust
 #[crud_table(formats_pg:"id:{}::uuid")]
-//#[crud_table(formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
+//#[crud_table(table_name:"biz_activity" | formats_pg:"id:{}::uuid,create_time:{}::timestamp")]
+//#[crud_table(table_name:"biz_activity" | formats_mysql:...)]
 //#[crud_table(formats_mysql:...)]
 //#[crud_table(formats_sqlite:...)]
 //#[crud_table(formats_mssql:...)]
@@ -235,7 +236,7 @@ pub struct BizUuid {
                                                                 [rbatis] [] Args  ==> ["df07fea2-b819-4e05-b86d-dfc15a5f52a9"]
 ```
 
-# 使用Wrapper-Sql
+# 使用Wrapper（sql语句条件构造器）
 
 | 方法    | sql |
 | ------ | ------ |
