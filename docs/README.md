@@ -1002,7 +1002,9 @@ rb.log_plugin = Box::new(RbatisLog{});
 # 联系方式/捐赠,或 [GitHub](https://github.com/rbatis/rbatis) 点star
 
 <img style="width: 400px;height: 600px;" src="https://zhuxiujia.github.io/gomybatis.io/assets/wx_account.jpg"/>
-* 联系方式(添加好友请备注'rbatis')
+
+> 联系方式(添加好友请备注'rbatis')
+
 <img style="width: 400px;height: 500px;" src="wechat.jpg"/>
 
 
