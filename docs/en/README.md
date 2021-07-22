@@ -14,6 +14,18 @@
 | TiDB(Mysql)             | √     |
 | CockroachDB(Postgres)      | √     |
 
+
+# Web Framework + Rbatis example
+
+* [actix_web](https://github.com/rbatis/rbatis/tree/master/example/src/actix_web)
+* [hyper](https://github.com/rbatis/rbatis/tree/master/example/src/hyper)
+* [ntex](https://github.com/rbatis/rbatis/tree/master/example/src/ntex)
+* [rocket](https://github.com/rbatis/rbatis/tree/master/example/src/rocket)
+* [tide](https://github.com/rbatis/rbatis/tree/master/example/src/tide)
+* [warp](https://github.com/rbatis/rbatis/tree/master/example/src/warp)
+
+
+
 # Rbatis-init
 
 > Install dependencies
