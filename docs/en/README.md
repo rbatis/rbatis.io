@@ -1,5 +1,7 @@
 * [中文](https://rbatis.github.io/rbatis.io/#/)
 
+[![Gitter](https://badges.gitter.im/rbatis_orm/community.svg)](https://gitter.im/rbatis_orm/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+
 ### Support database
 
 | database    | support |
