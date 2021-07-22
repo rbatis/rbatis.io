@@ -290,7 +290,7 @@ pub struct BizUuid {
             .group_by(&["id"])
             .order_by(true, &["id", "name"]);
   //第二步，传入带有***_wrapper(**)的rbatis对象的方法参数中,例如          
-  let w = rb.new_wrapper().eq("id", "1").;
+  let w = rb.new_wrapper().eq("id", "1");
   let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;          
 ```
 

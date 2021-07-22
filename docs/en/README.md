@@ -275,7 +275,7 @@ pub struct BizUuid {
             .group_by(&["id"])
             .order_by(true, &["id", "name"]);
   //Second step,send this into method arguments to an Rbatis object with a ***_wrapper(**), for example         
-  let w = rb.new_wrapper().eq("id", "1").;
+  let w = rb.new_wrapper().eq("id", "1");
   let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;     
 ```
 
