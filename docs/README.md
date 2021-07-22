@@ -54,7 +54,7 @@ rbatis =  { version = "2.0" }
 | postgres | pg驱动 |
 | sqlite | sqlite驱动 |
 | mssql | mssql驱动 |
-> 例如单选（框架actix-web+mysql数据库）
+> 例如定制选择某些框架（异步框架tokio + web框架actix-web + mysql数据库）
 
 ```rust
 rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
