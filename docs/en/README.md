@@ -35,6 +35,28 @@ bigdecimal = "0.2"
 rbatis =  { version = "2.0" }
 ```
 
+# Conditional compilation choose Runtime or driver
+
+> Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
+
+|Options | explanation|
+| ------ | ------ |
+| default  | default,aysnc-io runtime，all database |
+| async-io | async-io(async-std)runtime |
+| tokio1 | tokio1.0runtime |
+| tokio02 | tokio0.2runtime |
+| tokio03 | tokio0.3runtime |
+| mysql | mysql driver |
+| postgres | pg driver |
+| sqlite | sqlite driver |
+| mssql | mssql driver |
+
+> for example
+
+```rust
+rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
+```
+
 > Ordinary init
 
 ```rust
@@ -589,27 +611,6 @@ async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity>
 rbatis = { ...}
 ```
 
-# Conditional compilation choose Runtime or driver
-
-> Conditional compilation can select the specified database and run-time compilation instead of compiling all databases. Conditional compilation can reduce program size
-
-|Options | explanation|
-| ------ | ------ |
-| default  | default,aysnc-io runtime，all database |
-| async-io | async-io(async-std)runtime |
-| tokio1 | tokio1.0runtime |
-| tokio02 | tokio0.2runtime |
-| tokio03 | tokio0.3runtime |
-| mysql | mysql driver |
-| postgres | pg driver |
-| sqlite | sqlite driver |
-| mssql | mssql driver |
-
-> for example
-
-```rust
-rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
-```
 
 # Plugin: RbatisPagePlugin
 

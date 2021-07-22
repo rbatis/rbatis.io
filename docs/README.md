@@ -38,6 +38,28 @@ bigdecimal = "0.2"
 rbatis =  { version = "2.0" } 
 ```
 
+# 条件编译切换运行时
+
+> 条件编译可以选择指定的数据库、运行时编译，而不是编译全部数据库。条件编译可以缩减程序体积
+> 条件编译支持以下编译参数(多选)
+
+| 特性    | 解释 |
+| ------ | ------ |
+| default  | 默认-使用aysnc-io运行时，所有驱动 |
+| async-io | 使用async-io(async-std)运行时 |
+| tokio1 | 使用tokio1.0运行时 |
+| tokio02 | 使用tokio0.2运行时 |
+| tokio03 | 使用tokio0.3运行时 |
+| mysql | mysql驱动 |
+| postgres | pg驱动 |
+| sqlite | sqlite驱动 |
+| mssql | mssql驱动 |
+> 例如单选（框架actix-web+mysql数据库）
+
+```rust
+rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
+```
+
 > 普通初始化
 
 ```rust
@@ -679,28 +701,6 @@ rbatis = { ...}
         //commit or rollback
         tx.commit().await.unwrap();
     }
-```
-
-# 条件编译切换运行时
-
-> 条件编译可以选择指定的数据库、运行时编译，而不是编译全部数据库。条件编译可以缩减程序体积
-> 条件编译支持以下编译参数(多选)
-
-| 特性    | 解释 |
-| ------ | ------ |
-| default  | 默认-使用aysnc-io运行时，所有驱动 |
-| async-io | 使用async-io(async-std)运行时 |
-| tokio1 | 使用tokio1.0运行时 |
-| tokio02 | 使用tokio0.2运行时 |
-| tokio03 | 使用tokio0.3运行时 |
-| mysql | mysql驱动 |
-| postgres | pg驱动 |
-| sqlite | sqlite驱动 |
-| mssql | mssql驱动 |
-> 例如单选（框架actix-web+mysql数据库）
-
-```rust
-rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
 ```
 
 
