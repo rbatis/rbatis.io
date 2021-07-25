@@ -15,6 +15,6 @@
 </ul>
 
 [English](en/)
-[立即开始](#Rbatis-初始化)
+[立即开始](#支持数据库)
 
 ![](_media/bg.jpg)
