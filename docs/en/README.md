@@ -785,42 +785,25 @@ pub async fn test_tx() {
 
 # Conditional compilation switch runtime
 
-
-
 > conditional compilation can select the specified database, run time compilation, and not compile the entire database. Conditional compilation can reduce program size
-> conditional compilation supports any of the following compilation parameters (radio)
+> conditional compilation supports any of the following compilation parameters
 
-| single option | explains |
+|  option | explains |
 | ------ | ------ |
-| default | - runs with async-io(async-std) on all drivers |
-| async-io | uses async-io(async-std) run when all drivers |
-| actix | using the actix runtime, all drivers |
-| tokio02 | using the tokio02 version of the runtime, all drivers |
-| tokio03 | using the tokio03 version of the runtime, all drivers |
-| async-io-mysql | uses the async-std version run when mysql driver |
-| async-io-postgres | using async-std version run, pg driver |
-| async-io-sqlite | uses the async-std version run when sqlite driver |
-| async-io-mssql | uses async-std version to run while MSSQL driver |
-| tokio03-mysql | using the tokio03 version of the runtime, mysql driver |
-| tokio03-postgres | using the tokio03 version of the run time, pg driver |
-| tokio03-sqlite | using the tokio03 version of the run, sqlite driver |
-| tokio03- MSSQL | using the tokio03 version of the run time, MSSQL driver |
-| tokio02-mysql | uses the tokio02 version to run, mysql to driver |
-| tokio02-postgres | uses the tokio02 version to run, pg driver |
-| tokio02-sqlite | using the tokio02 version of the runtime, sqlite driver |
-| tokio02-mssql | using the tokio02 version run time, MSSQL driver |
-| actix-mysql | using the actix version of the runtime, mysql driver |
-| actix-postgres | runs with the actix version, pg driver |
-| actix-sqlite | using the actix version of the runtime, sqlite driver |
-| actix-mssql | using the actix version runs, MSSQL driver |
+| default  | default aysnc-io runtime，all of drivers(mysql,pg,sqlite,mssql) |
+| async-io | async-io(async-std) runtime |
+| tokio1 | tokio1.0runtime |
+| tokio02 | tokio0.2 runtime |
+| tokio03 | tokio0.3 runtime |
+| mysql | mysql drivers |
+| postgres | pg drivers |
+| sqlite | sqlite drivers |
+| mssql | mssql drivers |
+> For example, custom selection of certain frameworks (asynchronous framework Tokio + Web framework Actix - Web + mysql database)
 
-> such as radio actix-mysql
-
-```toml
-
-rbatis = { version = "*", default-features = false, features = ["actix-mysql"] }
-
-` ` `
+```rust
+rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
+```
 
 
 
