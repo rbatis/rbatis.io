@@ -788,7 +788,7 @@ pub async fn test_tx() {
 > conditional compilation can select the specified database, run time compilation, and not compile the entire database. Conditional compilation can reduce program size
 > conditional compilation supports any of the following compilation parameters
 
-|  option | explains |
+|  option | meaning |
 | ------ | ------ |
 | default  | default aysnc-io runtime，all of drivers(mysql,pg,sqlite,mssql) |
 | async-io | async-io(async-std) runtime |
