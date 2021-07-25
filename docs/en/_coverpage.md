@@ -11,7 +11,7 @@
 <ul style="padding-left: 40px;" >
 <li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
 <li align="left" style="color: aliceblue" >- Memory security, coroutine security, transaction security (anti-forget to commit), 100% safe code</li>
-<li align="left" style="color: aliceblue" >- A variety of plug-ins, paging logic/delete/SQL interceptors/CRUD/Wrapper/PySQL/HtmlSQL</li>
+<li align="left" style="color: aliceblue" >- Rich plugins, paging logic/delete/SQL interceptors/CRUD/Wrapper/PySQL/HtmlSQL</li>
 </ul>
 
 
