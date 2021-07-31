@@ -628,10 +628,10 @@ async fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity
 async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
-> 禁用打印宏生成的Rust代码
+> 查看py_sql生成的代码
 
 ```toml
-//Cargo.toml 去除 features =  ["debug_mode"] 即可
+//Cargo.toml 添加调试模式 features =  ["debug_mode"] 即可
 //rbatis = {  features = ["debug_mode"]}
 rbatis = { ...}
 ```

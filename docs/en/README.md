@@ -617,10 +617,10 @@ async fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity
 async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 ```
 
-> Disable generate Rust code print
+> enable debug_mode see Rust code print
 
 ```toml
-//just delete Cargo.toml features "debug_mode"
+//just add Cargo.toml features "debug_mode"
 //rbatis = {  features = ["debug_mode"]}
 rbatis = { ...}
 ```
