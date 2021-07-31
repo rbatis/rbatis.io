@@ -451,7 +451,7 @@ rb.update_by_wrapper( &activity, &w).await;
 
 
 
-# html_sql(Similar mybatis3 XML)
+# HtmlSql_Lang(mybatis3 XML compatibility)
 
 * file("example/example_include.html")
 ```html

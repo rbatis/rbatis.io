@@ -464,7 +464,7 @@ rb.update_by_wrapper( &activity, &w).await;
 
 > 使用宏映射执行pysql，见 #Macro-智能宏映射
 
-# html_sql语法(类似mybatis xml格式)
+# HtmlSql语法(兼容Mybatis)
 
 * 文件:example/example_include.html
 ```html
