@@ -194,11 +194,10 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 ```rust
     use rbatis::crud::CRUDTable;
     impl CRUDTable for BizActivity {
-        type IdType = String; //By default, IdType is provided; other methods in the interface use JSON serialization by default
-        fn get_id(&self) -> Option<&Self::IdType>; // must be add impl this
-        //fn table_name() -> String {} //Can be rewritten
-        //fn table_columns() -> String {}  //Can be rewritten
-        //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //Can be rewritten
+        //fn table_name() -> String {} //can rewrite
+        //fn table_columns() -> String {}  //can rewrite
+        //fn format_chain() -> Vec<Box<dyn ColumnFormat>>{} //can rewrite
+        //... and more
     }
 ```
 
