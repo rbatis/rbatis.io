@@ -23,7 +23,7 @@
 * [rocket](https://github.com/rbatis/rbatis/tree/master/example/src/rocket/main.rs)
 * [tide](https://github.com/rbatis/rbatis/tree/master/example/src/tide/main.rs)
 * [warp](https://github.com/rbatis/rbatis/tree/master/example/src/warp/main.rs)
-
+* [axum](https://github.com/rbatis/rbatis/tree/master/example/src/axum/main.rs)
 
 
 # Rbatis-init
