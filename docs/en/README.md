@@ -2,6 +2,8 @@
 
 [![Gitter](https://badges.gitter.im/rbatis_orm/community.svg)](https://gitter.im/rbatis_orm/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
+# Rbatis-init
+
 ### Support database
 
 | database    | support |
@@ -26,7 +28,7 @@
 * [axum](https://github.com/rbatis/rbatis/tree/master/example/src/axum/main.rs)
 
 
-# Rbatis-init
+# Rbatis-install
 
 > Install dependencies
 
@@ -48,6 +50,8 @@ bigdecimal = "0.2"
 #rbatis support(must)
 rbatis =  { version = "2.0" }
 ```
+
+
 
 # Conditional compilation choose async Runtime or driver
 

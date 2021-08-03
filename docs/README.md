@@ -1,6 +1,9 @@
 * [English](en/)
 * [博客](blog.md)
 
+
+# Rbatis-初始化
+
 ### 支持数据库
 
 | 数据库    | 已支持 |
@@ -24,8 +27,7 @@
 * [axum](https://github.com/rbatis/rbatis/tree/master/example/src/axum/main.rs)
 
 
-
-# Rbatis-初始化
+# 安装rbatis依赖
 
 > 安装依赖(建议初学者使用[Clion](https://www.jetbrains.com/clion/) 并且下载安装[rust插件](https://www.baidu.com/s?ie=utf-8&f=8&rsv_bp=1&rsv_idx=1&tn=baidu&wd=clion%E5%AE%89%E8%A3%85rust%E6%8F%92%E4%BB%B6&fenlei=256&rsv_pq=e760e610000e3354&rsv_t=22bcByEhopEDDF%2B3Is3mKMurxW7FpFV1wt8eglPloQxZGqN2OEVekZavLZs&rqlang=cn&rsv_enter=0&rsv_dl=tb&rsv_sug3=2&rsv_sug1=2&rsv_sug7=001&rsv_n=2&rsv_btype=i&inputT=1183&rsv_sug4=1345&rsv_sug=1)使用！因为该Ide提供debug支持，智能提示，导入包路径比较方便)
 
