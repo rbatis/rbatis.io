@@ -544,7 +544,7 @@ rb.update_by_wrapper( &activity, &w).await;
 
     #[tokio::test]
     pub async fn test_macro() {
-        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
         let a = select("1").await.unwrap();
         println!("{:?}", a);
@@ -564,7 +564,7 @@ rb.update_by_wrapper( &activity, &w).await;
     async fn py_select_page(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
     #[tokio::test]
     pub async fn test_macro_py_select() {
-        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
         let a = py_select_page(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
             .await
@@ -586,7 +586,7 @@ rb.update_by_wrapper( &activity, &w).await;
     async fn py_select(tx_id:&str,name: &str) -> Option<BizActivity> {}
     #[tokio::test]
     pub async fn test_macro_py_select() {
-        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
         let a = py_select("1").await.unwrap();
         println!("{:?}", a);
@@ -603,7 +603,7 @@ rb.update_by_wrapper( &activity, &w).await;
 
     #[tokio::test]
     pub async fn test_join() {
-        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
         let results = join_select(&RB, "test").await.unwrap();
         println!("data: {:?}", results);
@@ -742,7 +742,7 @@ pub async fn test_tx() {
 
     #[tokio::test]
     pub async fn test_join() {
-        fast_log::log::init_log("requests.log", &RuntimeType::Std);
+        fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         let rb: Rbatis = Rbatis::new();
         rb.link("mysql://root:123456@localhost:3306/test").await.unwrap();
 
