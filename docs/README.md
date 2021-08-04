@@ -537,6 +537,7 @@ rb.update_by_wrapper( &activity, &w).await;
 * 支持分页插件(参数传入``` page_req: &PageRequest ```即可)
 * 支持传入``` rb: &mut RbatisExecutor<'_> ```或者 ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....等等
 * 对于PostgresSQL数据库,默认使用预编译SQL。特殊类型例如UUID 需使用::type强制转换类型。例如``` #{arg}::uuid ```
+* 实际执行函数，根据返回类型是否包含DBExecResult判断是执行Exec还是Fetch
 
 > 宏映射 原生驱动sql
 

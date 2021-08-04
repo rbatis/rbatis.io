@@ -529,6 +529,8 @@ rb.update_by_wrapper( &activity, &w).await;
 * support Page Plugin!(Just put param ``` page_req: &PageRequest ```)
 * param support ``` rb: &mut RbatisExecutor<'_> ```or ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....more
 * For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '
+* The actual execution of the function determines whether to execute Exec or Fetch depending on whether the return type contains DBExecResult
+
 
 > Macro mapping native driver SQL
 
