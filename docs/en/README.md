@@ -998,7 +998,7 @@ rb.log_plugin = Box::new(RbatisLog{});
     }
 ```
 
-# Plug-in：Version lock/optimistic lock
+# Plug-in：Version lock/optimistic lock(deprecated)
 
 > When updating a record, it is hoped that the record has not been updated by someone else
 Optimistic locking implementation:
