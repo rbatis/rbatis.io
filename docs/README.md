@@ -861,6 +861,24 @@ rbatis = { ...}
    }
 ```
 
+> 控制是否启用逻辑删除插件（表column包含字段视为启用）
+
+```rust
+ let mut rb = Rbatis::new();
+        let mut plugin = RbatisLogicDeletePlugin::new("delete_flag");
+        rb.set_logic_plugin(plugin);
+        rb.link("mysql://root:123456@localhost:3306/test")
+            .await
+            .unwrap();
+
+        let id = "12312".to_string();
+        //logic delete sql:   "update biz_activity set delete_flag = 1 where id = ?"
+        rb.remove_by_column::<BizActivity, _>("id", &id).await;
+        //delete sql          "delete from biz_activity where id = ?"
+        rb.remove_by_wrapper::<BizActivity>(&rb.new_wrapper().set_option("delete").eq("id",&id)).await;
+```
+
+
 # 插件：SQL拦截器SqlIntercept
 
 > 实现接口
