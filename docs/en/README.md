@@ -841,7 +841,7 @@ rbatis = { version = "*", default-features = false, features = ["tokio02","tokio
         //logic delete sql:   "update biz_activity set delete_flag = 1 where id = ?"
         rb.remove_by_column::<BizActivity, _>("id", &id).await;
         //delete sql          "delete from biz_activity where id = ?"
-        rb.remove_by_wrapper::<BizActivity>(&rb.new_wrapper().set_option("delete").eq("id",&id)).await;
+        rb.remove_by_wrapper::<BizActivity>(&rb.new_wrapper().set_dml("delete").eq("id",&id)).await;
 ```
 
 
