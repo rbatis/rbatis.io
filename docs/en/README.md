@@ -211,6 +211,9 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
 > therefore requires a Pg database '::type' to cast, using column formatting macros The
 > format macro is defined as formats_database:"column_name:format_string"  format_string with a {} symbol
 > format macro use ',' split columns
+> 
+> Formatting is not required for special types, such as RbBytes or RbJson
+> 
 > for example:
 
 ```rust

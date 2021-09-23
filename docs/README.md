@@ -211,6 +211,9 @@ pub struct BizActivity {    //表名称 BizActivity=> "biz_activity"
 >
 > 宏定义为 formats_数据库:“列名称:带有{}符号的格式化内容”例如 formats_pg:"id:{}::uuid"
 > 宏定义多个可用逗号分隔
+> 
+> 特殊类型无需格式化，例如RbBytes,RbJson
+> 
 > 例如
 
 ```rust
