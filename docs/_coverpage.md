@@ -9,7 +9,7 @@
 <h1 style="color: aliceblue">Rbatis灵活.智能.高效的ORM</h1>
 
 <ul style="padding-left: 40px;" >
-<li align="left" style="color: aliceblue" >- 编译时动态sql、全异步(Future)、生产实践(<a style="color: red" href="https://github.com/rbatis/abs_admin">abs_admin</a>)、</li>
+<li align="left" style="color: aliceblue" >- 编译时动态sql（mybatis动态sql标签）、全异步(Future)、生产实践(<a style="color: red" href="https://github.com/rbatis/abs_admin">abs_admin</a>)、</li>
 <li align="left" style="color: aliceblue" >- 内存安全，协程安全，事务安全(防忘提交)，百分百safe代码</li>
 <li align="left" style="color: aliceblue" >- 多种插件，分页/逻辑删除/sql拦截器/CRUD/Wrapper/PySQL/HtmlSQL</li>
 </ul>
