@@ -538,7 +538,7 @@ rb.update_by_wrapper( &activity, &w).await;
 * 其中，py_sql宏中的py_sql可以使用运算表达式，例如 ``` #{1+1},#{arg},#{arg[0]},#{arg[0] + 'string'} ```
 * 会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
 * 支持分页插件(参数传入``` page_req: &PageRequest ```即可)
-* 支持传入``` rb: &mut RbatisExecutor<'_> ```或者 ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....等等
+* 支持传入``` rb: &mut RbatisExecutor<'_,'_> ```或者 ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....等等
 * 对于PostgresSQL数据库,默认使用预编译SQL。特殊类型例如UUID 需使用::type强制转换类型。例如``` #{arg}::uuid ```
 * 实际执行函数，根据返回类型是否包含DBExecResult判断是执行Exec还是Fetch
 
@@ -592,7 +592,7 @@ rb.update_by_wrapper( &activity, &w).await;
     #[py_sql(rb,"select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
-    async fn py_select_page(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
+    async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
     #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
@@ -703,7 +703,7 @@ rbatis = { ...}
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
-    async fn join_select(rbatis: &mut RbatisExecutor<'_> ,name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &mut RbatisExecutor<'_,'_> ,name: &str) -> Option<Vec<BizActivity>> {}
 
     #[tokio::test]
     pub async fn test_join() {

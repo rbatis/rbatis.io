@@ -499,7 +499,7 @@ rb.update_by_wrapper( &activity, &w).await;
 ```rust
     ///Here, the name of the method corresponds to the ID of the tag inside the XML. For example, id="select_by_condition" corresponds to async fn select_by_condition
     #[html_sql(rb, "example/example.html")]
-    async fn select_by_condition(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
+    async fn select_by_condition(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
 
     #[tokio::test]
     pub async fn test_py_select_page() {
@@ -530,7 +530,7 @@ rb.update_by_wrapper( &activity, &w).await;
 * py_sql can use arithmetic expressions of macros, such as ` ` ` # {1 + 1}, # {arg}, # {arg [0]}, # {arg [0] + 'string'} ` ` `
 * automatically converts the function ``` pub async fn select(name: & STR) -> rbatis::core::Result {} ```
 * support Page Plugin!(Just put param ``` page_req: &PageRequest ```)
-* param support ``` rb: &mut RbatisExecutor<'_> ```or ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....more
+* param support ``` rb: &mut RbatisExecutor<'_,'_> ```or ``` rb: &Rbatis ``` ``` rb:&mut RBatisConnExecutor<'_> ``` ....more
 * For PostgresSQL databases, precompiled SQL is used by default. Special types such as UUID require ::type cast type. For example, ' ' '#{arg}::uuid' ' '
 * The actual execution of the function determines whether to execute Exec or Fetch depending on whether the return type contains DBExecResult
 
@@ -564,7 +564,7 @@ rb.update_by_wrapper( &activity, &w).await;
     #[py_sql(rb,"select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
-    async fn py_select_page(rb: &mut RbatisExecutor<'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
+    async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
     #[tokio::test]
     pub async fn test_macro_py_select() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
@@ -741,7 +741,7 @@ pub async fn test_tx() {
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
-    async fn join_select(rbatis: &mut RbatisExecutor<'_> ,name: &str) -> Option<Vec<BizActivity>> {}
+    async fn join_select(rbatis: &mut RbatisExecutor<'_,'_> ,name: &str) -> Option<Vec<BizActivity>> {}
 
     #[tokio::test]
     pub async fn test_join() {
