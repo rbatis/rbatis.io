@@ -348,7 +348,7 @@ let result: Option<BizActivity> = rb.fetch_by_column("id", &"1".to_string()).awa
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///query all
-let result: Vec<BizActivity> = rb.fetch_list("").await.unwrap();
+let result: Vec<BizActivity> = rb.fetch_list().await.unwrap();
 //Query ==> SELECT create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1
 
 ///query id vec, return vec result
