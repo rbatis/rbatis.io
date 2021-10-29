@@ -49,7 +49,7 @@ fast_log="1.3"
 bigdecimal = "0.2"
 
 #rbatis支持
-rbatis =  { version = "2.0" } 
+rbatis =  { version = "2.1" } 
 ```
 
 # 条件编译切换 异步运行时(tokio/async_std)和数据库类型
@@ -380,9 +380,9 @@ rb.remove_by_column::<BizActivity,_>("id", &"1").await;
 rb.remove_batch_by_column::<BizActivity>("id", &["1", "2"]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
-///修改(使用wrapper)
+///修改(使用wrapper)，参数skip可使用  &[Skip::Value(&serde_json::Value::Null), Skip::Column("id"), Skip::Column(column)]
 let w = rb.new_wrapper().eq("id", "12312");
-rb.update_by_wrapper( &activity, &w).await;
+rb.update_by_wrapper( &activity, &w, &[]).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
 }
 
@@ -1006,7 +1006,7 @@ rb.log_plugin = Box::new(RbatisLog{});
             delete_flag: Some(1),
         };
  let w = rb.new_wrapper().eq("id", "12312");
- let r = rb.update_by_wrapper( &mut activity, &w, false).await;
+ let r = rb.update_by_wrapper( &mut activity, &w, &[]).await;
 ```
 * 执行结果
 ```log

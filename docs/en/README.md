@@ -48,7 +48,7 @@ fast_log="1.3"
 bigdecimal = "0.2"
 
 #rbatis support(must)
-rbatis =  { version = "2.0" }
+rbatis =  { version = "2.1" }
 ```
 
 
@@ -368,9 +368,9 @@ rb.remove_by_column::<BizActivity,_>("id", &"1".to_string()).await;
 rb.remove_batch_by_column::<BizActivity,_>("id", &["1".to_string(), "2".to_string()]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
-///update(use Wrapper)
+///update(use Wrapper)  the param Skip should be empty or  &[Skip::Value(&serde_json::Value::Null), Skip::Column("id"), Skip::Column(column)]
 let w = rb.new_wrapper().eq("id", "12312");
-rb.update_by_wrapper( &activity, &w).await;
+rb.update_by_wrapper( &activity, &w, &[]).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
 }
 
@@ -1048,7 +1048,7 @@ Optimistic locking implementation:
             delete_flag: Some(1),
         };
  let w = rb.new_wrapper().eq("id", "12312");
- let r = rb.update_by_wrapper( &mut activity, &w, false).await;
+ let r = rb.update_by_wrapper( &mut activity, &w, &[]).await;
  //[rbatis] [] Exec  ==> UPDATE biz_activity SET  status = ?, create_time = ?, version = ?, delete_flag = ? WHERE version = ? AND id = ?
  //[rbatis] [] Args  ==> [1,"2021-01-30T01:45:35.207863200","2",1,"1","12312"]
 ```
