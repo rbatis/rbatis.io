@@ -11,7 +11,7 @@
 | Mysql            | √     |   
 | Postgres         | √     |  
 | Sqlite           | √     |  
-| Mssql/Sqlserver           | √     |  
+| Mssql/Sqlserver            | √(50%)     |  
 | MariaDB(Mysql)             | √     |
 | TiDB(Mysql)             | √     |
 | CockroachDB(Postgres)      | √     |
@@ -34,22 +34,18 @@
 ##### 安装依赖(Cargo.toml)，项目根目录执行 ``` cargo install``` 如果网络比较慢请开启vpn科学上网，或者使用代理
 
 ``` toml
-#json支持(必须)
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+# bson (required)
+serde = { version = "1", features = ["derive"] }
+bson = "2.0.1"
 
-#日期支持(必须)
-chrono = { version = "0.4", features = ["serde"] }
-
-#log日志支持(必须)
+# logging lib(required)
 log = "0.4"
 fast_log="1.3"
 
-#BigDecimal支持(可选)
-bigdecimal = "0.2"
-
-#rbatis支持
-rbatis =  { version = "2.1" } 
+# rbatis (required) default is all-database+runtime-async-std-rustls
+rbatis =  { version = "3.0" } 
+# 或者，如果你使用 actix-web+mysql，除mysql外排除其他数据库类型，改用这个
+# rbatis = { version = "3.0", default-features = false, features = ["mysql","runtime-async-std-rustls"] }
 ```
 
 # 条件编译切换 异步运行时(tokio/async_std)和数据库类型
@@ -59,19 +55,17 @@ rbatis =  { version = "2.1" }
 
 | 特性    | 解释 |
 | ------ | ------ |
-| default  | 默认-使用aysnc-io运行时，所有驱动 |
-| async-io | 使用async-io(async-std)运行时 |
-| tokio1 | 使用tokio1.0运行时 |
-| tokio02 | 使用tokio0.2运行时 |
-| tokio03 | 使用tokio0.3运行时 |
-| mysql | mysql驱动 |
-| postgres | pg驱动 |
-| sqlite | sqlite驱动 |
-| mssql | mssql驱动 |
+| default  | "all-database","runtime-async-std-rustls" |
+| runtime-tokio-rustls |tokio+rusttls   |
+| runtime-actix-rustls  | actix+rusttls |
+| runtime-async-std-rustls  | async_std+rustls  |
+| runtime-tokio-native-tls |  tokio+本地 tls|
+| runtime-actix-native-tls  | actix+本地 tls |
+| runtime-async-std-native-tls  | async_std+本地 tls  |
 > 例如定制选择某些框架（异步框架tokio + web框架actix-web + mysql数据库）
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
+rbatis = { version = "*", default-features = false, features = ["runtime-async-std-rustls","mysql"] }
 ```
 
 > 普通初始化
@@ -380,7 +374,7 @@ rb.remove_by_column::<BizActivity,_>("id", &"1").await;
 rb.remove_batch_by_column::<BizActivity>("id", &["1", "2"]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
-///修改(使用wrapper)，参数skip可使用  &[Skip::Value(&serde_json::Value::Null), Skip::Column("id"), Skip::Column(column)]
+///修改(使用wrapper)，参数skip可使用  &[Skip::Value(&bson::Bson::Null), Skip::Column("id"), Skip::Column(column)]
 let w = rb.new_wrapper().eq("id", "12312");
 rb.update_by_wrapper( &activity, &w, &[]).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
@@ -656,7 +650,7 @@ rbatis = { ...}
             .await
             .unwrap();
         let tx = rb.acquire_begin().await.unwrap();
-        let v: serde_json::Value = tx
+        let v: bson::Bson = tx
             .fetch("select count(1) from biz_activity;", &vec![])
             .await
             .unwrap();
@@ -896,7 +890,7 @@ impl SqlIntercept for Intercept{
 
     /// do intercept sql/args
     /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<bson::Bson>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
 }
 ```
 

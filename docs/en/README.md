@@ -11,7 +11,7 @@
 | Mysql            | √     |   
 | Postgres         | √     |  
 | Sqlite           | √     |  
-| Mssql/Sqlserver           | √     |  
+| Mssql/Sqlserver            | √(50%)     |  
 | MariaDB(Mysql)             | √     |
 | TiDB(Mysql)             | √     |
 | CockroachDB(Postgres)      | √     |
@@ -33,22 +33,18 @@
 > Install dependencies
 
 ``` toml
-#json support(must)
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
+# bson (required)
+serde = { version = "1", features = ["derive"] }
+bson = "2.0.1"
 
-#date(must)
-chrono = { version = "0.4", features = ["serde"] }
-
-#log support(must)
+# logging lib(required)
 log = "0.4"
 fast_log="1.3"
 
-#BigDecimal support(not must)
-bigdecimal = "0.2"
-
-#rbatis support(must)
-rbatis =  { version = "2.1" }
+# rbatis (required) default is all-database+runtime-async-std-rustls
+rbatis =  { version = "3.0" } 
+# also if you use actix-web+mysql
+# rbatis = { version = "3.0", default-features = false, features = ["mysql","runtime-async-std-rustls"] }
 ```
 
 
@@ -59,20 +55,18 @@ rbatis =  { version = "2.1" }
 
 |Options | explanation|
 | ------ | ------ |
-| default  | default,aysnc-io runtime，all database |
-| async-io | async-io(async-std)runtime |
-| tokio1 | tokio1.0runtime |
-| tokio02 | tokio0.2runtime |
-| tokio03 | tokio0.3runtime |
-| mysql | mysql driver |
-| postgres | pg driver |
-| sqlite | sqlite driver |
-| mssql | mssql driver |
+| default  | "all-database","runtime-async-std-rustls" |
+| runtime-tokio-rustls |tokio+rusttls   |
+| runtime-actix-rustls  | actix+rusttls |
+| runtime-async-std-rustls  | async_std+rustls  |
+| runtime-tokio-native-tls |  tokio+local tls|
+| runtime-actix-native-tls  | actix+local tls |
+| runtime-async-std-native-tls  | async_std+local tls  |
 
 > for example
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["tokio02","tokio1","mysql"] }
+rbatis = { version = "*", default-features = false, features = ["runtime-async-std-rustls","mysql"] }
 ```
 
 > Ordinary init
@@ -368,7 +362,7 @@ rb.remove_by_column::<BizActivity,_>("id", &"1".to_string()).await;
 rb.remove_batch_by_column::<BizActivity,_>("id", &["1".to_string(), "2".to_string()]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
-///update(use Wrapper)  the param Skip should be empty or  &[Skip::Value(&serde_json::Value::Null), Skip::Column("id"), Skip::Column(column)]
+///update(use Wrapper)  the param Skip should be empty or  &[Skip::Value(&bson::Bson::Null), Skip::Column("id"), Skip::Column(column)]
 let w = rb.new_wrapper().eq("id", "12312");
 rb.update_by_wrapper( &activity, &w, &[]).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
@@ -699,7 +693,7 @@ pub async fn test_tx() {
     let tx_id = "tx:1";
     //begin
     RB.begin(tx_id).await.unwrap();
-    let v: serde_json::Value = RB.fetch(tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
+    let v: bson::Bson = RB.fetch(tx_id, "SELECT count(1) FROM biz_activity;").await.unwrap();
     println!("{}", v.clone());
     //commit or rollback
     RB.commit(tx_id).await.unwrap();
@@ -938,7 +932,7 @@ impl SqlIntercept for Intercept{
 
     /// do intercept sql/args
     /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<serde_json::Value>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<bson::Bson>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
 }
 ```
 
