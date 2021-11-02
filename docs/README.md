@@ -717,7 +717,7 @@ rbatis = { ...}
 
 ## 宏事务(在py_sql宏中传递事务)
 
-> 让事务可以传递于你的宏代码中（因为Rbatis事务使用了‘线程安全的hashmap’方式管理事务，这里传入事务id号即可绑定事务）
+> 让事务可以传递于你的宏代码中
 
 ```rust
     #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
