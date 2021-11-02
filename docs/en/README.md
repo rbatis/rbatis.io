@@ -17,6 +17,31 @@
 | CockroachDB(Postgres)      | √     |
 
 
+### Supported data structures
+
+| data structure    | is supported |
+| ------ | ------ |
+| Option                   | √     | 
+| Vec                      | √     |  
+| HashMap                      | √     |
+| i32,i64,f32,f64,bool,String...more rust type   | √     |  
+| rbatis::Bytes                   | √     |  
+| rbatis::DateNative              | √     |  
+| rbatis::DateUtc                  | √     |  
+| rbatis::DateTimeNative          | √     |  
+| rbatis::DateTimeUtc             | √     |  
+| rbatis::Decimal                 | √     |  
+| rbatis::Json<T>                 | √     |  
+| rbatis::TimeNative              | √     |  
+| rbatis::TimeUtc                 | √     |  
+| rbatis::Timestamp               | √     |  
+| rbatis::TimestampZ              | √     |  
+| rbatis::Uuid                    | √     |  
+| rbatis::plugin::page::{Page<T>, PageRequest} | √     |
+| bson::Bson*                      | √     |
+| serde_json::*        | √     |
+| any serde type         | √     |
+
 >  Web Framework + Rbatis example
 
 * [actix_web](https://github.com/rbatis/rbatis/tree/master/example/src/actix_web/main.rs)
@@ -181,7 +206,7 @@ pub struct BizActivity {    //will be table_name BizActivity => "biz_activity"
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<NaiveDateTime>,
+    pub create_time: Option<rbatis::DateTimeNative>,
     pub version: Option<i32>,
     pub delete_flag: Option<i32>,
 }
@@ -325,7 +350,7 @@ let activity = BizActivity {
                 id: Some("12312".to_string()),
                 name: None,
                 remark: None,
-                create_time: Some(NaiveDateTime::now()),
+                create_time: Some(rbatis::DateTimeNative::now()),
                 version: Some(1),
                 delete_flag: Some(1),
             };
@@ -857,7 +882,7 @@ for example:
         pub sort: Option<String>,
         pub status: Option<i32>,
         pub remark: Option<String>,
-        pub create_time: Option<NaiveDateTime>,
+        pub create_time: Option<rbatis::DateTimeNative>,
         pub version: Option<BigDecimal>,
         pub delete_flag: Option<i32>,
     }
@@ -1037,7 +1062,7 @@ Optimistic locking implementation:
             sort: None,
             status: Some(1),
             remark: None,
-            create_time: Some(NaiveDateTime::now()),
+            create_time: Some(rbatis::DateTimeNative::now()),
             version: Some(BigDecimal::from(1)),
             delete_flag: Some(1),
         };
