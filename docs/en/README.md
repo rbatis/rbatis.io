@@ -384,7 +384,7 @@ rb.remove_by_column::<BizActivity,_>("id", "1").await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id = 1
 
 ///delete batch
-rb.remove_batch_by_column::<BizActivity,_>("id", &["1".to_string(), "2".to_string()]).await;
+rb.remove_batch_by_column::<BizActivity,_>("id", &["1", "2"]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
 ///update(use Wrapper)  the param Skip should be empty or  &[Skip::Value(&bson::Bson::Null), Skip::Column("id"), Skip::Column(column)]

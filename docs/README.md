@@ -398,7 +398,7 @@ rb.remove_by_column::<BizActivity,_>("id", "1").await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id = 1
 
 ///批量删除
-rb.remove_batch_by_column::<BizActivity>("id", &["1", "2"]).await;
+rb.remove_batch_by_column::<BizActivity,_>("id", &["1", "2"]).await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id IN (  ?  ,  ?  ) 
 
 ///修改(使用wrapper)，参数skip可使用  &[Skip::Value(&bson::Bson::Null), Skip::Column("id"), Skip::Column(column)]
