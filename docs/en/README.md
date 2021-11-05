@@ -380,7 +380,7 @@ let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///delete
-rb.remove_by_column::<BizActivity,_>("id", &"1".to_string()).await;
+rb.remove_by_column::<BizActivity,_>("id", "1").await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id = 1
 
 ///delete batch

@@ -281,7 +281,7 @@ pub struct BizUuid {
         let data: BizUuid = rb.fetch_by_column("id", &uuid).await.unwrap();
         println!("{:?}", data);
         //delete table
-        rb.remove_by_column::<BizUuid>(&uuid).await;
+        rb.remove_by_column::<BizUuid,_>("id",&uuid).await;
     }
     
     
@@ -394,7 +394,7 @@ let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper(&w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///删除
-rb.remove_by_column::<BizActivity,_>("id", &"1").await;
+rb.remove_by_column::<BizActivity,_>("id", "1").await;
 //Exec ==> UPDATE biz_activity SET delete_flag = 0 WHERE id = 1
 
 ///批量删除
