@@ -38,7 +38,7 @@
 | rbatis::TimestampZ              | √     |  
 | rbatis::Uuid                    | √     |  
 | rbatis::plugin::page::{Page<T>, PageRequest} | √     |
-| bson::Bson*                      | √     |
+| bson2::Bson*                      | √     |
 | serde_json::*        | √     |
 | any serde type         | √     |
 
@@ -61,9 +61,9 @@
 ##### 安装依赖(Cargo.toml)，项目根目录执行 ``` cargo install``` 如果网络比较慢请开启vpn科学上网，或者使用代理
 
 ``` toml
-# bson (required)
+# bson2 (required)
 serde = { version = "1", features = ["derive"] }
-bson = "2.0.1"
+bson2 = "2.0.1"
 
 # logging lib(required)
 log = "0.4"
