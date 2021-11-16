@@ -63,7 +63,7 @@
 ``` toml
 # bson2 (required)
 serde = { version = "1", features = ["derive"] }
-bson2 = "2.0.1"
+bson2 = "2.0"
 
 # logging lib(required)
 log = "0.4"
