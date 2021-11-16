@@ -38,7 +38,7 @@
 | rbatis::TimestampZ              | √     |  
 | rbatis::Uuid                    | √     |  
 | rbatis::plugin::page::{Page<T>, PageRequest} | √     |
-| bson::Bson*                      | √     |
+| bson2::Bson*                      | √     |
 | serde_json::*        | √     |
 | any serde type         | √     |
 
@@ -58,9 +58,9 @@
 > Install dependencies
 
 ``` toml
-# bson (required)
+# bson2 (required)
 serde = { version = "1", features = ["derive"] }
-bson = "2.0.1"
+bson2 = "2.0.2"
 
 # logging lib(required)
 log = "0.4"
