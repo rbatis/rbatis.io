@@ -691,6 +691,7 @@ rbatis = { ...}
 > 守卫-顾名思义是对事务tx的一个守卫者、保护者（守卫结构体包裹被保护的事务对象）。当保护者被销毁(Drop之前)，守卫会立即释放(提交or回滚)事务tx
 
 ```rust
+    use rbatis::executor::{RbatisRef, RBatisTxExecutor, ExecutorMut};  
     pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<()> {
         // tx will be commit.when func end
         let mut tx = rb.acquire_begin().await?.defer_async(|mut tx1| async move {
