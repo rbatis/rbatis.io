@@ -728,6 +728,7 @@ pub async fn test_tx() {
 ## TxGuard
 
 ```rust
+    use rbatis::executor::{RbatisRef, RBatisTxExecutor, ExecutorMut}; 
     pub async fn forget_commit(rb: &Rbatis) -> rbatis::core::Result<()> {
         // tx will be commit.when func end
         let mut tx = rb.acquire_begin().await?.defer_async(|mut tx1| async move {
