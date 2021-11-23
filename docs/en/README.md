@@ -517,7 +517,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 
 ```rust
     ///Here, the name of the method corresponds to the ID of the tag inside the XML. For example, id="select_by_condition" corresponds to async fn select_by_condition
-    #[html_sql(rb, "example/example.html")]
+    #[html_sql("example/example.html")]
     async fn select_by_condition(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
 
     #[tokio::test]
@@ -528,7 +528,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
         rb.link("mysql://root:123456@localhost:3306/test")
             .await
             .unwrap();
-        let a = select_by_condition(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+        let a = select_by_condition(&mut rb.as_executor(), &PageRequest::new(1, 10), "test")
             .await
             .unwrap();
         println!("{:?}", a);
@@ -544,6 +544,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 * sql macro:   Used to write raw SQL.   Rule: The first parameter to the SQL macro is the Rbatis instance name followed by SQL. Note that the SQL macro executes SQL
   that is driven to run directly, so it must be a replacement symbol for a specific database, such as mysql(? ,?) ,pg(
   $1,$2) for example ``` #[sql(RB, "select * from biz_activity where id = ?")] ```
+* sql，py_sql,html_sql Either omit the rbatis keyword in the macro parenthesis (requires rbatis or RbatisExecutor references in the function)
 * py_sql macro:  For writing 'dynamic SQL'.  Rule:   ```#{}``` is used instead of precompiled parameters (precompiled is
   safer and anti-SQL injection), and ```${}``` is used instead of direct replacement parameters (SQL injection risk).
 * py_sql can use arithmetic expressions of macros, such as ` ` ` # {1 + 1}, # {arg}, # {arg [0]}, # {arg [0] + 'string'} ` ` `
@@ -580,7 +581,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
      static ref RB:Rbatis=Rbatis::new();
    }
 
-    #[py_sql(rb,"select * from biz_activity where delete_flag = 0
+    #[py_sql("select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
     async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
@@ -618,7 +619,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 > Macro mapping py_SQL (join)
 
 ```rust
-#[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time 
+#[py_sql("SELECT a1.name as name,a2.create_time as create_time 
                   FROM test.biz_activity a1,biz_activity a2 
                   WHERE a1.id=a2.id and a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
@@ -635,6 +636,10 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 > Macro mapping use page plugin
 
 ```rust
+
+#[sql("select * from biz_activity where delete_flag = 0 and name = ?")]
+async fn sql(rb:&Rbatis, page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
+
 #[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
 async fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 
@@ -757,7 +762,7 @@ pub async fn test_tx() {
 
 ```rust
     ```rust
-    #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
+    #[py_sql("SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
@@ -1084,7 +1089,7 @@ Optimistic locking implementation:
 
 # Frequently Asked Questions
 
-> Incremental Compile Causes Modifying HTML Files Without Triggering #[HTML_SQL] Recompile?
+> Incremental Compile Causes Modifying HTML Files Without Triggering #[html_sql] Recompile?
 
 Because the prerequisite for triggering a procedural macro recompile is a change in the current repository code
 

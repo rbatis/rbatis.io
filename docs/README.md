@@ -531,7 +531,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 
 ```rust
     ///这里，方法名称对应xml里面标签id，例如id="select_by_condition" 对应  async fn select_by_condition
-    #[html_sql(rb, "example/example.html")]
+    #[html_sql("example/example.html")]
     async fn select_by_condition(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
 
     #[tokio::test]
@@ -542,7 +542,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
         rb.link("mysql://root:123456@localhost:3306/test")
             .await
             .unwrap();
-        let a = select_by_condition(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+        let a = select_by_condition(&mut rb.as_executor(), &PageRequest::new(1, 10), "test")
             .await
             .unwrap();
         println!("{:?}", a);
@@ -555,6 +555,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 
 * sql宏: 用于编写原始SQL。 规则：第一个参数是Rbatis实例名称，后面是sql。注意sql宏执行的是驱动直接运行的sql，所以必须是具体数据库的替换符号，例如mysql(?,?),pg($1,$2)例如
   ``` #[sql(RB, "select * from biz_activity where id = ?")] ```
+* sql，py_sql,html_sql 都可以省略宏括号里的rbatis关键字（要求函数中使用Rbatis或者RbatisExecutor引用）
 * py_sql宏: 用于编写‘动态SQL’。 规则：使用```#{}```代替预编译参数（预编译较安全，防sql注入），```${}```代替直接替换参数（有sql注入风险）
 * 其中，py_sql宏中的py_sql可以使用运算表达式，例如 ``` #{1+1},#{arg},#{arg[0]},#{arg[0] + 'string'} ```
 * 会自动转换函数为 ```pub async fn select(name: &str) -> rbatis::core::Result<BizActivity> {}```
@@ -589,7 +590,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
      static ref RB:Rbatis=Rbatis::new();
    }
 
-    #[py_sql(rbatis, "select * from biz_activity where id = #{name}
+    #[py_sql("select * from biz_activity where id = #{name}
                   if name != '':
                     and name=#{name}")]
     async fn py_select(rbatis:&Rbatis,name: &str) -> Option<BizActivity> {}
@@ -610,7 +611,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
      static ref RB:Rbatis=Rbatis::new();
    }
 
-    #[py_sql(rb,"select * from biz_activity where delete_flag = 0
+    #[py_sql("select * from biz_activity where delete_flag = 0
                   if name != '':
                     and name=#{name}")]
     async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
@@ -628,7 +629,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 > 宏映射 py_sql (join表连接)
 
 ```rust
-#[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time 
+#[py_sql("SELECT a1.name as name,a2.create_time as create_time 
                   FROM test.biz_activity a1,biz_activity a2 
                   WHERE a1.id=a2.id and a1.name=#{name}")]
     async fn join_select(rbatis: &Rbatis, name: &str) -> Option<Vec<BizActivity>> {}
@@ -645,6 +646,8 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 > 宏映射 使用分页插件
 
 ```rust
+#[sql("select * from biz_activity where delete_flag = 0 and name = ?")]
+async fn sql(rb:&Rbatis, page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
 
 #[sql(RB, "select * from biz_activity where delete_flag = 0 and name = ?")]
 async fn sql_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity> {}
@@ -721,7 +724,7 @@ rbatis = { ...}
 > 让事务可以传递于你的宏代码中
 
 ```rust
-    #[py_sql(rbatis, "SELECT a1.name as name,a2.create_time as create_time
+    #[py_sql("SELECT a1.name as name,a2.create_time as create_time
                       FROM test.biz_activity a1,biz_activity a2
                       WHERE a1.id=a2.id
                       AND a1.name=#{name}")]
