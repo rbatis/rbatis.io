@@ -465,7 +465,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 
 ```rust
     SELECT * FROM biz_activity
-    if  name!=null:
+    if  name != null:
       AND delete_flag = #{del}
       AND version = 1
       if  age!=1:
@@ -473,10 +473,14 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
       AND version = 1
     AND a = 0
       yes
-    for item in ids:
-      #{item}
-    for index,item in ids:
-      #{item}
+    and id in (
+    trim ',': for item in ids:
+      #{item},
+    )
+    and id in (
+    trim ',': for index,item in ids:
+      #{item},
+    )
     trim 'AND':
       AND delete_flag = #{del2}
     choose:
