@@ -593,7 +593,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
     pub async fn test_macro_py_select() {
         fast_log::init_log("requests.log", 1000, log::Level::Info, None, true);
         RB.link("mysql://root:123456@localhost:3306/test").await.unwrap();
-        let a = py_select_page(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+        let a = py_select_page(&mut rb.as_executor(), &PageRequest::new(1, 10), "test")
             .await
             .unwrap();
         println!("{:?}", a);

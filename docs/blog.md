@@ -145,7 +145,7 @@ v1.8版本借鉴了mybatis plus 同时具备的基本的crud功能并且推出py
         rb.link("mysql://root:123456@localhost:3306/test")
             .await
             .unwrap();
-        let a = select_by_condition(&mut (&rb).into(), &PageRequest::new(1, 10), "test")
+        let a = select_by_condition(&mut rb.as_executor(), &PageRequest::new(1, 10), "test")
             .await
             .unwrap();
         println!("{:?}", a);
