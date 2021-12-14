@@ -447,19 +447,19 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 * py语法必须以 : 结尾
 * py语法支持同一行连续写(中间用': '分割)   例如 trim: for item in arg:
 
-| 方法    | rust代码 |
-| ------ | ------ |
-| trim 'AND ': | trim |
-| if arg!=1 : | if后面是 '运算表达式' |
-| for item in arg : | for 循环 |
-| set : | sql:"SET" |
-| choose : | match |
-| when : | match expr |
-| otherwise : | match { _ =>{} }|
-| _: | match { _ =>{} }(1.8.54版本之后) |
-| where : | sql:"WHERE" |
-| bind a=1+1: | let a = 1+1|
-| let a=1+1: | let a = 1+1(1.8.54之后版本) |
+| 方法    | 对应rust | 解释             |
+| ------ | ------ |----------------|
+| trim 'AND ': | trim | 清空收尾指定的字符串     |
+| if arg!=1 : | if后面是 '运算表达式' | 判断条件           |
+| for item in arg : | for 循环 | 用于循环多次         |
+| set : | sql:"SET" | 拼接 sql语句 "set" |
+| choose : | match | 匹配条件           |
+| when : | match expr | 匹配条件case       |
+| otherwise : | match { _ =>{} }| 匹配条件不满足时       |
+| _: | match { _ =>{} }(1.8.54版本之后) | 匹配条件不满足时默认写法   |
+| where : | sql:"WHERE" | 拼接sql语句"where" |
+| bind a=1+1: | let a = 1+1| 在函数内声明变量       |
+| let a=1+1: | let a = 1+1(1.8.54之后版本) |   在函数内声明变量     |
 
 > 例如
 
