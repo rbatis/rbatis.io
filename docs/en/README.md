@@ -433,6 +433,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 * PY syntax, the line space for Child must be greater than that for father. It says it's its child
 * PY syntax must end with:
 * PY syntax support many express in same line.for example trim 'a': for item in arg:
+* Py syntax support in SQL insert # {} and ${}, for example: inside the curly braces support arbitrary expressions such as ```${1 + 1}``` inserted into the SQL string '2', ```#{1 + 1}``` insert SQL '$' or'? 'and add the precompile parameter '2'
 
 | method    | rust code |
 | ------ | ------ |
