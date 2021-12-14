@@ -435,6 +435,19 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 |   &&     |  且    | 
 |   &#124;&#124;       |  或     | 
 
+> 例如
+```xml
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_sql/raw/main/mybatis-3-mapper.dtd">
+<mapper>
+    <sql id="page_sql"> select * from include where name like #{'%'+name+'%'} </sql>
+</mapper>
+```
+```rust
+ #[py_sql("select * from biz_activity where delete_flag = 0
+                  if name != '':
+                    and name=#{name}")]
+async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
+```
 
 # PySQL语法
 
