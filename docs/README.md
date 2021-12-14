@@ -446,10 +446,11 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 * py语法中，child的行空格必须大于father的空格。表示自己是它的child
 * py语法必须以 : 结尾
 * py语法支持同一行连续写(中间用': '分割)   例如 trim: for item in arg:
+* py语法支持在sql中插入#{}和${}.例如： 花括号内支持任意表达式例如 ```${1+1}``` 结构为sql字符串'2', ```#{1+1}```为插入sql '$'或'？'并添加预编译参数'2'
 
 | 方法    | 对应rust | 解释             |
 | ------ | ------ |----------------|
-| trim 'AND ': | trim | 清空收尾指定的字符串     |
+| trim 'AND ': | trim | 清空首尾指定的字符串     |
 | if arg!=1 : | if后面是 '运算表达式' | 判断条件           |
 | for item in arg : | for 循环 | 用于循环多次         |
 | set : | sql:"SET" | 拼接 sql语句 "set" |
@@ -459,7 +460,7 @@ rb.update_by_wrapper( &activity, &w, &[]).await;
 | _: | match { _ =>{} }(1.8.54版本之后) | 匹配条件不满足时默认写法   |
 | where : | sql:"WHERE" | 拼接sql语句"where" |
 | bind a=1+1: | let a = 1+1| 在函数内声明变量       |
-| let a=1+1: | let a = 1+1(1.8.54之后版本) |   在函数内声明变量     |
+| let a=1+1: | let a = 1+1(1.8.54之后版本) | 在函数内声明变量       |
 
 > 例如
 
