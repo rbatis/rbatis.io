@@ -67,9 +67,9 @@ log = "0.4"
 fast_log="1.3"
 
 # rbatis (required) default is all-database+runtime-async-std-rustls
-rbatis =  { version = "3.0" } 
+rbatis =  { version = "3.1" } 
 # also if you use actix-web+mysql
-# rbatis = { version = "3.0", default-features = false, features = ["mysql","runtime-async-std-rustls"] }
+# rbatis = { version = "3.1", default-features = false, features = ["mysql","runtime-async-std-rustls"] }
 ```
 
 
