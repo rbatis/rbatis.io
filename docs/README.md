@@ -69,7 +69,7 @@ rbson = "2.0"
 log = "0.4"
 fast_log="1.3"
 
-# rbatis (required) default is all-database+runtime-async-std-rustls
+# rbatis (required) default is ```all-database```  +  ```runtime-tokio-rustls```
 rbatis =  { version = "3.1" } 
 # 或者，如果你使用 其他运行时，或者除mysql外排除其他数据库类型，改用这个
 # rbatis = { version = "3.1", default-features = false, features = ["mysql","runtime-tokio-rustls"] }
