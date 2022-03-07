@@ -71,8 +71,8 @@ fast_log="1.3"
 
 # rbatis (required) default is all-database+runtime-async-std-rustls
 rbatis =  { version = "3.1" } 
-# 或者，如果你使用 actix-web+mysql，除mysql外排除其他数据库类型，改用这个
-# rbatis = { version = "3.1", default-features = false, features = ["mysql","runtime-async-std-rustls"] }
+# 或者，如果你使用 其他运行时，或者除mysql外排除其他数据库类型，改用这个
+# rbatis = { version = "3.1", default-features = false, features = ["mysql","runtime-tokio-rustls"] }
 ```
 
 # 条件编译切换 异步运行时(tokio/async_std)和数据库类型
@@ -92,7 +92,7 @@ rbatis =  { version = "3.1" }
 > 例如定制选择某些框架（异步框架tokio + web框架actix-web + mysql数据库）
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["runtime-async-std-rustls","mysql"] }
+rbatis = { version = "*", default-features = false, features = ["runtime-tokio-rustls","mysql"] }
 ```
 
 > 普通初始化
