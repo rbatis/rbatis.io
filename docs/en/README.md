@@ -80,7 +80,7 @@ rbatis =  { version = "3.1" }
 
 |Options | explanation|
 | ------ | ------ |
-| default  | "all-database","runtime-async-std-rustls" |
+| default  | "all-database","runtime-tokio-rustls" |
 | runtime-tokio-rustls |tokio+rusttls   |
 | runtime-actix-rustls  | actix+rusttls |
 | runtime-async-std-rustls  | async_std+rustls  |
@@ -91,7 +91,7 @@ rbatis =  { version = "3.1" }
 > for example
 
 ```rust
-rbatis = { version = "*", default-features = false, features = ["runtime-async-std-rustls","mysql"] }
+rbatis = { version = "*", default-features = false, features = ["runtime-tokio-rustls","mysql"] }
 ```
 
 > Ordinary init
