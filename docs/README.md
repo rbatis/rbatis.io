@@ -557,6 +557,7 @@ async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, 
 
 
 ```rust
+    ///注意： 开发时需启用Cargo.toml里面 features=["debug_mode"] 这样修改example.html时才会自动触发编译。  发布release时请禁用删除features=["debug_mode"]
     ///这里，方法名称对应xml里面标签id，例如id="select_by_condition" 对应  async fn select_by_condition
     #[html_sql("example/example.html")]
     async fn select_by_condition(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, name: &str) -> Page<BizActivity> { todo!() }
