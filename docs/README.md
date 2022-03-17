@@ -94,6 +94,10 @@ rbatis =  { version = "3.1" }
 ```rust
 rbatis = { version = "*", default-features = false, features = ["runtime-tokio-rustls","mysql"] }
 ```
+* 开发时推荐启用Cargo.toml里面 ``` rbatis = { ......  , features=["debug_mode"]} ```, 发布生产环境请删除```features=["debug_mode"]```
+```rust
+rbatis = { version = "*", default-features = false, features = ["runtime-tokio-rustls","mysql","debug_mode"] }
+``` 
 
 > 普通初始化
 
