@@ -519,7 +519,7 @@ async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, 
 
 # HtmlSql语法(兼容Mybatis)
   
-* 开发时推荐启用Cargo.toml里面 rbatis = { ......  , features=["debug_mode"]}, 发布生产环境请删除features=["debug_mode"]
+* 开发时推荐启用Cargo.toml里面 ```toml rbatis = { ......  , features=["debug_mode"]} ```, 发布生产环境请删除```features=["debug_mode"]```
 
 * 文件:example/example_include.html
 ```html
