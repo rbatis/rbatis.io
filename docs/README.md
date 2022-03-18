@@ -523,7 +523,7 @@ async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, 
 
 # HtmlSql语法(兼容Mybatis)
   
-* 启用动态加载.html需要启用Cargo.toml里面 ``` rbatis = { ......  , features=["debug_mode"]} ```, 但是发布生产环境请删除```features=["debug_mode"]```
+* 保证每次运行重新加载html文件(未启用时仅首次加载html编译)，需要启用Cargo.toml里面 ``` rbatis = { ......  , features=["debug_mode"]} ```, 但是发布生产环境请删除```features=["debug_mode"]```
 
 * 文件:example/example_include.html
 ```html
