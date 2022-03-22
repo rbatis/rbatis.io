@@ -553,6 +553,9 @@ async fn py_select_page(rb: &mut RbatisExecutor<'_,'_>, page_req: &PageRequest, 
         <if test="name != ''">
             name like #{name}
         </if>
+        <if test="create_time.inner() >= '2009-12-12T00:00:00'">
+                and create_time < #{create_time.inner()}
+        </if>
     </select>
     <select id="test_include">
       <include refid="select_self"></include>
