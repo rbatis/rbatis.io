@@ -355,7 +355,7 @@ pub struct BizUuid {
             .order_by(true, &["id", "name"]);
   //第二步，传入带有***_wrapper(**)的rbatis对象的方法参数中,例如          
   let w = rb.new_wrapper().eq("id", "1");
-  let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper( &w).await;          
+  let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper(w).await;          
 ```
 
 # 内置增删改查和Wrapper使用
@@ -399,7 +399,7 @@ let result: Vec<BizActivity> = rb.fetch_list_by_column("id",&["1"]).await.unwrap
 
 ///自定义查询(使用wrapper)
 let w = rb.new_wrapper().eq("id", "1");
-let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper(&w).await;
+let r: Result<Option<BizActivity>, Error> = rb.fetch_by_wrapper(w).await;
 //Query ==> SELECT  create_time,delete_flag,h5_banner_img,h5_link,id,name,pc_banner_img,pc_link,remark,sort,status,version  FROM biz_activity WHERE delete_flag = 1  AND id =  ? 
 
 ///删除
@@ -412,7 +412,7 @@ rb.remove_batch_by_column::<BizActivity,_>("id", &["1", "2"]).await;
 
 ///修改(使用wrapper)，参数skip可使用  &[Skip::Value(&bson::Bson::Null), Skip::Column("id"), Skip::Column(column)]
 let w = rb.new_wrapper().eq("id", "12312");
-rb.update_by_wrapper( &activity, &w, &[]).await;
+rb.update_by_wrapper( &activity, w, &[]).await;
 //Exec ==> UPDATE biz_activity SET  create_time =  ? , delete_flag =  ? , status =  ? , version =  ?  WHERE id =  ? 
 }
 
@@ -872,9 +872,9 @@ rbatis = { ...}
         //rb.page_plugin = Box::new(RbatisPagePlugin {});
 
         let req = PageRequest::new(1, 20);//分页请求，页码，条数
-        let wraper= rb.new_wrapper()
-                    .eq("delete_flag",1);
-        let data: Page<BizActivity> = rb.fetch_page_by_wrapper( &wraper,  &req).await.unwrap();
+        
+        let data: Page<BizActivity> = rb.fetch_page_by_wrapper( rb.new_wrapper()
+                    .eq("delete_flag",1),  &req).await.unwrap();
         println!("{}", serde_json::to_string(&data).unwrap());
 ```
 
@@ -1068,7 +1068,7 @@ rb.log_plugin = Box::new(RbatisLog{});
             delete_flag: Some(1),
         };
  let w = rb.new_wrapper().eq("id", "12312");
- let r = rb.update_by_wrapper( &mut activity, &w, &[]).await;
+ let r = rb.update_by_wrapper( &mut activity, w, &[]).await;
 ```
 * 执行结果
 ```log
