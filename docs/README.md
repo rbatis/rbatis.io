@@ -1,6 +1,6 @@
 * [English](en/)
 * [博客](blog.md)
-
+* [FAQ](https://github.com/rbatis/rbatis/discussions)
 
 # Rbatis-初始化
 
