@@ -703,6 +703,10 @@ async fn py_select_page(page_req: &PageRequest, name: &str) -> Page<BizActivity>
 rbatis = { ...}
 ```
 
+# Mapper宏（html/py_sql）扩展函数
+  
+* 因为内部表达式使用中间对象表示，可以使用rust的trait系统扩展定制函数。参考[example](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_custom_func.rs)   
+
 # 事务
 
 ## 普通事务
