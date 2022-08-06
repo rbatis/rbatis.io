@@ -2,7 +2,7 @@
 * [博客](blog.md)
 * [FAQ](https://github.com/rbatis/rbatis/discussions)
 
-# Rbatis-初始化
+# Rbatis-V3文档  (V4.0文档进行中，请等待)
 
 ### 支持数据库
 
