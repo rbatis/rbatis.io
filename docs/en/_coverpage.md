@@ -16,6 +16,6 @@
 
 
 [Projects](https://github.com/rbatis)
-[Get Started](#Rbatis-init)
+[Get Started](#Rbatis-install)
 
 ![](_media/bg.jpg)
