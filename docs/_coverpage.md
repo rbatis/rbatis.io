@@ -15,6 +15,6 @@
 </ul>
 
 [English](en/)
-[立即开始](#Rbatis-初始化)
+[立即开始](#安装rbatis依赖)
 
 ![](_media/bg.jpg)
