@@ -979,7 +979,7 @@ for example:
 
 # Plug-in: SqlIntercept
 
-> Implementing an interface
+> Interceptors can modify your SQL and parameters before execution。
 
 ```rust
 pub struct Intercept{}
