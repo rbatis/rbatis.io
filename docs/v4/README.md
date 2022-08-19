@@ -7,7 +7,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 * Compatible with most mybatis3 syntax.You can start recoding Java projects into Rust!
 * No Runtimes，No Garbage Collection,High performance, Based on Future/Tokio
-* Zero cost [Dynamic SQL](dyn_sql.md), implemented using (proc-macro,compile-time,Cow(Reduce unnecessary cloning))
+* Zero cost [Dynamic SQL](../v4/dyn_sql.md), implemented using (proc-macro,compile-time,Cow(Reduce unnecessary cloning))
   techniques。 don't need ONGL engine(mybatis)
 * JDBC-like driver design, driver use cargo.toml dependency and ```Box<dyn Driver>``` separation
 * All database drivers supported ```#{arg}```, ```${arg}```,```?```  placeholder(pg/mssql auto processing '?' to '$1'
