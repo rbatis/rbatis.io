@@ -1,4 +1,4 @@
-<img src="logo.png" style="width: 200px;height: 140px" />
+<img src="_media/logo.png" style="width: 200px;height: 140px" />
 
 <div style="margin-left: 400px;" >
 <a href="https://github.com/rbatis/rbatis" target="_blank">
@@ -11,10 +11,10 @@
 <ul style="padding-left: 40px;" >
 <li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
 <li align="left" style="color: aliceblue" >- Memory security, coroutine security, transaction security (anti-forget to commit), 100% safe code</li>
-<li align="left" style="color: aliceblue" >- Rich plugins, paging logic/delete/SQL interceptors/CRUD/Wrapper/PySQL/HtmlSQL</li>
+<li align="left" style="color: aliceblue" >- Rich plugins, paging SQL  page/interceptors/crud!/PySQL/HtmlSQL</li>
 </ul>
 
-[V3-doc](v3/)
-[V4-doc](v4/)
+[V3](v3/)
+[V4](v4/)
 
 ![](_media/bg.jpg)

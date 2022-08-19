@@ -1,4 +1,4 @@
-<img src="logo.png" style="width: 200px;height: 140px" />
+<img src="../_media/logo.png" style="width: 200px;height: 140px" />
 
 <div style="margin-left: 400px;" >
 <a href="https://github.com/rbatis/rbatis" target="_blank">
