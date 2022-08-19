@@ -361,22 +361,22 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
 * Syntax tree 
 
-| Syntax/method                         | rust code                                                            |
-|---------------------------------------|----------------------------------------------------------------------|
-| trim 'AND ':                          | trim                                                                 |
-| if arg!=1 :                           | if                                                                   |
-| for item in arg :                     | for                                                                  |
-| set :                                 | sql:"SET"                                                            |
-| choose :                              | match                                                                |
-| when :                                | match expr                                                           |
-| otherwise :                           | match { _ =>{} }                                                     |
-| _:                                    | match { _ =>{} }(v1.8.54 later)                                      |
-| where :                               | sql:"WHERE"                                                          |
-| bind a=1+1:                           | let a = 1+1                                                          |
-| let  a=1+1:                           | let a = 1+1(v1.8.54 later)                                           |
-| ``` ` and name=#{name}`    ```        | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`   |
-| ``` ` and name=${name}`     ```       | `sql.push_str(&format!(" and name={}",name));                    `   |
-| ``` ` and name=${name + '_tag'}`  ``` | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    `  |
+| Syntax/method                         | rust code                                                           |
+|---------------------------------------|---------------------------------------------------------------------|
+| trim 'AND ':                          | .trim("AND ")                                                       |
+| if arg!=1 :                           | if arg !=1 {}                                                       |
+| for key,item in arg :                 | for (key,item) in arg{ }                                            |
+| set :                                 | sql.push_str("SET").trim("SET")                                     |
+| choose :                              | match                                                               |
+| when :                                | match expr                                                          |
+| otherwise :                           | match { _ =>{} }                                                    |
+| _:                                    | match { _ =>{} }(v1.8.54 later)                                     |
+| where :                               | sql:"WHERE"                                                         |
+| bind a=1+1:                           | let a = 1+1                                                         |
+| let  a=1+1:                           | let a = 1+1(v1.8.54 later)                                          |
+| ``` ` and name=#{name}`    ```        | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
+| ``` ` and name=${name}`     ```       | `sql.push_str(&format!(" and name={}",name));                    `  |
+| ``` ` and name=${name + '_tag'}`  ``` | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
 
 ```rust
 #[py_sql(
