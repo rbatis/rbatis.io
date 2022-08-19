@@ -6,7 +6,8 @@
 </a>
 </div>
 
-<h1 style="color: aliceblue">Rbatis-Advanced Compile-Time ORM</h1>
+<h1 style="color: aliceblue">Rbatis</h1>
+<h2 style="color: aliceblue">Advanced Compile-Time ORM</h2>
 
 <ul style="padding-left: 40px;" >
 <li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
