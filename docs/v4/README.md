@@ -147,7 +147,9 @@ async fn main() {
     println!("select_page = {:?}", data);
 }
 ```
+
 * run log
+
 ```log
 2022-08-19 14:42:53.346321 INFO rbatis::plugin::log - [rbatis] [403076696909156352] Exec   ==> insert into biz_activity (id,name,pc_link,h5_link,pc_banner_img,h5_banner_img,sort,status,remark,create_time,version,delete_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
                                                       [rbatis]                      Args   ==> ["2","2","2","2",null,null,null,2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1]
