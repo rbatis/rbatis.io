@@ -6,7 +6,7 @@
 </a>
 </div>
 
-<h1 style="color: aliceblue;font-size: 32px">Rbatis-Flexible.Intelligent.Efficient ORM</h1>
+<h1 style="color: aliceblue;font-size: 32px">Rbatis-Flexible.Intelligent.Efficient ORM(version-v3)</h1>
 
 <ul style="padding-left: 40px;" >
 <li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
