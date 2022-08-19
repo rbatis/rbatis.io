@@ -1124,7 +1124,11 @@ Because the prerequisite for triggering a procedural macro recompile is a change
 (In the root repository, a recompile can be triggered by changing a single line of code, or adding or deleting a new line. If not, force the cache to be removed using cargo clean.)
 
 # Contact information
-> WeChat ID: ``` zxj347284221  ```,WeChat group: add WeChat first, then pull in the group
+
+> [github-discussions](https://github.com/rbatis/rbatis/discussions)
+
+
+> WeChat ID: ``` zxj347284221  ```
 
 <img style="width: 400px;height: 500px;" src="../_media/wechat.jpg"/>
 

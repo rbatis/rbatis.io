@@ -9,7 +9,7 @@
 <h1 style="color: aliceblue">Rbatis Compile-Time ORM</h1>
 
 <ul style="padding-left: 40px;" >
-<li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
+<li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile-time (dynamic SQL)</li>
 <li align="left" style="color: aliceblue" >- Memory security, coroutine security, transaction security (anti-forget to commit), 100% safe code</li>
 <li align="left" style="color: aliceblue" >- Rich plugins, paging SQL  page/interceptors/crud!/PySQL/HtmlSQL</li>
 </ul>

@@ -9,7 +9,7 @@
 <h1 style="color: aliceblue;font-size: 32px">Rbatis-Flexible.Intelligent.Efficient ORM(version-v3,v4 upcoming)</h1>
 
 <ul style="padding-left: 40px;" >
-<li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
+<li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile-time (dynamic SQL)</li>
 <li align="left" style="color: aliceblue" >- Memory security, coroutine security, transaction security (anti-forget to commit), 100% safe code</li>
 <li align="left" style="color: aliceblue" >- Rich plugins, paging logic/delete/SQL interceptors/CRUD/Wrapper/PySQL/HtmlSQL</li>
 </ul>
