@@ -1,9 +1,8 @@
-* [中文](https://rbatis.github.io/rbatis.io/#/)
 * [FAQ](https://github.com/rbatis/rbatis/discussions)
 
 [![Gitter](https://badges.gitter.im/rbatis_orm/community.svg)](https://gitter.im/rbatis_orm/community?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
-# Rbatis-V3 documentation (V4.0 documentation in progress, please wait)
+# Rbatis-V3 documentation
 
 ### Support database
 
