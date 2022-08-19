@@ -6,7 +6,7 @@
 </a>
 </div>
 
-<h1 style="color: aliceblue">Rbatis灵活.智能.高效的ORM(版本-v3)</h1>
+<h1 style="color: aliceblue">Rbatis灵活.智能.高效的ORM(版本-v3,V4版本即将到来)</h1>
 
 <ul style="padding-left: 40px;" >
 <li align="left" style="color: aliceblue" >- 编译时动态sql（mybatis动态sql标签）、全异步(Future)、生产实践(<a style="color: red" href="https://github.com/rbatis/abs_admin">abs_admin</a>)、</li>
