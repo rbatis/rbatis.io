@@ -23,7 +23,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
   Vue.js+rbatis+actix-web)
 
 
-#### Quick example: QueryWrapper and common usages (see example/crud_test.rs for details)
+#### CRUD-basic methods
 
 * Cargo.toml
 
@@ -131,4 +131,202 @@ async fn main() {
 }
 ///...more usage,see crud.rs
 ```
+
+#### TableDefine
+
+> Rbatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
+> We use the ```crud!()``` macro ``` impl_*!() ``` macro Enables the table structure to have the ability to query and modify the database
+
+```rust
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<FastDateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+crud!(BizActivity {}); //crud = async fn insert(...)+async fn  select_by_column(...)+ async fn  update_by_column(...)+async fn  delete_by_column(...)...and more
+```
+
+
+#### Transaction
+
+> The essence of a transaction is to use the SQL statements BEGIN, COMMIT, and ROLLBACK.
+> The Rbatis provides these three functions but also support ```defer_async()``` to prevent forgotten commits 
+
+example [see](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
+
+```rust
+#[tokio::main]
+pub async fn main() {
+    let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    let rb = Rbatis::new();
+    // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await.unwrap();
+    rb.link(
+        SqliteDriver {},
+        &format!("sqlite://{}target/sqlite.db", path),
+    ).await.unwrap();
+    let t = BizActivity {
+        id: Some("2".into()),
+        name: Some("2".into()),
+        pc_link: Some("2".into()),
+        h5_link: Some("2".into()),
+        pc_banner_img: None,
+        h5_banner_img: None,
+        sort: None,
+        status: Some(2),
+        remark: Some("2".into()),
+        create_time: Some(FastDateTime::now()),
+        version: Some(1),
+        delete_flag: Some(1),
+    };
+    let mut tx = rb.acquire_begin().await.unwrap();
+    // defer_async will be rollback if tx drop
+    // let mut tx = tx.defer_async(|mut tx| async move {
+    //     if !tx.done {
+    //         tx.rollback().await.unwrap();
+    //         println!("rollback");
+    //     }
+    // });
+    //tx.exec("select 1", vec![]).await.unwrap();
+    BizActivity::insert(&mut tx, &t).await.unwrap();
+    
+    tx.commit().await.unwrap();
+    tx.rollback().await.unwrap();
+```
+
+
+#### Raw Sql
+
+> the Rbatis also support Write the original statements of the database
+> And the drivers provided by RBatis all support placeholder '?',so you can write '?' on Postgres/mssql...and more
+
+```rust
+use crate::model::{init_sqlite, BizActivity};
+use fast_log::sleep;
+use rbs::to_value;
+use std::time::Duration;
+#[tokio::main]
+pub async fn main() {
+    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+     let rb = Rbatis::new();
+    // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await.unwrap();
+    rb.link(
+        SqliteDriver {},
+        &format!("sqlite://{}target/sqlite.db", path),
+    ).await.unwrap();
+    let table: Option<BizActivity> = rb
+        .fetch_decode("select * from biz_activity limit ?", vec![to_value!(1)])
+        .await
+        .unwrap();
+    let count: u64 = rb
+        .fetch_decode("select count(1) as count from biz_activity", vec![])
+        .await
+        .unwrap();
+    sleep(Duration::from_secs(1));
+    println!(">>>>> table={:?}", table);
+    println!(">>>>> count={}", count);
+}
+```
+
+
+#### HtmlSql
+> It is implemented by Rbatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
+
+* When the RBatis dependency in Cargo.toml turns on the ```debug_mode``` feature, the generated function implementation code is printed
+* Language parsing -> Lexical analysis -> Syntax analysis -> generation of abstract syntax trees ->  translation to Rust code。Have the performance of native Rust
+* Of course, PySql is also a syntax tree using HtmlSql,PySql will be Convert to HtmlSql
+* It uses crates [rbs](https://crates.io/crates/rbs)  of   ```rbs::Value``` as the base object and operates on and fan'h
+* you can call any method/trait on ```rbs::Value``` such as ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'}  ``` or  ```  if sql.contans('count'):   ```
+* method will create 2 variable on method body.So you can determine whether the variable SQL contains a COUNT statement or a SELECT statement in a paging operation
+```rust
+let mut sql = String::with_capacity(1000);
+let mut args = Vec::with_capacity(20);
+```
+
+* HtmlSql Syntax tree
+
+| Syntax/method     | rust code                       |
+|-------------------|---------------------------------|
+| trim 'AND ':      | trim                            |
+| if arg!=1 :       | if                              |
+| for item in arg : | for                             |
+| set :             | sql:"SET"                       |
+| choose :          | match                           |
+| when :            | match expr                      |
+| otherwise :       | match { _ =>{} }                |
+| _:                | match { _ =>{} }(v1.8.54 later) |
+| where :           | sql:"WHERE"                     |
+| bind a=1+1:       | let a = 1+1                     |
+| let  a=1+1:       | let a = 1+1(v1.8.54 later)      |
+
+* HtmlSql example:
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://github.com/rbatis/rbatis_codegen/raw/main/mybatis-3-mapper.dtd">
+<mapper>
+  <insert id="insert">
+    `insert into biz_activity`
+    <foreach collection="arg" index="key" item="item" open="(" close=")" separator=",">
+      <if test="key == 'id'">
+        <continue/>
+      </if>
+      ${key}
+    </foreach>
+    ` values `
+    <foreach collection="arg" index="key" item="item" open="(" close=")" separator=",">
+      ${item}
+    </foreach>
+  </insert>
+  <select id="select_by_condition">
+    `select * from biz_activity`
+    <where>
+      <if test="name != ''">
+        ` and name like #{name}`
+      </if>
+      <if test="dt >= '2009-12-12 00:00:00'">
+        ` and create_time < #{dt}`
+      </if>
+      <choose>
+        <when test="true">
+          ` and id != '-1'`
+        </when>
+        <otherwise>and id != -2</otherwise>
+      </choose>
+      ` and `
+      <trim prefixOverrides=" and">
+        ` and name != '' `
+      </trim>
+    </where>
+  </select>
+</mapper>
+```
+
+* PySql
+
+* It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
+* Syntax tree and use way, see HtmlSql Syntax tree
+
+```rust
+#[py_sql(
+    "`select * from biz_activity where delete_flag = 0`
+                  if name != '':
+                    ` and name=#{name}`"
+)]
+async fn py_select(rb: &mut dyn Executor, name: &str) -> Result<Vec<BizActivity>, Error> {
+    impled!()
+}
+```
+
 
