@@ -331,6 +331,14 @@ let mut args = Vec::with_capacity(20);
 </mapper>
 ```
 
+* define on rust code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
+```rust
+#[html_sql("example/example.html")]
+async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
+    impled!()
+}
+```
+
 #### PySql
 
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
