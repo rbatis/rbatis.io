@@ -1,5 +1,5 @@
 
-### rbatis-v4(unfinished yet)
+### rbatis-v4
 
 A highly Performant SQL Toolkit and Compile time ORM Library. An async, pure Rust SQL crate featuring compile-time Dynamic SQL
 
