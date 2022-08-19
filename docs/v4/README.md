@@ -25,6 +25,9 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 #### Supported database driver
 
+> the Rbatis support any impl rdbc drivers.
+> If you don't have the following driver you want, you can write one yourself, just as long as the impl rbdc::db::* traits
+
 | database      | crates.io                                           | github_link                                                 |
 |---------------|-----------------------------------------------------|-------------------------------------------------------------|
 | Mysql         | [rbdc-mysql](https://crates.io/crates/rbdc-mysql)   | [rbatis](https://github.com/rbatis/rbatis)                  |
