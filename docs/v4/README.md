@@ -229,7 +229,6 @@ pub async fn main() {
 > And the drivers provided by RBatis all support placeholder '?',so you can write '?' on Postgres/mssql...and more
 
 ```rust
-use fast_log::sleep;
 use rbs::to_value;
 use std::time::Duration;
 #[tokio::main]
