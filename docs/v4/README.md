@@ -579,6 +579,11 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
 
 #### macro-built-in
+
+* ``` make_table```  Simplifies table construction by relying on the Default trait
+* ``` make_table_field_vec ``` take the target Vec member attribute Vec collection
+* ``` make_table_field_map ```  Gets the HashMap collection of member attributes of the target Vec
+
 for example:
 ```rust
     #[crud_table]
@@ -649,9 +654,5 @@ for example:
         assert_eq!(names.len(), table_vec.len());
     }
 ```
-
-* ``` make_table```  Simplifies table construction by relying on the Default trait
-* ``` make_table_field_vec ``` take the target Vec member attribute Vec collection
-* ``` make_table_field_map ```  Gets the HashMap collection of member attributes of the target Vec
 
 
