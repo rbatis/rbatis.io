@@ -553,7 +553,7 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
 
 
-# Plug-in: distributed unique ID (snowflake algorithm(i64))
+#### Plug-in: distributed unique ID (snowflake algorithm(i64))
 
 ```rust
     use crate::plugin::snowflake::{new_snowflake_id};
@@ -569,7 +569,7 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
     }
 ```
 
-# Plug-in: distributed unique ID (MongoDB object id algorithm(String/u128))
+#### Plug-in: distributed unique ID (MongoDB object id algorithm(String/u128))
 
 ```rust
     #[test]
@@ -582,7 +582,7 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
 
 
-# macro-built-in
+#### macro-built-in
 for example:
 ```rust
     #[crud_table]
