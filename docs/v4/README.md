@@ -273,6 +273,7 @@ pub struct BizActivity {
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
+crud!(BizActivity{});
 #[tokio::main]
 pub async fn main() {
     let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
@@ -323,6 +324,22 @@ pub async fn main() {
 use rbs::to_value;
 use std::time::Duration;
 use tokio::time::sleep;
+use serde::{Deserialize, Serialize};
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<FastDateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
 #[tokio::main]
 pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
