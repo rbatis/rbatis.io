@@ -5,7 +5,7 @@ A highly Performant SQL Toolkit and Compile time ORM Library. An async, pure Rus
 
 It is an ORM, a small compiler, a dynamic SQL languages
 
-* Compatible with most mybatis3 syntax
+* Compatible with most mybatis3 syntax.You can start recoding Java projects into Rust!
 * No Runtimes，No Garbage Collection,High performance, Based on Future/Tokio
 * Zero cost [Dynamic SQL](dyn_sql.md), implemented using (proc-macro,compile-time,Cow(Reduce unnecessary cloning))
   techniques。 don't need ONGL engine(mybatis)
