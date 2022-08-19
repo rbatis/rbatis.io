@@ -466,3 +466,90 @@ async fn py_select(rb: &mut dyn Executor, name: &str) -> Result<Vec<BizActivity>
 ```
 
 
+#### plugin-table-sync
+
+> This IS a PLUGIN THAT SYNCHRONIZES THE TABLE STRUCTURE WITH THE TABLE STRUCTURE IN THE code, which I believe is VERY important in MOBILE DEVELOPMENT.
+> Note that it does not change the table structure.
+
+* If the table does not exist, it is created
+* If the table exists but a column is missing, increment the column of the missing section
+
+```rust
+use rbatis::rbatis::Rbatis;
+use rbatis::table_sync::{RbatisTableSync, SqliteTableSync};
+use rbatis::rbdc::datetime::FastDateTime;
+use rbdc_sqlite::driver::SqliteDriver;
+
+#[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<FastDateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+#[tokio::main]
+pub async fn main() {
+    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    let rb = Rbatis::new();
+    rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
+        .await
+        .unwrap();
+    let mut s = RbatisTableSync::new();
+    s.insert("sqlite".to_string(), Box::new(SqliteTableSync {}));
+    let t = BizActivity {
+        id: Some("".to_string()),
+        name: Some("".to_string()),
+        pc_link: Some("".to_string()),
+        h5_link: Some("".to_string()),
+        pc_banner_img: Some("".to_string()),
+        h5_banner_img: Some("".to_string()),
+        sort: Some("".to_string()),
+        status: Some(1),
+        remark: Some("".to_string()),
+        create_time: Some(FastDateTime::utc()),
+        version: Some(1),
+        delete_flag: Some(1),
+    };
+    s.sync("sqlite", rb.acquire().await.unwrap(), t)
+        .await
+        .unwrap();
+}
+
+```
+
+
+#### Plug-in: SqlIntercept
+
+> Implementing an interface
+
+```rust
+pub struct Intercept{}
+
+impl SqlIntercept for Intercept{
+
+    ///the intercept name
+    fn name(&self) -> &str;
+
+    /// do intercept sql/args
+    /// is_prepared_sql: if is run in prepared_sql=ture
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<bson::Bson>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
+}
+```
+
+> Set to Rbatis
+
+```rust
+let mut rb=Rbatis::new();
+rb.sql_intercepts.push(Box::new(Intercept{}));
+```
+
+
+
