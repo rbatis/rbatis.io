@@ -369,6 +369,7 @@ let mut args = Vec::with_capacity(20);
 | ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | .trim(" and")                                                       |
 | ``` <if test="key == 'id'"/> ```                                                              | if  key == "id"{}                                                   |
 | ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | for (key,item) in arg{}                                             |
+| ``` <continue/>  ```                                                                          | for (key,item) in arg{ continue;}                                   |
 | ``` <set>  ```                                                                                | sql.push_str("SET").trim("SET")                                     |
 | ``` <choose>  ```                                                                             | match                                                               |
 | ``` <when test="true">  ```                                                                   | match expr                                                          |
@@ -436,8 +437,9 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
 | Syntax/method                         | rust code                                                           |
 |---------------------------------------|---------------------------------------------------------------------|
 | trim 'AND ':                          | .trim("AND ")                                                       |
-| if arg!=1 :                           | if arg !=1 {}                                                       |
-| for key,item in arg :                 | for (key,item) in arg{ }                                            |
+| if arg!=1:                            | if arg !=1 {}                                                       |
+| for key,item in arg:                  | for (key,item) in arg{ }                                            |
+| continue:                             | for (key,item) in arg{ continue; }                                  |
 | set :                                 | sql.push_str("SET").trim("SET")                                     |
 | choose :                              | match                                                               |
 | when :                                | match expr                                                          |
