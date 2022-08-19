@@ -560,12 +560,10 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
     #[test]
     fn test_new_async_id() {
-        crate::core::runtime::block_on(async {
-            //Snowflake::new()  //Snowflake::new(Must be a singleton or global variable)
+        //Snowflake::new()  //Snowflake::new(Must be a singleton or global variable)
             
             //default use
-            println!("{}", new_snowflake_id().to_string());
-        });
+         println!("{}", new_snowflake_id().to_string());
     }
 ```
 
@@ -573,10 +571,8 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
 ```rust
     #[test]
-    fn test_new_async_id() {
-        crate::core::runtime::block_on(async {
-            println!("{}", rbatis::plugin::object_id::ObjectId::new().to_string());
-        });
+    async fn test_new_async_id() {
+       println!("{}", rbatis::plugin::object_id::ObjectId::new().to_string());
     }
 ```
 
