@@ -138,6 +138,7 @@ async fn main() {
 > We use the ```crud!()``` macro ``` impl_*!() ``` macro Enables the table structure to have the ability to query and modify the database
 
 ```rust
+use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BizActivity {
     pub id: Option<String>,
@@ -165,6 +166,7 @@ crud!(BizActivity {}); //crud = async fn insert(...)+async fn  select_by_column(
 example [see](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
 ```rust
+use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BizActivity {
     pub id: Option<String>,
