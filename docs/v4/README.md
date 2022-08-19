@@ -466,7 +466,7 @@ async fn py_select(rb: &mut dyn Executor, name: &str) -> Result<Vec<BizActivity>
 ```
 
 
-#### plugin-table-sync
+#### plugin: table-sync
 
 > This IS a PLUGIN THAT SYNCHRONIZES THE TABLE STRUCTURE WITH THE TABLE STRUCTURE IN THE code, which I believe is VERY important in MOBILE DEVELOPMENT.
 > Note that it does not change the table structure.
@@ -526,7 +526,7 @@ pub async fn main() {
 ```
 
 
-#### Plug-in: SqlIntercept
+#### plugin: SqlIntercept
 
 > Implementing an interface
 
