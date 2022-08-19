@@ -23,7 +23,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
   Vue.js+rbatis+actix-web)
 
 
-##### Quick example: QueryWrapper and common usages (see example/crud_test.rs for details)
+#### Quick example: QueryWrapper and common usages (see example/crud_test.rs for details)
 
 * Cargo.toml
 
