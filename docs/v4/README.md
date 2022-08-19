@@ -264,6 +264,7 @@ pub async fn main() {
 * Of course, PySql is also a syntax tree using HtmlSql,PySql will be Convert to HtmlSql
 * It uses crates [rbs](https://crates.io/crates/rbs)  of   ```rbs::Value``` as the base object and operates on and fan'h
 * you can call any method/trait on ```rbs::Value``` such as ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'}  ``` or  ```  if sql.contans('count'):   ```
+* Strings can be reserved for Spaces using ``` ` ``` such as ``` ` select * from table where ` ```
 * method will create 2 variable on method body.So you can determine whether the variable SQL contains a COUNT statement or a SELECT statement in a paging operation
 ```rust
 let mut sql = String::with_capacity(1000);
