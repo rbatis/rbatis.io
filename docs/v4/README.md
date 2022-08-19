@@ -60,6 +60,8 @@ rbdc-sqlite = { version = "0.1" }
 #...other database driver...
 ```
 
+* src/main.rs
+
 ```rust
 //#[macro_use] define in 'root crate' or 'mod.rs' or 'main.rs'
 #[macro_use]
@@ -148,7 +150,7 @@ async fn main() {
 }
 ```
 
-* run log
+* cargo run after log
 
 ```log
 2022-08-19 14:42:53.346321 INFO rbatis::plugin::log - [rbatis] [403076696909156352] Exec   ==> insert into biz_activity (id,name,pc_link,h5_link,pc_banner_img,h5_banner_img,sort,status,remark,create_time,version,delete_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
