@@ -371,7 +371,7 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
 | when :                                | match expr                                                          |
 | otherwise :                           | match { _ =>{} }                                                    |
 | _:                                    | match { _ =>{} }(v1.8.54 later)                                     |
-| where :                               | sql:"WHERE"                                                         |
+| where :                               | sql.push_str("WHERE").trim("WHERE")                                 |
 | bind a=1+1:                           | let a = 1+1                                                         |
 | let  a=1+1:                           | let a = 1+1(v1.8.54 later)                                          |
 | ``` ` and name=#{name}`    ```        | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
