@@ -6,7 +6,7 @@
 </a>
 </div>
 
-<h1 style="color: aliceblue">Rbatis-Advanced Compile-Time ORM</h1>
+<h1 style="color: aliceblue;font-size: 32px">Rbatis-Flexible.Intelligent.Efficient ORM(version-v3,v4 upcoming)</h1>
 
 <ul style="padding-left: 40px;" >
 <li align="left" style="color: aliceblue" >- high-performance, fully asynchronous, compile time (dynamic SQL)</li>
@@ -14,7 +14,8 @@
 <li align="left" style="color: aliceblue" >- Rich plugins, paging logic/delete/SQL interceptors/CRUD/Wrapper/PySQL/HtmlSQL</li>
 </ul>
 
-[V3-doc](v3/)
-[V4-doc](v4/)
+
+[Projects](https://github.com/rbatis)
+[Get Started](#Rbatis-install)
 
 ![](_media/bg.jpg)
