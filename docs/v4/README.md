@@ -231,6 +231,7 @@ pub async fn main() {
 ```rust
 use rbs::to_value;
 use std::time::Duration;
+use tokio::time::sleep;
 #[tokio::main]
 pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
@@ -250,7 +251,7 @@ pub async fn main() {
         .fetch_decode("select count(1) as count from biz_activity", vec![])
         .await
         .unwrap();
-    sleep(Duration::from_secs(1));
+    sleep(Duration::from_secs(1)).await;
     println!(">>>>> table={:?}", table);
     println!(">>>>> count={}", count);
 }
