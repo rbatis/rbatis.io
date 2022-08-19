@@ -165,6 +165,21 @@ crud!(BizActivity {}); //crud = async fn insert(...)+async fn  select_by_column(
 example [see](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
 ```rust
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<FastDateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
 #[tokio::main]
 pub async fn main() {
     let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
@@ -212,7 +227,6 @@ pub async fn main() {
 > And the drivers provided by RBatis all support placeholder '?',so you can write '?' on Postgres/mssql...and more
 
 ```rust
-use crate::model::{init_sqlite, BizActivity};
 use fast_log::sleep;
 use rbs::to_value;
 use std::time::Duration;
