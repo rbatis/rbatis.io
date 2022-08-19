@@ -14,7 +14,7 @@
 <li align="left" style="color: aliceblue" >- Rich plugins, paging SQL  page/interceptors/crud!/PySQL/HtmlSQL</li>
 </ul>
 
-[V3](v3/)
-[V4](v4/)
+[V3(deprecated)](v3/)
+[V4-current-version](v4/)
 
 ![](_media/bg.jpg)
