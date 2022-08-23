@@ -155,72 +155,71 @@ async fn main() {
 * ```cargo run```  log
 
 ```log
-2022-08-19 14:42:53.346321 INFO rbatis::plugin::log - [rbatis] [403076696909156352] Exec   ==> insert into biz_activity (id,name,pc_link,h5_link,pc_banner_img,h5_banner_img,sort,status,remark,create_time,version,delete_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
-                                                      [rbatis]                      Args   ==> ["2","2","2","2",null,null,null,2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1]
+2022-08-23 23:27:52.591379 INFO rbatis::plugin::log - [rbatis] [404658365780856832] Exec   ==> insert into biz_activity (id,name,pc_link,h5_link,pc_banner_img,h5_banner_img,sort,status,remark,create_time,version,delete_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)
+                                                      [rbatis]                      Args   ==> ["2","2","2","2",null,null,null,2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1]
 insert = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(6) })
-2022-08-19 14:42:53.370667 INFO rbatis::plugin::log - [rbatis] [403076696909156352] RowsAffected <== 1
+2022-08-23 23:27:52.602895 INFO rbatis::plugin::log - [rbatis] [404658365780856832] RowsAffected <== 1
+2022-08-23 23:27:52.603042 INFO rbatis::plugin::log - [rbatis] [404658365831188480] Exec   ==> delete from biz_activity where name= '2'
+                                                      [rbatis]                      Args   ==> []
+2022-08-23 23:27:52.613163 INFO rbatis::plugin::log - [rbatis] [404658365831188480] RowsAffected <== 1
+2022-08-23 23:27:52.613297 INFO rbatis::plugin::log - [rbatis] [404658365873131520] Exec   ==> delete from biz_activity where name= '2'
+                                                      [rbatis]                      Args   ==> []
+2022-08-23 23:27:52.613657 INFO rbatis::plugin::log - [rbatis] [404658365873131520] RowsAffected <== 0
+2022-08-23 23:27:52.613811 INFO rbatis::plugin::log - [rbatis] [404658365873131521] Exec   ==> insert into biz_activity (id,name,pc_link,h5_link,pc_banner_img,h5_banner_img,sort,status,remark,create_time,version,delete_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?,?,?,?,?)
+                                                      [rbatis]                      Args   ==> ["2","2","2","2",null,null,null,2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1,"3","2","2","2",null,null,null,2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1]
+2022-08-23 23:27:52.624252 INFO rbatis::plugin::log - [rbatis] [404658365873131521] RowsAffected <== 2
 insert_batch = Ok(ExecResult { rows_affected: 2, last_insert_id: U64(7) })
+2022-08-23 23:27:52.624519 INFO rbatis::plugin::log - [rbatis] [404658365919268864] Exec   ==> update biz_activity set name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where  id = ?
+                                                      [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1,"2"]
+2022-08-23 23:27:52.624994 INFO rbatis::plugin::log - [rbatis] [404658365919268864] RowsAffected <== 1
+2022-08-23 23:27:52.625127 INFO rbatis::plugin::log - [rbatis] [404658365923463168] Exec   ==> update biz_activity set name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where  id = ?
+                                                      [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1,"3"]
 update_by_column_batch = Ok(ExecResult { rows_affected: 2, last_insert_id: Null })
-2022-08-19 14:42:53.372331 INFO rbatis::plugin::log - [rbatis] [403076697018208256] Exec   ==> delete from biz_activity where name= '2'
-                                                      [rbatis]                      Args   ==> []
-2022-08-19 14:42:53.378375 INFO rbatis::plugin::log - [rbatis] [403076697018208256] RowsAffected <== 1
-2022-08-19 14:42:53.378378 INFO rbatis::plugin::log - [rbatis] [403076697022402560] Exec   ==> delete from biz_activity where name= '2'
-                                                      [rbatis]                      Args   ==> []
-2022-08-19 14:42:53.378382 INFO rbatis::plugin::log - [rbatis] [403076697022402560] RowsAffected <== 0
-2022-08-19 14:42:53.378382 INFO rbatis::plugin::log - [rbatis] [403076697022402561] Exec   ==> insert into biz_activity (id,name,pc_link,h5_link,pc_banner_img,h5_banner_img,sort,status,remark,create_time,version,delete_flag) VALUES (?,?,?,?,?,?,?,?,?,?,?,?),(?,?,?,?,?,?,?,?,?,?,?,?)
-                                                      [rbatis]                      Args   ==> ["2","2","2","2",null,null,null,2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1,"3","2","2","2",null,null,null,2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1]
-2022-08-19 14:42:53.378384 INFO rbatis::plugin::log - [rbatis] [403076697022402561] RowsAffected <== 2
-2022-08-19 14:42:53.378384 INFO rbatis::plugin::log - [rbatis] [403076697026596864] Exec   ==> update biz_activity set name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where  id = ?
-                                                      [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1,"2"]
-2022-08-19 14:42:53.378385 INFO rbatis::plugin::log - [rbatis] [403076697026596864] RowsAffected <== 1
-2022-08-19 14:42:53.378386 INFO rbatis::plugin::log - [rbatis] [403076697026596865] Exec   ==> update biz_activity set name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where  id = ?
-                                                      [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1,"3"]
-2022-08-19 14:42:53.378387 INFO rbatis::plugin::log - [rbatis] [403076697026596865] RowsAffected <== 1
-2022-08-19 14:42:55.380839 INFO rbatis::plugin::log - [rbatis] [403076705440370688] Fetch  ==> select * from biz_activity where id = ? and name = ?
+2022-08-23 23:27:52.625456 INFO rbatis::plugin::log - [rbatis] [404658365923463168] RowsAffected <== 1
+2022-08-23 23:27:54.638880 INFO rbatis::plugin::log - [rbatis] [404658374366597120] Fetch  ==> select * from biz_activity where id = ? and name = ?
                                                       [rbatis]                      Args   ==> ["1","1"]
-2022-08-19 14:42:55.382669 INFO rbatis::plugin::log - [rbatis] [403076705440370688] ReturnRows <== 0
+2022-08-23 23:27:54.639515 INFO rbatis::plugin::log - [rbatis] [404658374366597120] ReturnRows <== 0
 [rbatis] [debug_mode] [value]   alloc::vec::Vec<crud::model::BizActivity> => []
 select_all_by_id = Ok([])
-2022-08-19 14:42:57.388513 INFO rbatis::plugin::log - [rbatis] [403076713862533120] Fetch  ==> select * from biz_activity where id = ? limit 1
+2022-08-23 23:27:56.653201 INFO rbatis::plugin::log - [rbatis] [404658382818119680] Fetch  ==> select * from biz_activity where id = ? limit 1
                                                       [rbatis]                      Args   ==> ["1"]
-2022-08-19 14:42:57.389865 INFO rbatis::plugin::log - [rbatis] [403076713862533120] ReturnRows <== 1
 [rbatis] [debug_mode] [value]   core::option::Option<crud::model::BizActivity> => [{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2019-12-12 00:00:00", "remark": "fff", "version": 1, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "活动1", "id": "1"}]
-select_by_id = Ok(Some(BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 0, min: 0, hour: 0, day: 12, mon: 12, year: 2019 })), version: Some(1), delete_flag: Some(0) }))
-2022-08-19 14:42:59.396231 INFO rbatis::plugin::log - [rbatis] [403076722284695552] Exec   ==> update biz_activity set name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where  id = ?
-                                                      [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1,"2"]
-2022-08-19 14:42:59.397060 INFO rbatis::plugin::log - [rbatis] [403076722284695552] RowsAffected <== 1
-update_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(6) })
-2022-08-19 14:43:01.400300 INFO rbatis::plugin::log - [rbatis] [403076730685886464] Exec   ==> update biz_activity set  id=?,name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where id = '2'
-                                                      [rbatis]                      Args   ==> ["2","2","2","2",2,"2",DateTime("2022-08-19 14:42:53.346144"),1,1]
-2022-08-19 14:43:01.404943 INFO rbatis::plugin::log - [rbatis] [403076730685886464] RowsAffected <== 1
+2022-08-23 23:27:56.653789 INFO rbatis::plugin::log - [rbatis] [404658382818119680] ReturnRows <== 1
+select_by_id = Ok(Some(BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(DateTime(2019-12-12 00:00:00)), version: Some(1), delete_flag: Some(0) }))
+2022-08-23 23:27:58.663324 INFO rbatis::plugin::log - [rbatis] [404658391248670720] Exec   ==> update biz_activity set name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where  id = ?
+                                                      [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1,"2"]
+2022-08-23 23:27:58.664195 INFO rbatis::plugin::log - [rbatis] [404658391248670720] RowsAffected <== 1
+update_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(7) })
+2022-08-23 23:28:00.666531 INFO rbatis::plugin::log - [rbatis] [404658399649861632] Exec   ==> update biz_activity set  id=?,name=?,pc_link=?,h5_link=?,status=?,remark=?,create_time=?,version=?,delete_flag=? where id = '2'
+                                                      [rbatis]                      Args   ==> ["2","2","2","2",2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1]
 update_by_name = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(7) })
-2022-08-19 14:43:03.410333 INFO rbatis::plugin::log - [rbatis] [403076739120631808] Exec   ==> delete from biz_activity where  id = ?
+2022-08-23 23:28:00.678682 INFO rbatis::plugin::log - [rbatis] [404658399649861632] RowsAffected <== 1
+2022-08-23 23:28:02.687381 INFO rbatis::plugin::log - [rbatis] [404658408126550016] Exec   ==> delete from biz_activity where  id = ?
                                                       [rbatis]                      Args   ==> ["2"]
-2022-08-19 14:43:03.411737 INFO rbatis::plugin::log - [rbatis] [403076739120631808] RowsAffected <== 1
-delete_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(6) })
-2022-08-19 14:43:05.417838 INFO rbatis::plugin::log - [rbatis] [403076747538599936] Exec   ==> delete from biz_activity where name= '2'
-                                                      [rbatis]                      Args   ==> []
-2022-08-19 14:43:05.422068 INFO rbatis::plugin::log - [rbatis] [403076747538599936] RowsAffected <== 1
 delete_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(7) })
-2022-08-19 14:43:07.428029 INFO rbatis::plugin::log - [rbatis] [403076755969150976] Fetch  ==> select count(1) as count from biz_activity 
+2022-08-23 23:28:02.698629 INFO rbatis::plugin::log - [rbatis] [404658408126550016] RowsAffected <== 1
+2022-08-23 23:28:04.708680 INFO rbatis::plugin::log - [rbatis] [404658416603238400] Exec   ==> delete from biz_activity where name= '2'
                                                       [rbatis]                      Args   ==> []
-2022-08-19 14:43:07.429972 INFO rbatis::plugin::log - [rbatis] [403076755969150976] ReturnRows <== 1
+delete_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(7) })
+2022-08-23 23:28:04.720904 INFO rbatis::plugin::log - [rbatis] [404658416603238400] RowsAffected <== 1
+2022-08-23 23:28:06.729403 INFO rbatis::plugin::log - [rbatis] [404658425079926784] Fetch  ==> select count(1) as count from biz_activity 
+                                                      [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   u64 => [{"count": 5}]
-2022-08-19 14:43:07.430278 INFO rbatis::plugin::log - [rbatis] [403076755981733888] Fetch  ==> select * from biz_activity order by create_time desc limit 0,10
+2022-08-23 23:28:06.729937 INFO rbatis::plugin::log - [rbatis] [404658425079926784] ReturnRows <== 1
+2022-08-23 23:28:06.730133 INFO rbatis::plugin::log - [rbatis] [404658425084121088] Fetch  ==> select * from biz_activity order by create_time desc limit 0,10
                                                       [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   alloc::vec::Vec<crud::model::BizActivity> => [{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "221"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "222"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "223"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:08:13", "remark": "", "version": 0, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "test_insret", "id": "178"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2019-12-12 00:00:00", "remark": "fff", "version": 1, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "活动1", "id": "1"}]
-2022-08-19 14:43:07.431172 INFO rbatis::plugin::log - [rbatis] [403076755981733888] ReturnRows <== 5
-select_page = Ok(Page { records: [BizActivity { id: Some("221"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 23, min: 10, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("222"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 23, min: 10, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("223"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 23, min: 10, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("178"), name: Some("test_insret"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 13, min: 8, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 0, min: 0, hour: 0, day: 12, mon: 12, year: 2019 })), version: Some(1), delete_flag: Some(0) }], total: 5, pages: 1, page_no: 1, page_size: 10, search_count: true })
-2022-08-19 14:43:09.433933 INFO rbatis::plugin::log - [rbatis] [403076764382924800] Fetch  ==> select count(1) as count from biz_activity where name != ''
+2022-08-23 23:28:06.730657 INFO rbatis::plugin::log - [rbatis] [404658425084121088] ReturnRows <== 5
+select_page = Ok(Page { records: [BizActivity { id: Some("221"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("222"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("223"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("178"), name: Some("test_insret"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:08:13)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(DateTime(2019-12-12 00:00:00)), version: Some(1), delete_flag: Some(0) }], total: 5, pages: 1, page_no: 1, page_size: 10, search_count: true })
+2022-08-23 23:28:08.740423 INFO rbatis::plugin::log - [rbatis] [404658433514672128] Fetch  ==> select count(1) as count from biz_activity where name != ''
                                                       [rbatis]                      Args   ==> []
-2022-08-19 14:43:09.435122 INFO rbatis::plugin::log - [rbatis] [403076764382924800] ReturnRows <== 1
 [rbatis] [debug_mode] [value]   u64 => [{"count": 5}]
-2022-08-19 14:43:09.435445 INFO rbatis::plugin::log - [rbatis] [403076764391313408] Fetch  ==> select * from biz_activity where name != '' limit 0,10
+2022-08-23 23:28:08.740967 INFO rbatis::plugin::log - [rbatis] [404658433514672128] ReturnRows <== 1
+2022-08-23 23:28:08.741108 INFO rbatis::plugin::log - [rbatis] [404658433518866432] Fetch  ==> select * from biz_activity where name != '' limit 0,10
                                                       [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   alloc::vec::Vec<crud::model::BizActivity> => [{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2019-12-12 00:00:00", "remark": "fff", "version": 1, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "活动1", "id": "1"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:08:13", "remark": "", "version": 0, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "test_insret", "id": "178"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "221"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "222"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "223"}]
-2022-08-19 14:43:09.436139 INFO rbatis::plugin::log - [rbatis] [403076764391313408] ReturnRows <== 5
-select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 0, min: 0, hour: 0, day: 12, mon: 12, year: 2019 })), version: Some(1), delete_flag: Some(0) }, BizActivity { id: Some("178"), name: Some("test_insret"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 13, min: 8, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("221"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 23, min: 10, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("222"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 23, min: 10, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("223"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(FastDateTime(DateTime { micro: 0, sec: 23, min: 10, hour: 20, day: 17, mon: 6, year: 2020 })), version: Some(0), delete_flag: Some(0) }], total: 5, pages: 1, page_no: 1, page_size: 10, search_count: true })
-
+2022-08-23 23:28:08.741559 INFO rbatis::plugin::log - [rbatis] [404658433518866432] ReturnRows <== 5
+select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(DateTime(2019-12-12 00:00:00)), version: Some(1), delete_flag: Some(0) }, BizActivity { id: Some("178"), name: Some("test_insret"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:08:13)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("221"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("222"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("223"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }], total: 5, pages: 1, page_no: 1, page_size: 10, search_count: true })
 ```
 
 #### TableDefine
