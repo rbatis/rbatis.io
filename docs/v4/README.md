@@ -249,7 +249,7 @@ select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Som
 
 #### debug_mode
 
->  debug_mode allow  show the project build gen rust code and show the database rows or error. and then you can see build log.
+>  debug_mode allow  show the project build gen rust code and show the database rows data or error. and then you can see build log.
 
 >  Note! We recommend that you turn off debug_mode in production
 
