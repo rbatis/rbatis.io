@@ -514,14 +514,13 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
    just like this exmaple:
    ```html
    <select id="select_page_data">
-           `select `
+           `select`
            <if test="do_count == true">
-               `count(1)`
+               ` count(1) from table`
            </if>
            <if test="do_count == false">
-               `*`
+               ` * from table limit ${page_no},${page_size}`
            </if>
-           ` from table limit ${page_no},${page_size}`
      </select>
    ```
 ```rust
