@@ -545,10 +545,7 @@ pub async fn main() {
     rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .await
         .unwrap();
-    let a = select_page_data(&mut rb.clone(),
-                                          &PageRequest::new(1, 10),
-                                          "test",
-                                          &FastDateTime::now().set_micro(0))
+    let a = select_page_data(&mut rb.clone(),&PageRequest::new(1, 10),"test",&FastDateTime::now().set_micro(0))
         .await
         .unwrap();
     println!("{:?}", a);
