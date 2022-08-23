@@ -249,11 +249,10 @@ select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Som
 
 #### debug_mode
 
-*  debug_mode allow  show the project build gen rust code. and then you can see build log.
+>  show the project build Generated code(rbatis_codgen Generated code). and then you can see build log.</br>
+>  show the database rows data or error. and then you can see data log.
 
-*   debug_mode allow  show the database rows data or error. and then you can see data log.
-
->  Note! We recommend that you turn off debug_mode in production
+Note! We recommend that you turn off debug_mode in production
 
 * add on your project/cargo.toml
 ```toml
