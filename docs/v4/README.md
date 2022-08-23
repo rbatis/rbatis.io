@@ -448,6 +448,63 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
 }
 ```
 
+
+##### Page
+> impl html_sql select page.
+  
+   you must deal with 3 param:
+   (do_count:bool,page_no:u64,page_size:u64)
+  
+   you must deal with sql:
+   return Vec<Record>（if param do_count = false）
+   return u64（if param do_count = true）
+  
+   just like this exmaple:
+   ```html
+   <select id="select_page_data">
+           `select `
+           <if test="do_count == true">
+               `count(1)`
+           </if>
+           <if test="do_count == false">
+               `*`
+           </if>
+     </select>
+   ```
+```rust
+#[macro_use]
+extern crate rbatis;
+
+pub mod model;
+
+use model::*;
+
+use rbatis::rbatis::Rbatis;
+use rbatis::rbdc::datetime::FastDateTime;
+use rbatis::sql::PageRequest;
+use rbdc_sqlite::driver::SqliteDriver;
+
+htmlsql_select_page!(select_page_data(name: &str, dt: &FastDateTime) -> BizActivity => "example/example.html");
+
+#[tokio::main]
+pub async fn main() {
+    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    let rb = Rbatis::new();
+    rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
+        .await
+        .unwrap();
+    let a = select_page_data(&mut rb.clone(),
+                                          &PageRequest::new(1, 10),
+                                          "test",
+                                          &FastDateTime::now().set_micro(0))
+        .await
+        .unwrap();
+    println!("{:?}", a);
+}
+```
+
+
+
 #### PySql
 
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
