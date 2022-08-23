@@ -40,7 +40,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 | Oracle        | [rbdc-oracle](https://crates.io/crates/rbdc-oracle) | [chenpengfan](https://github.com/chenpengfan/rbdc-oracle)   |
 
 
-#### CRUD-basic methods
+#### CRUD- basic use
 
 * Cargo.toml
 
@@ -62,7 +62,32 @@ rbdc-sqlite = { version = "0.1" }
 #...other database driver...
 ```
 
-* src/main.rs
+##### TableDefine
+
+> Rbatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
+> We use the ```crud!()``` macro ``` impl_*!() ``` macro Enables the table structure to have the ability to query and modify the database
+
+```rust
+use serde::{Deserialize, Serialize};
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<FastDateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+rbatis::crud!(BizActivity {}); //crud = async fn insert(...)+async fn  select_by_column(...)+ async fn  update_by_column(...)+async fn  delete_by_column(...)...and more
+```
+
+* the detail code(example/src/main.rs)
 
 ```rust
 //#[macro_use] define in 'root crate' or 'mod.rs' or 'main.rs'
@@ -222,30 +247,55 @@ select_page = Ok(Page { records: [BizActivity { id: Some("221"), name: Some("tes
 select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(DateTime(2019-12-12 00:00:00)), version: Some(1), delete_flag: Some(0) }, BizActivity { id: Some("178"), name: Some("test_insret"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:08:13)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("221"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("222"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("223"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }], total: 5, pages: 1, page_no: 1, page_size: 10, search_count: true })
 ```
 
-#### TableDefine
+#### debug_mode
 
-> Rbatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
-> We use the ```crud!()``` macro ``` impl_*!() ``` macro Enables the table structure to have the ability to query and modify the database
+>  debug_mode allow  show the project build gen rust code and show the database rows or error. and then you can see build log.
 
-```rust
-use serde::{Deserialize, Serialize};
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct BizActivity {
-    pub id: Option<String>,
-    pub name: Option<String>,
-    pub pc_link: Option<String>,
-    pub h5_link: Option<String>,
-    pub pc_banner_img: Option<String>,
-    pub h5_banner_img: Option<String>,
-    pub sort: Option<String>,
-    pub status: Option<i32>,
-    pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
-    pub version: Option<i64>,
-    pub delete_flag: Option<i32>,
-}
-crud!(BizActivity {}); //crud = async fn insert(...)+async fn  select_by_column(...)+ async fn  update_by_column(...)+async fn  delete_by_column(...)...and more
+* add on your project/cargo.toml
+```toml
+//just add Cargo.toml features=["debug_mode"]
+rbatis = { version = "4",features = ["debug_mode"]}
 ```
+
+* ```cargo run``` build log
+```log
+cargo run
+............gen macro py_sql :
+ pub async fn do_select_all(
+    rb: &mut dyn rbatis::executor::Executor,
+    table_name: String,
+) -> Result<Vec<BizActivity>, rbatis::rbdc::Error> {
+    let mut rb_arg_map = rbs::value::map::ValueMap::new();
+    rb_arg_map.insert(
+        "table_name".to_string().into(),
+        rbs::to_value(table_name).unwrap_or_default(),
+    );
+    {}
+    use rbatis::executor::RbatisRef;
+    let driver_type = rb.get_rbatis().driver_type()?;
+    use rbatis::rbatis_codegen;
+    pub fn do_select_all(arg: &rbs::Value, _tag: char) -> (String, Vec<rbs::Value>) {
+        use rbatis_codegen::ops::*;
+        let mut sql = String::with_capacity(1000);
+        let mut args = Vec::with_capacity(20);
+        sql.push_str(
+            "select * from ${table_name}"
+                .replacen("${table_name}", &{ &arg["table_name"] }.as_sql(), 1)
+                .as_str(),
+        );
+        rbatis_codegen::sql_index!(sql, _tag);
+        return (sql, args);
+    }
+    let (mut sql, rb_args) = do_select_all(&rbs::Value::Map(rb_arg_map), '?');
+    use rbatis::executor::Executor;
+    let r = rb.fetch(&sql, rb_args).await?;
+    rbatis::decode::decode(r)
+}
+............gen macro py_sql end............
+```
+
+
+
 
 
 #### Transaction
