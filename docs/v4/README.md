@@ -521,6 +521,7 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
            <if test="do_count == false">
                `*`
            </if>
+           ` from table limit ${page_no},${page_size}`
      </select>
    ```
 ```rust
