@@ -385,16 +385,16 @@ let mut args = Vec::with_capacity(20);
 
 | Syntax/method                                                                                 | rust code                                                           |
 |-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | .trim(" and")                                                       |
-| ``` <if test="key == 'id'"/> ```                                                              | if  key == "id"{}                                                   |
-| ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | for (key,item) in arg{}                                             |
-| ``` <continue/>  ```                                                                          | for (key,item) in arg{ continue;}                                   |
-| ``` <set>  ```                                                                                | sql.push_str("SET").trim("SET")                                     |
-| ``` <choose>  ```                                                                             | match                                                               |
-| ``` <when test="true">  ```                                                                   | match expr                                                          |
-| ``` <otherwise>  ```                                                                          | match { _ =>{} }                                                    |
-| ``` <where>  ```                                                                              | sql.push_str("WHERE").trim("WHERE")                                 |
-| ``` <bind name="a" value="1+1"></bind> ```                                                    | let a = 1 + 1                                                       |
+| ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                            |
+| ``` <if test="key == 'id'"/> ```                                                              | `if  key == "id"{}                     `                            |
+| ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | `for (key,item) in arg{}               `                            |
+| ``` <continue/>  ```                                                                          | `for (key,item) in arg{ continue;}     `                            |
+| ``` <set>  ```                                                                                | `sql.push_str("SET").trim("SET")       `                            |
+| ``` <choose>  ```                                                                             | `match {}                              `                            |
+| ``` <when test="true">  ```                                                                   | `match true{ true=>{} _ => {} }        `                            |
+| ``` <otherwise>  ```                                                                          | `match { _ =>{} }                      `                            |
+| ``` <where>  ```                                                                              | `sql.push_str("WHERE").trim("WHERE")       `                        |
+| ``` <bind name="a" value="1+1"></bind> ```                                                    | `let a = rbs::Value::I32(1 + 1)            `                        |
 | ``` ` and name=#{name}`    ```                                                                | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
 | ``` ` and name=${name}`     ```                                                               | `sql.push_str(&format!(" and name={}",name));                    `  |
 | ``` ` and name=${name + '_tag'}`  ```                                                         | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
@@ -512,18 +512,18 @@ pub async fn main() {
 
 | Syntax/method                         | rust code                                                           |
 |---------------------------------------|---------------------------------------------------------------------|
-| trim 'AND ':                          | .trim("AND ")                                                       |
-| if arg!=1:                            | if arg !=1 {}                                                       |
-| for key,item in arg:                  | for (key,item) in arg{ }                                            |
-| continue:                             | for (key,item) in arg{ continue; }                                  |
-| set :                                 | sql.push_str("SET").trim("SET")                                     |
-| choose :                              | match                                                               |
-| when :                                | match expr                                                          |
-| otherwise :                           | match { _ =>{} }                                                    |
-| _:                                    | match { _ =>{} }(v1.8.54 later)                                     |
-| where :                               | sql.push_str("WHERE").trim("WHERE")                                 |
-| bind a=1+1:                           | let a = 1+1                                                         |
-| let  a=1+1:                           | let a = 1+1(v1.8.54 later)                                          |
+| trim 'AND ':                          | `sql.trim("AND ")      `                                            |
+| if arg!=1:                            | `if arg !=1 {}               `                                      |
+| for key,item in arg:                  | `for (key,item) in arg{ }     `                                     |
+| continue:                             | `for (key,item) in arg{ continue; }      `                          |
+| set :                                 | `sql.push_str("SET").trim("SET")        `                           |
+| choose :                              | `match {}                                `                          |
+| when :                                | `match true{ true=>{} _ => {} }       `                             |
+| otherwise :                           | `match { _ =>{} }                    `                              |
+| _:                                    | `match { _ =>{} }(v1.8.54 later)         `                          |
+| where :                               | `sql.push_str("WHERE").trim("WHERE")    `                           |
+| bind a=1+1:                           | `let a = rbs::Value::I32(1 + 1) `                                   |
+| let  a=1+1:                           | `let a = rbs::Value::I32(1 + 1) `  (v1.8.54 later)                  |
 | ``` ` and name=#{name}`    ```        | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
 | ``` ` and name=${name}`     ```       | `sql.push_str(&format!(" and name={}",name));                    `  |
 | ``` ` and name=${name + '_tag'}`  ``` | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
