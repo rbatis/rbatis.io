@@ -494,6 +494,39 @@ let mut args = Vec::with_capacity(20);
 
 * define on rust code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
 ```rust
+// Clion Smart tips: click code, choose 'Inject Language or Reference', and then choose html
+#[html_sql(r#"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
+  <select id="select_by_condition">
+        `select * from biz_activity`
+        <where>
+         <if test="a">
+                ` and name like #{name}`
+            </if>
+            <if test="name != ''">
+                ` and name like #{name}`
+            </if>
+            <if test="dt >= '2009-12-12 00:00:00'">
+                ` and create_time < #{dt}`
+            </if>
+            <choose>
+                <when test="true">
+                    ` and id != '-1'`
+                </when>
+                <otherwise>and id != -2</otherwise>
+            </choose>
+            ` and `
+            <trim prefixOverrides=" and">
+                ` and name != '' `
+            </trim>
+        </where>
+  </select>"#)]
+async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
+    impled!()
+}
+```
+
+* define on rust from file [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_an_file.rs)
+```rust
 #[html_sql("example/example.html")]
 async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
     impled!()
