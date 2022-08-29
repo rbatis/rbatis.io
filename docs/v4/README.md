@@ -67,6 +67,8 @@ rbdc-sqlite = { version = "0.1" }
 > Rbatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
 > We use the ```crud!()``` macro ``` impl_*!() ``` macro Enables the table structure to have the ability to query and modify the database
 
+> ```crud!``` macros contains several impl_**() macros,so. ```crud!``` is a superset of macros ```impl_*!()```
+
 ```rust
 use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
@@ -84,10 +86,21 @@ pub struct BizActivity {
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
-rbatis::crud!(BizActivity {}); //crud = async fn insert(...)+async fn  select_by_column(...)+ async fn  update_by_column(...)+async fn  delete_by_column(...)...and more
+//crud = async fn insert(...)+async fn  select_by_column(...)+ async fn  update_by_column(...)+async fn  delete_by_column(...)...and more
+rbatis::crud!(BizActivity {}); 
+
 ```
 
-* the detail code(example/src/main.rs)
+###### custom table_name
+
+> rbatis allow custom your table_name, crud macro and impl_*() macro is different
+```rust
+rbatis::crud!(BizActivity {},"biz_activity"); // this way custom table name
+rbatis::impl_select!(BizActivity{select_by_id(table_name:&str,table_column:&str,id:String) -> Option => "`where id = #{id} limit 1`"});// this way custom table_name/table_column
+```
+
+
+###### macros example
 
 ```rust
 //#[macro_use] define in 'root crate' or 'mod.rs' or 'main.rs'
