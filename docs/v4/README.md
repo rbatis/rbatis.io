@@ -94,11 +94,19 @@ rbatis::crud!(BizActivity {});
 ###### custom table_name
 
 > rbatis allow custom your table_name, crud macro and impl_*() macro is different
+> just like gen sql ```select * from ${table_name} ```
 ```rust
 rbatis::crud!(BizActivity {},"biz_activity"); // this way custom table name
-rbatis::impl_select!(BizActivity{select_by_id(table_name:&str,table_column:&str,id:String) -> Option => "`where id = #{id} limit 1`"});// this way custom table_name/table_column
+rbatis::impl_select!(BizActivity{select_by_id(table_name:&str,id:String) -> Option => "`where id = #{id} limit 1`"});// this way custom table_name/table_column
 ```
 
+###### custom table_column
+
+> rbatis allow custom your table_column,just like gen sql ```select ${table_column} from ${table_name} ```
+
+```rust
+rbatis::impl_select!(BizActivity{select_by_id(table_name:&str,table_column:&str,id:String) -> Option => "`where id = #{id} limit 1`"});
+```
 
 ###### macros example
 
