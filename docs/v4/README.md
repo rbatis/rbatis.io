@@ -613,8 +613,11 @@ pub async fn main() {
 
 ##### Include
 
-> step1.define ```<sql id="a">` and id != '' `</sql>``` then,
-> use ``` <include refid="a"></include> ``` or ```<include refid="file://../rbatis/example/example.html?refid=a"></include>```
+> step1.define ```<sql id="a">` and id != '' `</sql>``` 
+
+> step2.use ``` <include refid="a"></include> ``` or ```<include refid="file://../rbatis/example/example.html?refid=a"></include>```
+
+for example:
 ```html
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
 <mapper>
