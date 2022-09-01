@@ -581,6 +581,42 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
            </if>
      </select>
    ```
+
+##### Include
+
+> step1.define ```<sql id="a">` and id != '' `</sql>``` then,
+> use ``` <include refid="a"></include> ``` or ```<include refid="file://../rbatis/example/example.html/?refid=a"></include>```
+```html
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
+<mapper>
+    <sql id="a">` and id != '' `</sql>
+    <select id="select_by_condition">
+        `select * from biz_activity`
+        <where>
+            <include refid="a"></include>
+            <include refid="file://../rbatis/example/example.html/?refid=a"></include>
+            <if test="name != ''">
+                ` and name like #{name}`
+            </if>
+            <if test="dt >= '2009-12-12 00:00:00'">
+                ` and create_time < #{dt}`
+            </if>
+            <choose>
+                <when test="true">
+                    ` and id != '-1'`
+                </when>
+                <otherwise>and id != -2</otherwise>
+            </choose>
+            ` and `
+            <trim prefixOverrides=" and">
+                ` and name != '' `
+            </trim>
+        </where>
+    </select>
+</mapper>
+```
+
+
 ```rust
 #[macro_use]
 extern crate rbatis;
