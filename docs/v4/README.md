@@ -767,8 +767,8 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
 for example:
 ```rust
-    #[crud_table]
-    #[derive(Clone, Debug)]
+    use serde::{Deserialize, Serialize};
+    #[derive(Clone, Debug, Deserialize, Serialize)]
     pub struct BizActivity {
         pub id: Option<String>,
         pub name: Option<String>,
