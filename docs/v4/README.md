@@ -581,6 +581,35 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
            </if>
      </select>
    ```
+```rust
+#[macro_use]
+extern crate rbatis;
+
+pub mod model;
+
+use model::*;
+
+use rbatis::rbatis::Rbatis;
+use rbatis::rbdc::datetime::FastDateTime;
+use rbatis::sql::PageRequest;
+use rbdc_sqlite::driver::SqliteDriver;
+
+htmlsql_select_page!(select_page_data(name: &str, dt: &FastDateTime) -> BizActivity => "example/example.html");
+
+#[tokio::main]
+pub async fn main() {
+    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    let rb = Rbatis::new();
+    rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
+        .await
+        .unwrap();
+    let a = select_page_data(&mut rb.clone(),&PageRequest::new(1, 10),"test",&FastDateTime::now().set_micro(0))
+        .await
+        .unwrap();
+    println!("{:?}", a);
+}
+```
+
 
 ##### Include
 
@@ -615,38 +644,6 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
     </select>
 </mapper>
 ```
-
-
-```rust
-#[macro_use]
-extern crate rbatis;
-
-pub mod model;
-
-use model::*;
-
-use rbatis::rbatis::Rbatis;
-use rbatis::rbdc::datetime::FastDateTime;
-use rbatis::sql::PageRequest;
-use rbdc_sqlite::driver::SqliteDriver;
-
-htmlsql_select_page!(select_page_data(name: &str, dt: &FastDateTime) -> BizActivity => "example/example.html");
-
-#[tokio::main]
-pub async fn main() {
-    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-    let rb = Rbatis::new();
-    rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
-        .await
-        .unwrap();
-    let a = select_page_data(&mut rb.clone(),&PageRequest::new(1, 10),"test",&FastDateTime::now().set_micro(0))
-        .await
-        .unwrap();
-    println!("{:?}", a);
-}
-```
-
-
 
 #### PySql
 
