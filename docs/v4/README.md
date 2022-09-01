@@ -767,6 +767,7 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 
 for example:
 ```rust
+    use rbatis::rbdc::datetime::FastDateTime;
     use serde::{Deserialize, Serialize};
     #[derive(Clone, Debug, Deserialize, Serialize)]
     pub struct BizActivity {
@@ -779,7 +780,7 @@ for example:
         pub sort: Option<String>,
         pub status: Option<i32>,
         pub remark: Option<String>,
-        pub create_time: Option<rbatis::DateTimeNative>,
+        pub create_time: Option<FastDateTime>,
         pub version: Option<BigDecimal>,
         pub delete_flag: Option<i32>,
     }
