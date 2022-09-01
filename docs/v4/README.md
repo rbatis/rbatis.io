@@ -613,6 +613,8 @@ pub async fn main() {
 
 ##### Include
 
+```<include>``` allows reference  SQL blocks and even SQL blocks from `xxxx.html` files, requiring ```refid``` to be specified for proper reference
+
 > step1.define ```<sql id="a">` and id != '' `</sql>``` 
 
 > step2.use ``` <include refid="a"></include> ``` or ```<include refid="file://../rbatis/example/example.html?refid=a"></include>```
