@@ -1,11 +1,11 @@
 
 ### rbatis-v4
 
-A highly Performant SQL Toolkit and Compile time ORM Library. An async, pure Rust SQL crate featuring compile-time Dynamic SQL
+A highly Performant SQL Toolkit and Compile time ORM Library. An async, pure `Rust` SQL crate featuring compile-time Dynamic SQL
 
 It is an ORM, a small compiler, a dynamic SQL languages
 
-* Compatible with most mybatis3 syntax.You can start recoding Java projects into Rust!
+* Compatible with most mybatis3 syntax.You can start recoding Java projects into `Rust`!
 * No Runtimes，No Garbage Collection,High performance, Based on Future/Tokio
 * Zero cost [Dynamic SQL](../v4/dyn_sql.md), implemented using (proc-macro,compile-time,Cow(Reduce unnecessary cloning))
   techniques。 don't need ONGL engine(mybatis)
@@ -15,7 +15,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * Dynamic SQL(Write code freely in SQL),pagination, ```py_sql``` query lang and ```html_sql```(Inspired Mybatis).
 * Dynamic configuration connection pool(Based on the mobc)
 * Supports logging, customizable logging based on `log` crate
-* 100% Safe Rust with `#![forbid(unsafe_code)]` enabled
+* 100% Safe `Rust` with `#![forbid(unsafe_code)]` enabled
 * Support use Trait System Add ```py_sql/ html_sql```
   functions.[see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_custom_func.rs)
 * [rbatis/example (import into Clion!)](example/src)
@@ -444,7 +444,7 @@ pub async fn main() {
 > It is implemented by Rbatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
 
 * When the RBatis dependency in Cargo.toml turns on the ```debug_mode``` feature, the generated function implementation code is printed
-* Language parsing -> Lexical analysis -> Syntax analysis -> generation of abstract syntax trees ->  translation to Rust code。Have the performance of native Rust
+* Language parsing -> Lexical analysis -> Syntax analysis -> generation of abstract syntax trees ->  translation to `Rust` code。Have the performance of native `Rust`
 * Of course, PySql is also a syntax tree using HtmlSql,PySql will be Convert to HtmlSql
 * It uses crates [rbs](https://crates.io/crates/rbs)  of   ```rbs::Value``` as the base object and operates on and any func
 * you can call any method/trait on ```rbs::Value``` such as ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'}  ``` or  ```  if sql.contans('count'):   ```
@@ -457,7 +457,7 @@ let mut args = Vec::with_capacity(20);
 
 * HtmlSql Syntax tree
 
-| Syntax/method                                                                                 | rust code                                                           |
+| Syntax/method                                                                                 | `Rust` code                                                         |
 |-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
 | ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                            |
 | ``` <if test="key == 'id'"/> ```                                                              | `if  key == "id"{}                     `                            |
@@ -473,7 +473,7 @@ let mut args = Vec::with_capacity(20);
 | ``` ` and name=${name}`     ```                                                               | `sql.push_str(&format!(" and name={}",name));                    `  |
 | ``` ` and name=${name + '_tag'}`  ```                                                         | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
 
-* define on rust code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
+* define on `Rust` code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
 ```rust
 // Clion Smart tips: click code, choose 'Inject Language or Reference', and then choose html
 #[html_sql(r#"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
@@ -507,7 +507,7 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
 ```
 
 
-* define on rust from file [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_an_file.rs)
+* define on `Rust` from file [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_an_file.rs)
 
 > example/example.html
 ```html
@@ -655,7 +655,7 @@ for example:
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
 * Syntax tree 
 
-| Syntax/method                         | rust code                                                           |
+| Syntax/method                         | `Rust` code                                                         |
 |---------------------------------------|---------------------------------------------------------------------|
 | `trim 'AND ':      `                  | `sql.trim("AND ")      `                                            |
 | `if arg!=1:         `                 | `if arg !=1 {}               `                                      |
