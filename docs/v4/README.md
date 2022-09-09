@@ -657,18 +657,18 @@ for example:
 
 | Syntax/method                         | rust code                                                           |
 |---------------------------------------|---------------------------------------------------------------------|
-| trim 'AND ':                          | `sql.trim("AND ")      `                                            |
-| if arg!=1:                            | `if arg !=1 {}               `                                      |
-| for key,item in arg:                  | `for (key,item) in arg{ }     `                                     |
-| continue:                             | `for (key,item) in arg{ continue; }      `                          |
-| set :                                 | `sql.push_str("SET").trim("SET")        `                           |
-| choose :                              | `match {}                                `                          |
-| when :                                | `match true{ true=>{} _ => {} }       `                             |
-| otherwise :                           | `match { _ =>{} }                    `                              |
-| _:                                    | `match { _ =>{} }(v1.8.54 later)         `                          |
-| where :                               | `sql.push_str("WHERE").trim("WHERE")    `                           |
-| bind a=1+1:                           | `let a = rbs::Value::I32(1 + 1) `                                   |
-| let  a=1+1:                           | `let a = rbs::Value::I32(1 + 1) `  (v1.8.54 later)                  |
+| `trim 'AND ':      `                  | `sql.trim("AND ")      `                                            |
+| `if arg!=1:         `                 | `if arg !=1 {}               `                                      |
+| `for key,item in arg:      `          | `for (key,item) in arg{ }     `                                     |
+| `continue:                 `          | `for (key,item) in arg{ continue; }      `                          |
+| `set :                       `        | `sql.push_str("SET").trim("SET")        `                           |
+| `choose :                     `       | `match {}                                `                          |
+| `when :              `                | `match true{ true=>{} _ => {} }       `                             |
+| `otherwise :           `              | `match { _ =>{} }                    `                              |
+| `_:              `                    | `match { _ =>{} }(v1.8.54 later)         `                          |
+| `where :              `               | `sql.push_str("WHERE").trim("WHERE")    `                           |
+| `bind a=1+1:       `                  | `let a = rbs::Value::I32(1 + 1) `                                   |
+| `let  a=1+1:     `                    | `let a = rbs::Value::I32(1 + 1) `  (v1.8.54 later)                  |
 | ``` ` and name=#{name}`    ```        | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
 | ``` ` and name=${name}`     ```       | `sql.push_str(&format!(" and name={}",name));                    `  |
 | ``` ` and name=${name + '_tag'}`  ``` | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
