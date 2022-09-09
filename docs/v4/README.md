@@ -457,21 +457,31 @@ let mut args = Vec::with_capacity(20);
 
 * HtmlSql Syntax tree
 
-| Syntax/method                                                                                 | Generated `Rust` code                                               |
-|-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
-| ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                            |
-| ``` <if test="key == 'id'"/> ```                                                              | `if  key == "id"{}                     `                            |
-| ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | `for (key,item) in arg{}               `                            |
-| ``` <continue/>  ```                                                                          | `for (key,item) in arg{ continue;}     `                            |
-| ``` <set>  ```                                                                                | `sql.push_str("SET").trim("SET")       `                            |
-| ``` <choose>  ```                                                                             | `match {}                              `                            |
-| ``` <when test="true">  ```                                                                   | `match true{ true=>{} _ => {} }        `                            |
-| ``` <otherwise>  ```                                                                          | `match { _ =>{} }                      `                            |
-| ``` <where>  ```                                                                              | `sql.push_str("WHERE").trim("WHERE")       `                        |
-| ``` <bind name="a" value="1+1"></bind> ```                                                    | `let a = rbs::Value::I32(1 + 1)            `                        |
-| ``` ` and name=#{name}`    ```                                                                | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
-| ``` ` and name=${name}`     ```                                                               | `sql.push_str(&format!(" and name={}",name));                    `  |
-| ``` ` and name=${name + '_tag'}`  ```                                                         | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
+| Syntax/method                                                                                 | Generated `Rust` code                                              |
+|-----------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                           |
+| ``` <if test="key == 'id'"/> ```                                                              | `if  key == "id"{}                     `                           |
+| ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | `for (key,item) in arg{}               `                           |
+| ``` <continue/>  ```                                                                          | `for (key,item) in arg{ continue;}     `                           |
+| ``` <set>  ```                                                                                | `sql.push_str("SET").trim("SET")       `                           |
+| ``` <choose>  ```                                                                             | `match {}                              `                           |
+| ``` <when test="true">  ```                                                                   | `match true{ true=>{} _ => {} }        `                           |
+| ``` <otherwise>  ```                                                                          | `match { _ =>{} }                      `                           |
+| ``` <where>  ```                                                                              | `sql.push_str("WHERE").trim("WHERE")       `                       |
+| ``` <bind name="a" value="1+1"></bind> ```                                                    | `let a = rbs::Value::I32(1 + 1)            `                       |
+| ``` ` and name=#{name}`    ```                                                                | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));` |
+| ``` ` and name=${name}`     ```                                                               | `sql.push_str(&format!(" and name={}",name));                    ` |
+| ``` ` and age=${1 + 1}`  ```                                                                  | `sql.push_str(&format!(" and age={}", 1 + 1));    `                |
+| ``` ` and name=${name + '_tag'}`  ```                                                         | `sql.push_str(&format!(" and name={}",name + "_tag"));    `        |
+| ``` ` and age=${age + 1}`  ```                                                                | `sql.push_str(&format!(" and age={}", age + 1));    `              |
+| ``` ` and bitand=${true  & true}`  ```                                                        | `sql.push_str(&format!(" and bitand={}", true & true));    `       |
+| ``` ` and cmp=${2 >  1}`  ```                                                                 | `sql.push_str(&format!(" and cmp={}",2 >  1));    `                |
+| ``` ` and div=${2 /  1}`  ```                                                                 | `sql.push_str(&format!(" and div={}", 2 / 1));    `                |
+| ``` ` and eq=${2 ==  1}`  ```                                                                 | `sql.push_str(&format!(" and eq={}", 2 == 1));    `                |
+| ``` ` and mul=${2 *  1}`  ```                                                                 | `sql.push_str(&format!(" and mul={}", 2 * 1));    `                |
+| ``` ` and not=${ !false }`  ```                                                               | `sql.push_str(&format!(" and not={}", !false));    `               |
+| ``` ` and rem=${ 2 % 1 }`  ```                                                                | `sql.push_str(&format!(" and rem={}", 2 % 1));    `                |
+| ``` ` and sub=${ 2 - 1 }`  ```                                                                | `sql.push_str(&format!(" and sub={}", 2 - 1));    `                |
 
 * define on `Rust` code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
 ```rust
@@ -655,23 +665,35 @@ for example:
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
 * Syntax tree 
 
-| Syntax/method                         | Generated `Rust` code                                               |
-|---------------------------------------|---------------------------------------------------------------------|
-| `trim 'AND ':      `                  | `sql.trim("AND ")      `                                            |
-| `if arg!=1:         `                 | `if arg !=1 {}               `                                      |
-| `for key,item in arg:      `          | `for (key,item) in arg{ }     `                                     |
-| `continue:                 `          | `for (key,item) in arg{ continue; }      `                          |
-| `set :                       `        | `sql.push_str("SET").trim("SET")        `                           |
-| `choose :                     `       | `match {}                                `                          |
-| `when :              `                | `match true{ true=>{} _ => {} }       `                             |
-| `otherwise :           `              | `match { _ =>{} }                    `                              |
-| `_:              `                    | `match { _ =>{} }(v1.8.54 later)         `                          |
-| `where :              `               | `sql.push_str("WHERE").trim("WHERE")    `                           |
-| `bind a=1+1:       `                  | `let a = rbs::Value::I32(1 + 1) `                                   |
-| `let  a=1+1:     `                    | `let a = rbs::Value::I32(1 + 1) `  (v1.8.54 later)                  |
-| ``` ` and name=#{name}`    ```        | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));`  |
-| ``` ` and name=${name}`     ```       | `sql.push_str(&format!(" and name={}",name));                    `  |
-| ``` ` and name=${name + '_tag'}`  ``` | `sql.push_str(&format!(" and name={}",name.push_str("_tag")));    ` |
+| Syntax/method                          | Generated `Rust` code                                              |
+|----------------------------------------|--------------------------------------------------------------------|
+| `trim 'AND ':      `                   | `sql.trim("AND ")      `                                           |
+| `if arg!=1:         `                  | `if arg !=1 {}               `                                     |
+| `for key,item in arg:      `           | `for (key,item) in arg{ }     `                                    |
+| `continue:                 `           | `for (key,item) in arg{ continue; }      `                         |
+| `set :                       `         | `sql.push_str("SET").trim("SET")        `                          |
+| `choose :                     `        | `match {}                                `                         |
+| `when :              `                 | `match true{ true=>{} _ => {} }       `                            |
+| `otherwise :           `               | `match { _ =>{} }                    `                             |
+| `_:              `                     | `match { _ =>{} }(v1.8.54 later)         `                         |
+| `where :              `                | `sql.push_str("WHERE").trim("WHERE")    `                          |
+| `bind a=1+1:       `                   | `let a = rbs::Value::I32(1 + 1) `                                  |
+| `let  a=1+1:     `                     | `let a = rbs::Value::I32(1 + 1) `  (v1.8.54 later)                 |
+| ``` ` and name=#{name}`    ```         | `sql.push_str(" and name=?");args.push(rbs::Value::String(name));` |
+| ``` ` and name=${name}`     ```        | `sql.push_str(&format!(" and name={}",name));                    ` |
+| ``` ` and age=${1 + 1}`  ```           | `sql.push_str(&format!(" and age={}", 1 + 1));    `                |
+| ``` ` and name=${name + '_tag'}`  ```  | `sql.push_str(&format!(" and name={}",name + "_tag"));    `        |
+| ``` ` and age=${age + 1}`  ```         | `sql.push_str(&format!(" and age={}", age + 1));    `              |
+| ``` ` and bitand=${true  & true}`  ``` | `sql.push_str(&format!(" and bitand={}", true & true));    `       |
+| ``` ` and cmp=${2 >  1}`  ```          | `sql.push_str(&format!(" and cmp={}",2 >  1));    `                |
+| ``` ` and div=${2 /  1}`  ```          | `sql.push_str(&format!(" and div={}", 2 / 1));    `                |
+| ``` ` and eq=${2 ==  1}`  ```          | `sql.push_str(&format!(" and eq={}", 2 == 1));    `                |
+| ``` ` and mul=${2 *  1}`  ```          | `sql.push_str(&format!(" and mul={}", 2 * 1));    `                |
+| ``` ` and not=${ !false }`  ```        | `sql.push_str(&format!(" and not={}", !false));    `               |
+| ``` ` and rem=${ 2 % 1 }`  ```         | `sql.push_str(&format!(" and rem={}", 2 % 1));    `                |
+| ``` ` and sub=${ 2 - 1 }`  ```         | `sql.push_str(&format!(" and sub={}", 2 - 1));    `                |
+
+
 
 ```rust
 #[py_sql(
