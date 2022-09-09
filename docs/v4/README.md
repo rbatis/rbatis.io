@@ -457,7 +457,7 @@ let mut args = Vec::with_capacity(20);
 
 * HtmlSql Syntax tree
 
-| Syntax/method                                                                                 | `Rust` code                                                         |
+| Syntax/method                                                                                 | Generated `Rust` code                                               |
 |-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------|
 | ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                            |
 | ``` <if test="key == 'id'"/> ```                                                              | `if  key == "id"{}                     `                            |
@@ -655,7 +655,7 @@ for example:
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
 * Syntax tree 
 
-| Syntax/method                         | `Rust` code                                                         |
+| Syntax/method                         | Generated `Rust` code                                               |
 |---------------------------------------|---------------------------------------------------------------------|
 | `trim 'AND ':      `                  | `sql.trim("AND ")      `                                            |
 | `if arg!=1:         `                 | `if arg !=1 {}               `                                      |
