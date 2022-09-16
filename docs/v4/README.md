@@ -276,6 +276,11 @@ select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Som
 
 Note! debug_mode should set log level to 'debug'
 
+* open features on Cargo.toml
+```toml
+rbatis = { version = "4",features = ["debug_mode"]}
+```
+
 * just like fast_log set level
 ```rust
 //fast_log::init(fast_log::Config::new().console().level(log::LevelFilter::Debug));
