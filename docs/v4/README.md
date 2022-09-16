@@ -274,12 +274,13 @@ select_page_by_name = Ok(Page { records: [BizActivity { id: Some("1"), name: Som
 >  show the project build Generated code(`rbatis_codgen` Generated code). and then you can see build log.</br>
 >  show the database rows data or error. and then you can see data log.
 
-Note! We recommend that you turn off debug_mode in production
+Note! debug_mode should set log level to 'debug'
 
-* add on your project/cargo.toml
-```toml
-//just add Cargo.toml features=["debug_mode"]
-rbatis = { version = "4",features = ["debug_mode"]}
+* just like fast_log set level
+```rust
+//fast_log::init(fast_log::Config::new().console().level(log::LevelFilter::Debug));
+....
+fast_log::LOGGER.set_level(log::LevelFilter::Debug);
 ```
 
 * ```cargo run``` build log
