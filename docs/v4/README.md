@@ -791,17 +791,12 @@ impl SqlIntercept for Intercept{
         Ok(())
     }
 }
-```
-
-> Set to Rbatis
-
-```rust
+//Set to Rbatis
 fn main(){
     let mut rb=Rbatis::new();
     rb.set_sql_intercepts(vec![Box::new(Intercept{})]);
 }
 ```
-
 
 
 #### Plug-in: distributed unique ID (snowflake algorithm(i64))
