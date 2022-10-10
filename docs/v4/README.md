@@ -778,16 +778,18 @@ pub async fn main() {
 > Implementing an interface
 
 ```rust
+use rbatis::intercept::SqlIntercept;
+use rbatis::Rbatis;
+#[derive(Debug)]
 pub struct Intercept{}
 
 impl SqlIntercept for Intercept{
-
-    ///the intercept name
-    fn name(&self) -> &str;
-
     /// do intercept sql/args
     /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<bson::Bson>, is_prepared_sql: bool) -> Result<(), rbatis::core::Error>;
+    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<rbs::Value>, is_prepared_sql: bool) -> Result<(), rbatis::Error>{
+        println!("sql=>{}",sql);
+        Ok(())
+    }
 }
 ```
 
