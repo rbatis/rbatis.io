@@ -796,8 +796,10 @@ impl SqlIntercept for Intercept{
 > Set to Rbatis
 
 ```rust
-let mut rb=Rbatis::new();
-rb.sql_intercepts.push(Box::new(Intercept{}));
+fn main(){
+    let mut rb=Rbatis::new();
+    rb.set_sql_intercepts(vec![Box::new(Intercept{})]);
+}
 ```
 
 
@@ -805,13 +807,11 @@ rb.sql_intercepts.push(Box::new(Intercept{}));
 #### Plug-in: distributed unique ID (snowflake algorithm(i64))
 
 ```rust
-    use crate::plugin::snowflake::{new_snowflake_id};
-
+    use rbatis::plugin::snowflake::new_snowflake_id;
     #[test]
     fn test_new_async_id() {
-        //Snowflake::new()  //Snowflake::new(Must be a singleton or global variable)
-            
-            //default use
+         //Snowflake::new()  //Snowflake::new(Must be a singleton or global variable)
+         //default use
          println!("{}", new_snowflake_id().to_string());
     }
 ```
