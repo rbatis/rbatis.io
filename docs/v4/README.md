@@ -141,6 +141,8 @@ impl_select!(BizActivity{select_all_by_id(id:&str,name:&str) => "`where id = #{i
 impl_select!(BizActivity{select_by_id(id:String) -> Option => "`where id = #{id} limit 1`"});
 impl_update!(BizActivity{update_by_name(name:&str) => "`where id = 1`"});
 impl_delete!(BizActivity {delete_by_name(name:&str) => "`where name= '2'`"});
+//limiting condition：maybe pg/mssql not support sql `limit 0,10` you should add arg  `limit_sql:&str` of set limit_sql = " limit 0 offset 10"
+//`impl_select_page!(BizActivity{select_page(name:&str,limit_sql:&str) => "`where name != #{name}`"});`
 impl_select_page!(BizActivity{select_page(name:&str) => "`where name != #{name}`"});
 
 #[tokio::main]
