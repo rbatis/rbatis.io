@@ -225,12 +225,12 @@ insert_batch = Ok(ExecResult { rows_affected: 2, last_insert_id: U64(7) })
                                                       [rbatis]                      Args   ==> ["2","2","2",2,"2",DateTime("2022-08-23 23:27:52.591131"),1,1,"3"]
 update_by_column_batch = Ok(ExecResult { rows_affected: 2, last_insert_id: Null })
 2022-08-23 23:27:52.625456 INFO rbatis::plugin::log - [rbatis] [404658365923463168] RowsAffected <== 1
-2022-08-23 23:27:54.638880 INFO rbatis::plugin::log - [rbatis] [404658374366597120] Fetch  ==> select * from biz_activity where id = ? and name = ?
+2022-08-23 23:27:54.638880 INFO rbatis::plugin::log - [rbatis] [404658374366597120] Query  ==> select * from biz_activity where id = ? and name = ?
                                                       [rbatis]                      Args   ==> ["1","1"]
 2022-08-23 23:27:54.639515 INFO rbatis::plugin::log - [rbatis] [404658374366597120] ReturnRows <== 0
 [rbatis] [debug_mode] [value]   alloc::vec::Vec<crud::model::BizActivity> => []
 select_all_by_id = Ok([])
-2022-08-23 23:27:56.653201 INFO rbatis::plugin::log - [rbatis] [404658382818119680] Fetch  ==> select * from biz_activity where id = ? limit 1
+2022-08-23 23:27:56.653201 INFO rbatis::plugin::log - [rbatis] [404658382818119680] Query  ==> select * from biz_activity where id = ? limit 1
                                                       [rbatis]                      Args   ==> ["1"]
 [rbatis] [debug_mode] [value]   core::option::Option<crud::model::BizActivity> => [{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2019-12-12 00:00:00", "remark": "fff", "version": 1, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "活动1", "id": "1"}]
 2022-08-23 23:27:56.653789 INFO rbatis::plugin::log - [rbatis] [404658382818119680] ReturnRows <== 1
@@ -251,20 +251,20 @@ delete_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(7) })
                                                       [rbatis]                      Args   ==> []
 delete_by_column = Ok(ExecResult { rows_affected: 1, last_insert_id: U64(7) })
 2022-08-23 23:28:04.720904 INFO rbatis::plugin::log - [rbatis] [404658416603238400] RowsAffected <== 1
-2022-08-23 23:28:06.729403 INFO rbatis::plugin::log - [rbatis] [404658425079926784] Fetch  ==> select count(1) as count from biz_activity 
+2022-08-23 23:28:06.729403 INFO rbatis::plugin::log - [rbatis] [404658425079926784] Query  ==> select count(1) as count from biz_activity 
                                                       [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   u64 => [{"count": 5}]
 2022-08-23 23:28:06.729937 INFO rbatis::plugin::log - [rbatis] [404658425079926784] ReturnRows <== 1
-2022-08-23 23:28:06.730133 INFO rbatis::plugin::log - [rbatis] [404658425084121088] Fetch  ==> select * from biz_activity order by create_time desc limit 0,10
+2022-08-23 23:28:06.730133 INFO rbatis::plugin::log - [rbatis] [404658425084121088] Query  ==> select * from biz_activity order by create_time desc limit 0,10
                                                       [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   alloc::vec::Vec<crud::model::BizActivity> => [{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "221"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "222"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "223"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:08:13", "remark": "", "version": 0, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "test_insret", "id": "178"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2019-12-12 00:00:00", "remark": "fff", "version": 1, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "活动1", "id": "1"}]
 2022-08-23 23:28:06.730657 INFO rbatis::plugin::log - [rbatis] [404658425084121088] ReturnRows <== 5
 select_page = Ok(Page { records: [BizActivity { id: Some("221"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("222"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("223"), name: Some("test"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("0"), status: Some(0), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:10:23)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("178"), name: Some("test_insret"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some(""), create_time: Some(DateTime(2020-06-17 20:08:13)), version: Some(0), delete_flag: Some(0) }, BizActivity { id: Some("1"), name: Some("活动1"), pc_link: Some(""), h5_link: Some(""), pc_banner_img: Some(""), h5_banner_img: Some(""), sort: Some("1"), status: Some(1), remark: Some("fff"), create_time: Some(DateTime(2019-12-12 00:00:00)), version: Some(1), delete_flag: Some(0) }], total: 5, pages: 1, page_no: 1, page_size: 10, search_count: true })
-2022-08-23 23:28:08.740423 INFO rbatis::plugin::log - [rbatis] [404658433514672128] Fetch  ==> select count(1) as count from biz_activity where name != ''
+2022-08-23 23:28:08.740423 INFO rbatis::plugin::log - [rbatis] [404658433514672128] Query  ==> select count(1) as count from biz_activity where name != ''
                                                       [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   u64 => [{"count": 5}]
 2022-08-23 23:28:08.740967 INFO rbatis::plugin::log - [rbatis] [404658433514672128] ReturnRows <== 1
-2022-08-23 23:28:08.741108 INFO rbatis::plugin::log - [rbatis] [404658433518866432] Fetch  ==> select * from biz_activity where name != '' limit 0,10
+2022-08-23 23:28:08.741108 INFO rbatis::plugin::log - [rbatis] [404658433518866432] Query  ==> select * from biz_activity where name != '' limit 0,10
                                                       [rbatis]                      Args   ==> []
 [rbatis] [debug_mode] [value]   alloc::vec::Vec<crud::model::BizActivity> => [{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2019-12-12 00:00:00", "remark": "fff", "version": 1, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "活动1", "id": "1"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:08:13", "remark": "", "version": 0, "status": 1, "sort": "1", "h5_link": "", "pc_link": "", "name": "test_insret", "id": "178"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "221"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "222"},{"h5_banner_img": "", "pc_banner_img": "", "delete_flag": 0, "create_time": "2020-06-17 20:10:23", "remark": "", "version": 0, "status": 0, "sort": "0", "h5_link": "", "pc_link": "", "name": "test", "id": "223"}]
 2022-08-23 23:28:08.741559 INFO rbatis::plugin::log - [rbatis] [404658433518866432] ReturnRows <== 5
@@ -321,7 +321,7 @@ cargo run
     }
     let (mut sql, rb_args) = do_select_all(&rbs::Value::Map(rb_arg_map), '?');
     use rbatis::executor::Executor;
-    let r = rb.fetch(&sql, rb_args).await?;
+    let r = rb.query(&sql, rb_args).await?;
     rbatis::decode::decode(r)
 }
 ............gen macro py_sql end............
@@ -434,11 +434,11 @@ pub async fn main() {
         &format!("sqlite://{}target/sqlite.db", path),
     ).await.unwrap();
     let table: Option<BizActivity> = rb
-        .fetch_decode("select * from biz_activity limit ?", vec![to_value!(1)])
+        .query_decode("select * from biz_activity limit ?", vec![to_value!(1)])
         .await
         .unwrap();
     let count: u64 = rb
-        .fetch_decode("select count(1) as count from biz_activity", vec![])
+        .query_decode("select count(1) as count from biz_activity", vec![])
         .await
         .unwrap();
     sleep(Duration::from_secs(1)).await;
