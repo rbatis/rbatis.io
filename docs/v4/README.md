@@ -352,9 +352,10 @@ pub async fn main() {
     // });
     //tx.exec("select 1", vec![]).await.unwrap();
     BizActivity::insert(&mut tx, &t).await.unwrap();
-    
+
     tx.commit().await.unwrap();
     tx.rollback().await.unwrap();
+}
 ```
 
 
