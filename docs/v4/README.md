@@ -46,21 +46,18 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * install step: Cargo.toml(run command `cargo update`)
 
 ```toml
-#async runtime lib
-tokio = { version = "1", features = ["full"] }
-# logging(option)
-log = "0.4"
-fast_log = "1.5"
-# serde/rbs (required)
-serde = { version = "1", features = ["derive"] }
+#rbatis deps
 rbs = { version = "4.1"}
 rbatis = { version = "4.1"}
-# choose one rbdc drivier
 rbdc-sqlite = { version = "4.1" }
 #rbdc-mysql={version="4.1"}
 #rbdc-pg={version="4.1"}
 #rbdc-mssql={version="4.1"}
-#...other database driver...
+
+#other deps
+tokio = { version = "1", features = ["full"] }
+log = "0.4"
+fast_log = "1.5"
 ```
 
 ##### TableDefine
