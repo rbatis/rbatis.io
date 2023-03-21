@@ -47,12 +47,12 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 ```toml
 #rbatis deps
-rbs = { version = "4.1"}
-rbatis = { version = "4.1"}
-rbdc-sqlite = { version = "4.1" }
-#rbdc-mysql={version="4.1"}
-#rbdc-pg={version="4.1"}
-#rbdc-mssql={version="4.1"}
+rbs = { version = "4.3"}
+rbatis = { version = "4.3"}
+rbdc-sqlite = { version = "4.3" }
+#rbdc-mysql={version="4.3"}
+#rbdc-pg={version="4.3"}
+#rbdc-mssql={version="4.3"}
 
 #other deps
 serde = { version = "1", features = ["derive"] }
