@@ -25,7 +25,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 #### Supported database driver
 
-> the Rbatis support any impl [rdbc](https://crates.io/crates/rbdc) drivers.
+> the RBatis support any impl [rdbc](https://crates.io/crates/rbdc) drivers.
 > If you don't have the following driver you want, you can write one yourself, just as long as the impl ``` rbdc::db::* ``` traits
 
 | database(crates.io)                                 | github_link                                                                    |
@@ -82,7 +82,7 @@ fast_log = "1.5"
 
 ##### TableDefine
 
-> Rbatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
+> RBatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
 > We use the ```crud!()``` macro ``` impl_*!() ``` macro Enables the table structure to have the ability to query and modify the database
 
 > ```crud!``` macros contains several impl_**() macros,so. ```crud!``` is a superset of macros ```impl_*!()```
@@ -169,7 +169,7 @@ async fn main() {
     /// enable log crate to show sql logs
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
-    let rb = Rbatis::new();
+    let rb = RBatis::new();
     /// connect to database 
 
     //init() just set driver
@@ -289,7 +289,7 @@ cargo run
         rbs::to_value(table_name).unwrap_or_default(),
     );
     {}
-    use rbatis::executor::RbatisRef;
+    use rbatis::executor::RBatisRef;
     let driver_type = rb.get_rbatis().driver_type()?;
     use rbatis::rbatis_codegen;
     pub fn do_select_all(arg: &rbs::Value, _tag: char) -> (String, Vec<rbs::Value>) {
@@ -319,7 +319,7 @@ cargo run
 #### Transaction
 
 > The essence of a transaction is to use the SQL statements BEGIN, COMMIT, and ROLLBACK.
-> The Rbatis provides these three functions but also support ```defer_async()``` to prevent forgotten commits 
+> The RBatis provides these three functions but also support ```defer_async()``` to prevent forgotten commits 
 
 example [see](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
@@ -344,7 +344,7 @@ crud!(BizActivity{});
 #[tokio::main]
 pub async fn main() {
     let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-    let rb = Rbatis::new();
+    let rb = RBatis::new();
     // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await.unwrap();
     // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
     // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await.unwrap();
@@ -385,7 +385,7 @@ pub async fn main() {
 
 #### Raw Sql
 
-> the Rbatis also support Write the original statements of the database
+> the RBatis also support Write the original statements of the database
 > And the drivers provided by RBatis all support placeholder '?',so you can write '?' on Postgres/mssql...and more
 
 ```rust
@@ -411,7 +411,7 @@ pub struct BizActivity {
 #[tokio::main]
 pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-     let rb = Rbatis::new();
+     let rb = RBatis::new();
     // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await.unwrap();
     // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
     // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await.unwrap();
@@ -435,7 +435,7 @@ pub async fn main() {
 
 
 #### HtmlSql
-> It is implemented by Rbatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
+> It is implemented by RBatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
 
 * When the RBatis dependency in Cargo.toml turns on the ```debug_mode``` feature, the generated function implementation code is printed
 * Language parsing -> Lexical analysis -> Syntax analysis -> generation of abstract syntax trees ->  translation to `Rust` code。Have the performance of native `Rust`
@@ -593,7 +593,7 @@ pub mod model;
 
 use model::*;
 
-use rbatis::rbatis::Rbatis;
+use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::FastDateTime;
 use rbatis::sql::PageRequest;
 use rbdc_sqlite::driver::SqliteDriver;
@@ -603,7 +603,7 @@ htmlsql_select_page!(select_page_data(name: &str, dt: &FastDateTime) -> BizActiv
 #[tokio::main]
 pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-    let rb = Rbatis::new();
+    let rb = RBatis::new();
     rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .await
         .unwrap();
@@ -710,7 +710,7 @@ async fn py_select(rb: &mut dyn Executor, name: &str) -> Result<Vec<BizActivity>
 * If the table exists but a column is missing, increment the column of the missing section
 
 ```rust
-use rbatis::rbatis::Rbatis;
+use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::FastDateTime;
 use rbatis::table_sync::{SqliteTableSync, TableSync};
 use rbdc_sqlite::driver::SqliteDriver;
@@ -729,7 +729,7 @@ pub struct RBUser {
 #[tokio::main]
 pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-    let rb = Rbatis::new();
+    let rb = RBatis::new();
     rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .unwrap();
     let mut s = SqliteTableSync::default();
@@ -755,21 +755,21 @@ pub async fn main() {
 
 ```rust
 use rbatis::intercept::SqlIntercept;
-use rbatis::Rbatis;
+use rbatis::RBatis;
 #[derive(Debug)]
 pub struct Intercept{}
 
 impl SqlIntercept for Intercept{
     /// do intercept sql/args
     /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &Rbatis, sql: &mut String, args: &mut Vec<rbs::Value>, is_prepared_sql: bool) -> Result<(), rbatis::Error>{
+    fn do_intercept(&self, rb: &RBatis, sql: &mut String, args: &mut Vec<rbs::Value>, is_prepared_sql: bool) -> Result<(), rbatis::Error>{
         println!("sql=>{}",sql);
         Ok(())
     }
 }
-//Set to Rbatis
+//Set to RBatis
 fn main(){
-    let mut rb=Rbatis::new();
+    let mut rb=RBatis::new();
     rb.set_sql_intercepts(vec![Box::new(Intercept{})]);
 }
 ```
