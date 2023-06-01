@@ -46,6 +46,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * install step: Cargo.toml(run command `cargo update`)
 
 * toml(default)
+
 ```toml
 #rbatis deps
 rbs = { version = "4.3"}
@@ -55,7 +56,6 @@ rbdc-sqlite = { version = "4.3" }
 #rbdc-pg={version="4.3"}
 #rbdc-mssql={version="4.3"}
 
-#other deps
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
 log = "0.4"
@@ -63,6 +63,7 @@ fast_log = "1.5"
 ```
 
 * toml (option) 'native-tls'
+
 ```toml
 rbs = { version = "4.3" }
 rbdc-sqlite = { version = "4.3", default-features = false, features = ["tls-native-tls"] }
@@ -70,7 +71,7 @@ rbdc-sqlite = { version = "4.3", default-features = false, features = ["tls-nati
 #rbdc-pg={version="4.3", default-features = false, features = ["tls-native-tls"]}
 #rbdc-mssql={version="4.3", default-features = false, features = ["tls-native-tls"]}
 rbatis = { version = "4.3", default-features = false, features = ["tls-native-tls","default_mode"] }
-#other deps
+
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
 log = "0.4"
