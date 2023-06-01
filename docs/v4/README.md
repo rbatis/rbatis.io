@@ -45,7 +45,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 * install step: Cargo.toml(run command `cargo update`)
 
-* toml(default)
+* `toml`(default)
 
 ```toml
 #rbatis deps
@@ -62,7 +62,7 @@ log = "0.4"
 fast_log = "1.5"
 ```
 
-* toml (option) 'native-tls'
+* `toml` `native-tls` (option)
 
 ```toml
 rbs = { version = "4.3" }
