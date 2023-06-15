@@ -749,28 +749,42 @@ pub async fn main() {
 ```
 
 
-#### plugin: SqlIntercept
+#### plugin: Intercept
 
 > Implementing an interface
 
 ```rust
-use rbatis::intercept::SqlIntercept;
+use rbatis::intercept::Intercept;
 use rbatis::RBatis;
 #[derive(Debug)]
-pub struct Intercept{}
+pub struct MyInterceptor{}
 
-impl SqlIntercept for Intercept{
-    /// do intercept sql/args
-    /// is_prepared_sql: if is run in prepared_sql=ture
-    fn do_intercept(&self, rb: &RBatis, sql: &mut String, args: &mut Vec<rbs::Value>, is_prepared_sql: bool) -> Result<(), rbatis::Error>{
-        println!("sql=>{}",sql);
-        Ok(())
+impl Intercept for MyInterceptor {
+    fn before(
+        &self,
+        task_id: i64,
+        _rb: &dyn Executor,
+        sql: &mut String,
+        args: &mut Vec<Value>,
+    ) -> Result<(), Error> {
+       Ok(())
+    }
+
+    fn after(
+        &self,
+        task_id: i64,
+        _rb: &dyn Executor,
+        sql: &mut String,
+        _args: &mut Vec<Value>,
+        result: Result<ResultType<&mut ExecResult, &mut Vec<Value>>, &mut Error>,
+    ) -> Result<(), Error> {
+       Ok(())
     }
 }
-//Set to RBatis
+//push into RBatis
 fn main(){
     let mut rb=RBatis::new();
-    rb.set_sql_intercepts(vec![Box::new(Intercept{})]);
+    rb.intercepts.push(Arc::new(MyInterceptor{} as Arc<dyn Intercept>));
 }
 ```
 
