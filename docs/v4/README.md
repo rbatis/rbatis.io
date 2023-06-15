@@ -784,7 +784,7 @@ impl Intercept for MyInterceptor {
 //push into RBatis
 fn main(){
     let mut rb=RBatis::new();
-    rb.intercepts.push(Arc::new(MyInterceptor{} as Arc<dyn Intercept>));
+    rb.intercepts.push(Arc::new(MyInterceptor{} as Arc<dyn Intercept>);
 }
 ```
 
