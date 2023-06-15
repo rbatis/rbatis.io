@@ -754,8 +754,11 @@ pub async fn main() {
 > Implementing an interface
 
 ```rust
-use rbatis::intercept::Intercept;
-use rbatis::RBatis;
+use rbatis::{Error, RBatis};
+use rbatis::executor::Executor;
+use rbatis::intercept::{Intercept, ResultType};
+use rbdc::db::ExecResult;
+use rbs::Value;
 #[derive(Debug)]
 pub struct MyInterceptor{}
 
