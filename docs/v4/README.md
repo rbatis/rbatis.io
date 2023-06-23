@@ -898,6 +898,11 @@ for example:
 
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
+* step0: create your cargo project,and add 'rbdc = "4.3.8"' on Cargo.toml
+```toml
+rbdc = "4.3.8"
+```
+
 * step1: define you driver struct
 ```rust
 #[derive(Debug, Clone)]
