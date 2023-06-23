@@ -923,18 +923,20 @@ struct MockConnectOptions {}
 * step2: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
 
 ```rust
-   use rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
-   use rbdc::Error;
-   use rbs::Value;
+use std::any::Any;
+use futures_core::future::BoxFuture;
+use rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder, ExecResult};
+use rbdc::Error;
+use rbs::Value;
 
-   impl Driver for MockDriver {
+impl Driver for MockDriver {
     fn name(&self) -> &str {
         "MockDriver"
     }
     fn connect(&self, url: &str) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
         let url = url.to_owned();
         Box::pin(async move {
-            let conn;//todo make an connection
+            let conn = MockConnection {};
             Ok(Box::new(conn) as Box<dyn Connection>)
         })
     }
@@ -943,27 +945,56 @@ struct MockConnectOptions {}
         &'a self,
         opt: &'a dyn ConnectOptions,
     ) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
-        let opt = opt.downcast_ref::<MssqlConnectOptions>().unwrap();
+        let opt = opt.downcast_ref::<MockConnectOptions>().unwrap();
         Box::pin(async move {
-            let conn;//todo make an connection
+            let conn = MockConnection {};
             Ok(Box::new(conn) as Box<dyn Connection>)
         })
     }
 
     fn default_option(&self) -> Box<dyn ConnectOptions> {
-        Box::new(MockConnectOptions{})
+        Box::new(MockConnectOptions {})
     }
 }
-   impl MetaData for MockRowMetaData{}
-   impl Row for MockRow {}
-   impl Connection for MockConnection{}
-   impl ConnectOptions for MockConnectOptions{}
-   impl Placeholder for MssqlDriver {
-       fn exchange(&self, sql: &str) -> String {
-           rbdc::impl_exchange("@P", 1, sql) //if database not support sql Placeholder '?',replace '@1' to '?'
-           //return sql.to_string();//if database is support sql Placeholder '?'
-       }
-   }
+
+impl MetaData for MockRowMetaData {
+    fn column_len(&self) -> usize {  todo!() }
+
+    fn column_name(&self, i: usize) -> String {  todo!() }
+
+    fn column_type(&self, i: usize) -> String {  todo!() }
+}
+
+impl Row for MockRow {
+    fn meta_data(&self) -> Box<dyn MetaData> {  todo!() }
+
+    fn get(&mut self, i: usize) -> Result<Value, Error> {  todo!() }
+}
+
+impl Connection for MockConnection {
+    fn get_rows(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<Vec<Box<dyn Row>>, Error>> {  todo!() }
+
+    fn exec(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<ExecResult, Error>> {  todo!() }
+
+    fn close(&mut self) -> BoxFuture<Result<(), Error>> {  todo!() }
+
+    fn ping(&mut self) -> BoxFuture<Result<(), Error>> {  todo!() }
+}
+
+impl ConnectOptions for MockConnectOptions {
+    fn connect(&self) -> BoxFuture<Result<Box<dyn Connection>, Error>> {  todo!() }
+
+    fn set_uri(&mut self, uri: &str) -> Result<(), Error> {  todo!() }
+
+    fn uppercase_self(&self) -> &(dyn Any + Send + Sync) {  todo!() }
+}
+
+impl Placeholder for MockDriver {
+    fn exchange(&self, sql: &str) -> String {
+        rbdc::impl_exchange("@P", 1, sql) //if database not support sql Placeholder '?',replace '@1' to '?'
+        //return sql.to_string();//if database is support sql Placeholder '?'
+    }
+}
 ```
 
 * step3: load your driver on rbatis
