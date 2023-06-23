@@ -894,7 +894,7 @@ for example:
 ```
 
 
-#### define other driver
+#### define-driver
 
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
