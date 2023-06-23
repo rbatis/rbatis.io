@@ -902,19 +902,13 @@ should impl trait
 #[derive(Debug, Clone)]
 struct MockDriver {}
 #[derive(Clone, Debug)]
-struct MockRowMetaData {
-}
+struct MockRowMetaData {}
 #[derive(Clone, Debug)]
-struct MockRow {
-    pub sql: String,
-    pub count: u64,
-}
+struct MockRow {}
 #[derive(Clone, Debug)]
-struct MockConnection {
-}
+struct MockConnection {}
 #[derive(Clone, Debug)]
-struct MockConnectOptions {
-}
+struct MockConnectOptions {}
 
 ```
 
