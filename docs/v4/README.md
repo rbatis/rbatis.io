@@ -900,16 +900,22 @@ should impl trait
 * step1: define you driver struct
 ```rust
 #[derive(Debug, Clone)]
- struct MockDriver {}
+struct MockDriver {}
+#[derive(Clone, Debug)]
+struct MockRowMetaData {
+}
+#[derive(Clone, Debug)]
+struct MockRow {
+    pub sql: String,
+    pub count: u64,
+}
 #[derive(Clone, Debug)]
 struct MockConnection {
 }
 #[derive(Clone, Debug)]
 struct MockConnectOptions {
 }
-#[derive(Clone, Debug)]
-struct MockRowMetaData {
-}
+
 ```
 
 * step2: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
@@ -919,12 +925,39 @@ struct MockRowMetaData {
     fn name(&self) -> &str {
         "MockDriver"
     }
+    fn connect(&self, url: &str) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
+        let url = url.to_owned();
+        Box::pin(async move {
+            let conn;//todo make an connection
+            Ok(Box::new(conn) as Box<dyn Connection>)
+        })
+    }
+
+    fn connect_opt<'a>(
+        &'a self,
+        opt: &'a dyn ConnectOptions,
+    ) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
+        let opt = opt.downcast_ref::<MssqlConnectOptions>().unwrap();
+        Box::pin(async move {
+            let conn;//todo make an connection
+            Ok(Box::new(conn) as Box<dyn Connection>)
+        })
+    }
+
+    fn default_option(&self) -> Box<dyn ConnectOptions> {
+        Box::new(MockConnectOptions{})
+    }
 }
-   impl Placeholder for MockDriver{}
    impl MetaData for MockRowMetaData{}
    impl Row for MockRow {}
    impl Connection for MockConnection{}
    impl ConnectOptions for MockConnectOptions{}
+   impl Placeholder for MssqlDriver {
+       fn exchange(&self, sql: &str) -> String {
+           rbdc::impl_exchange("@P", 1, sql) //if database is postgres
+           //return sql.to_string();//if database is mysql/sqlite
+       }
+   }
 ```
 
 * step3: load your driver on rbatis
