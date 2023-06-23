@@ -949,7 +949,7 @@ struct MockConnectOptions {}
    impl ConnectOptions for MockConnectOptions{}
    impl Placeholder for MssqlDriver {
        fn exchange(&self, sql: &str) -> String {
-           rbdc::impl_exchange("@P", 1, sql) //if database is postgres
+           rbdc::impl_exchange("@P", 1, sql) //if database not support '?',replace '@1' to '?'
            //return sql.to_string();//if database is mysql/sqlite
        }
    }
