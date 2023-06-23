@@ -901,6 +901,8 @@ for example:
 * step0: create your cargo project,and add 'rbdc = "4.3"' on Cargo.toml
 ```toml
 rbdc = "4.3"
+rbs  = "4.3"
+fastdate = { version = "0.1" }
 ```
 
 * step1: define you driver struct
@@ -922,6 +924,8 @@ struct MockConnectOptions {}
 
 ```rust
    use rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
+   use rbdc::Error;
+   use rbs::Value;
 
    impl Driver for MockDriver {
     fn name(&self) -> &str {
