@@ -894,7 +894,7 @@ for example:
 ```
 
 
-#### how to define my driver to support rbdc driver?
+#### define other driver
 should impl trait
 
 * step1: define you driver struct
