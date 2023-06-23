@@ -991,8 +991,8 @@ impl ConnectOptions for MockConnectOptions {
 
 impl Placeholder for MockDriver {
     fn exchange(&self, sql: &str) -> String {
-        rbdc::impl_exchange("@P", 1, sql) //if database not support sql Placeholder '?',replace '@1' to '?'
-        //return sql.to_string();//if database is support sql Placeholder '?'
+        //rbdc::impl_exchange("@P", 1, sql) //TODO if database not support sql Placeholder '?',replace '@1' to '?'
+        return sql.to_string();//if database is support sql Placeholder '?'
     }
 }
 ```
