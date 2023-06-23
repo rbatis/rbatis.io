@@ -921,6 +921,8 @@ struct MockConnectOptions {}
 * step2: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
 
 ```rust
+   use rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
+
    impl Driver for MockDriver {
     fn name(&self) -> &str {
         "MockDriver"
