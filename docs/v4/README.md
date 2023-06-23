@@ -894,3 +894,48 @@ for example:
 ```
 
 
+#### how to define my driver to support rbdc driver?
+should impl trait
+
+* step1: define you driver struct
+```rust
+#[derive(Debug, Clone)]
+ struct MockDriver {}
+#[derive(Clone, Debug)]
+struct MockConnection {
+}
+#[derive(Clone, Debug)]
+struct MockConnectOptions {
+}
+#[derive(Clone, Debug)]
+struct MockRowMetaData {
+}
+```
+
+* step2: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
+
+```rust
+   impl Driver for MockDriver {
+    fn name(&self) -> &str {
+        "MockDriver"
+    }
+}
+   impl Placeholder for MockDriver{}
+   impl MetaData for MockRowMetaData{}
+   impl Row for MockRow {}
+   impl Connection for MockConnection{}
+   impl ConnectOptions for MockConnectOptions{}
+```
+
+* step3: load your driver on rbatis
+
+```rust
+#[tokio::main]
+async fn main(){
+    let mut rb = RBatis::new();
+    rb.init(MockDriver {}, "MockDriver").unwrap();
+    rb.acquire().await.expect("connection database fail");//check is successful.
+}
+```
+
+example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
