@@ -895,7 +895,8 @@ for example:
 
 
 #### define other driver
-should impl trait
+
+* example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
 * step1: define you driver struct
 ```rust
@@ -964,5 +965,3 @@ async fn main(){
     rb.acquire().await.expect("connection database fail");//check is successful.
 }
 ```
-
-example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
