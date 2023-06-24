@@ -1011,7 +1011,7 @@ impl Placeholder for MockDriver {
 #[tokio::main]
 async fn main(){
     let mut rb = RBatis::new();
-    rb.init(MockDriver {}, "MockDriver").unwrap();
+    rb.init(MockDriver {}, "xxx://xxx.db").unwrap();
     rb.acquire().await.expect("connection database fail");//check is successful.
 }
 ```
