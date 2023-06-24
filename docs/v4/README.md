@@ -1012,6 +1012,7 @@ impl Placeholder for MockDriver {
 async fn main(){
     let mut rb = RBatis::new();
     rb.init(MockDriver {}, "xxx://xxx.db").unwrap();
-    rb.acquire().await.expect("connection database fail");//check is successful.
+    rb.acquire().await.expect("connection database fail");
+    println!("connect database successful");
 }
 ```
