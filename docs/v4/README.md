@@ -894,7 +894,7 @@ for example:
 ```
 
 
-#### define-driver
+#### design-driver
 
 * This doc is used to design a new database driver to joi into rbatis
 
