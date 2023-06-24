@@ -899,13 +899,19 @@ for example:
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
 * step0: create your cargo project,and add 'rbdc = "4.3"' on Cargo.toml
+```
+cargo new mock_driver --lib
+```
+
+* step1: add Depend,or add your database driver crates depend.
 ```toml
 rbdc = "4.3"
 rbs  = "4.3"
 fastdate = { version = "0.1" }
+# xx_driver = {version = "xxx"}
 ```
 
-* step1: define you driver struct
+* step2: define you driver struct
 ```rust
 #[derive(Debug, Clone)]
 struct MockDriver {}
@@ -920,7 +926,7 @@ struct MockConnectOptions {}
 
 ```
 
-* step2: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
+* step3: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
 
 ```rust
 use std::any::Any;
@@ -997,7 +1003,7 @@ impl Placeholder for MockDriver {
 }
 ```
 
-* step3: load your driver on rbatis
+* step4: load your driver on rbatis
 
 ```rust
 #[tokio::main]
