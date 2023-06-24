@@ -993,8 +993,6 @@ impl ConnectOptions for MockConnectOptions {
     fn connect(&self) -> BoxFuture<Result<Box<dyn Connection>, Error>> {  todo!() }
 
     fn set_uri(&mut self, uri: &str) -> Result<(), Error> {  todo!() }
-
-    fn uppercase_self(&self) -> &(dyn Any + Send + Sync) {  todo!() }
 }
 
 impl Placeholder for MockDriver {
