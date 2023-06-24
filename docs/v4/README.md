@@ -896,6 +896,8 @@ for example:
 
 #### define-driver
 
+* This doc is used to design a new database driver to joi into rbatis
+
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
 * step0: create your cargo project,and add 'rbdc = "4.3"' on Cargo.toml
