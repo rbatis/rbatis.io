@@ -896,7 +896,7 @@ for example:
 
 #### design-driver
 
-* This doc is used to design a new database driver to joi into rbatis
+* This doc is used to design a new database driver to join into rbatis
 
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
