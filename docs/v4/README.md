@@ -59,7 +59,7 @@ rbdc-sqlite = { version = "4.3" }
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
 log = "0.4"
-fast_log = "1.5"
+fast_log = "1.6"
 ```
 
 * `toml` `native-tls` (option)
@@ -75,7 +75,7 @@ rbatis = { version = "4.3", default-features = false, features = ["tls-native-tl
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
 log = "0.4"
-fast_log = "1.5"
+fast_log = "1.6"
 ```
 
 
