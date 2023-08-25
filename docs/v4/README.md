@@ -894,3 +894,123 @@ for example:
 ```
 
 
+#### design-driver
+
+* This doc is used to design a new database driver to join into rbatis
+
+* example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
+
+* step0: create your cargo project,and add 'rbdc = "4.3"' on Cargo.toml
+```
+cargo new mock_driver --lib
+```
+
+* step1: add Depend,or add your database driver crates depend.
+```toml
+rbdc = "4.3"
+rbs  = "4.3"
+fastdate = { version = "0.1" }
+# xx_driver = {version = "xxx"}
+```
+
+* step2: define you driver struct
+```rust
+#[derive(Debug, Clone)]
+struct MockDriver {}
+#[derive(Clone, Debug)]
+struct MockRowMetaData {}
+#[derive(Clone, Debug)]
+struct MockRow {}
+#[derive(Clone, Debug)]
+struct MockConnection {}
+#[derive(Clone, Debug)]
+struct MockConnectOptions {}
+
+```
+
+* step3: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
+
+```rust
+use std::any::Any;
+use futures_core::future::BoxFuture;
+use rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder, ExecResult};
+use rbdc::Error;
+use rbs::Value;
+
+impl Driver for MockDriver {
+    fn name(&self) -> &str {
+        "MockDriver"
+    }
+    fn connect(&self, url: &str) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
+        let url = url.to_owned();
+        Box::pin(async move {
+            let conn = MockConnection {};
+            Ok(Box::new(conn) as Box<dyn Connection>)
+        })
+    }
+
+    fn connect_opt<'a>(
+        &'a self,
+        opt: &'a dyn ConnectOptions,
+    ) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
+        let opt = opt.downcast_ref::<MockConnectOptions>().unwrap();
+        Box::pin(async move {
+            let conn = MockConnection {};
+            Ok(Box::new(conn) as Box<dyn Connection>)
+        })
+    }
+
+    fn default_option(&self) -> Box<dyn ConnectOptions> {
+        Box::new(MockConnectOptions {})
+    }
+}
+
+impl MetaData for MockRowMetaData {
+    fn column_len(&self) -> usize {  todo!() }
+
+    fn column_name(&self, i: usize) -> String {  todo!() }
+
+    fn column_type(&self, i: usize) -> String {  todo!() }
+}
+
+impl Row for MockRow {
+    fn meta_data(&self) -> Box<dyn MetaData> {  todo!() }
+
+    fn get(&mut self, i: usize) -> Result<Value, Error> {  todo!() }
+}
+
+impl Connection for MockConnection {
+    fn get_rows(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<Vec<Box<dyn Row>>, Error>> {  todo!() }
+
+    fn exec(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<ExecResult, Error>> {  todo!() }
+
+    fn close(&mut self) -> BoxFuture<Result<(), Error>> {  todo!() }
+
+    fn ping(&mut self) -> BoxFuture<Result<(), Error>> {  todo!() }
+}
+
+impl ConnectOptions for MockConnectOptions {
+    fn connect(&self) -> BoxFuture<Result<Box<dyn Connection>, Error>> {  todo!() }
+
+    fn set_uri(&mut self, uri: &str) -> Result<(), Error> {  todo!() }
+}
+
+impl Placeholder for MockDriver {
+    fn exchange(&self, sql: &str) -> String {
+        //return rbdc::impl_exchange("@P", 1, sql); //TODO if database not support sql Placeholder '?',replace '@1' to '?'
+        return sql.to_string();//if database is support sql Placeholder '?'
+    }
+}
+```
+
+* step4: load your driver on rbatis
+
+```rust
+#[tokio::main]
+async fn main(){
+    let mut rb = RBatis::new();
+    rb.init(MockDriver {}, "xxx://xxx.db").unwrap();
+    rb.acquire().await.expect("connect database fail");
+    println!("connect database successful");
+}
+```
