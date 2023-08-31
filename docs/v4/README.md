@@ -378,6 +378,7 @@ impl_select_page!(BizActivity{select_page_by_name(name:&str) =>"
      if name == '':
        `where name != ''`"});
 
+/// postgres/mssql database not support `limit 0,10`,you should use limit_sql:&str and set `limit 10 offset 0`
 impl_select_page!(BizActivity{select_page_by_limit(name:&str,limit_sql:&str) => "`where name != #{name}`"});
 
 #[tokio::main]
