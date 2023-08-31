@@ -333,6 +333,9 @@ async fn main() {
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
 
+    let data = BizActivity::select_by_column(&mut rb, "id","1").await;
+    println!("select_by_id = {}", json!(data));
+    
     let data = BizActivity::select_all_by_id(&mut rb, "1", "1").await;
     println!("select_all_by_id = {}", json!(data));
 
