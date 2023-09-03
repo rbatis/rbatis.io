@@ -1012,26 +1012,32 @@ use rbs::Value;
 pub struct MyInterceptor{}
 
 impl Intercept for MyInterceptor {
+    /// task_id maybe is conn_id or tx_id,
+    /// is_prepared_sql = !args.is_empty(),
+    /// if return Ok(false) will be return data. return Ok(true) will run next
     fn before(
         &self,
-        task_id: i64,
+        _task_id: i64,
         _rb: &dyn Executor,
-        sql: &mut String,
-        args: &mut Vec<Value>,
-        _result: ResultType<&mut Option<ExecResult>, &mut Option<Vec<Value>>>,
-    ) -> Result<(), Error> {
-       Ok(())
+        _sql: &mut String,
+        _args: &mut Vec<Value>,
+        _result: ResultType<&mut Result<ExecResult, Error>, &mut Result<Vec<Value>, Error>>,
+    ) -> Result<bool, Error> {
+        Ok(true)
     }
 
+    /// task_id maybe is conn_id or tx_id,
+    /// is_prepared_sql = !args.is_empty(),
+    /// if return Ok(false) will be return data. return Ok(true) will run next
     fn after(
         &self,
-        task_id: i64,
+        _task_id: i64,
         _rb: &dyn Executor,
-        sql: &mut String,
+        _sql: &mut String,
         _args: &mut Vec<Value>,
-        result: Result<ResultType<&mut ExecResult, &mut Vec<Value>>, &mut Error>,
-    ) -> Result<(), Error> {
-       Ok(())
+        _result: ResultType<&mut Result<ExecResult, Error>, &mut Result<Vec<Value>, Error>>,
+    ) -> Result<bool, Error> {
+        Ok(true)
     }
 }
 //push into RBatis
