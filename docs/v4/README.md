@@ -49,12 +49,12 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 ```toml
 #rbatis deps
-rbs = { version = "4.3"}
-rbatis = { version = "4.3"}
-rbdc-sqlite = { version = "4.3" }
-#rbdc-mysql={version="4.3"}
-#rbdc-pg={version="4.3"}
-#rbdc-mssql={version="4.3"}
+rbs = { version = "4.4"}
+rbatis = { version = "4.4"}
+rbdc-sqlite = { version = "4.4" }
+#rbdc-mysql={version="4.4"}
+#rbdc-pg={version="4.4"}
+#rbdc-mssql={version="4.4"}
 
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
@@ -65,12 +65,12 @@ fast_log = "1.6"
 * `toml` `native-tls` (option)
 
 ```toml
-rbs = { version = "4.3" }
-rbdc-sqlite = { version = "4.3", default-features = false, features = ["tls-native-tls"] }
-#rbdc-mysql={version="4.3", default-features = false, features = ["tls-native-tls"]}
-#rbdc-pg={version="4.3", default-features = false, features = ["tls-native-tls"]}
-#rbdc-mssql={version="4.3", default-features = false, features = ["tls-native-tls"]}
-rbatis = { version = "4.3", default-features = false, features = ["tls-native-tls","default_mode"] }
+rbs = { version = "4.4" }
+rbdc-sqlite = { version = "4.4", default-features = false, features = ["tls-native-tls"] }
+#rbdc-mysql={version="4.4", default-features = false, features = ["tls-native-tls"]}
+#rbdc-pg={version="4.4", default-features = false, features = ["tls-native-tls"]}
+#rbdc-mssql={version="4.4", default-features = false, features = ["tls-native-tls"]}
+rbatis = { version = "4.4", default-features = false, features = ["tls-native-tls","default_mode"] }
 
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
@@ -199,10 +199,10 @@ async fn main() {
         t3
     }];
 
-    let data = BizActivity::insert(&mut rb, &table).await;
+    let data = BizActivity::insert(&rb, &table).await;
     println!("insert = {}", json!(data));
 
-    let data = BizActivity::insert_batch(&mut rb, &tables, 10).await;
+    let data = BizActivity::insert_batch(&rb, &tables, 10).await;
     println!("insert_batch = {}", json!(data));
 }
 ```
@@ -272,10 +272,10 @@ async fn main() {
         delete_flag: Some(1),
     };
 
-    let data = BizActivity::update_by_column(&mut rb, &table, "id").await;
+    let data = BizActivity::update_by_column(&rb, &table, "id").await;
     println!("update_by_column = {}", json!(data));
 
-    let data = BizActivity::update_by_name(&mut rb, &table, "2").await;
+    let data = BizActivity::update_by_name(&rb, &table, "2").await;
     println!("update_by_name = {}", json!(data));
 
 }
@@ -333,13 +333,13 @@ async fn main() {
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
 
-    let data = BizActivity::select_by_column(&mut rb, "id","1").await;
+    let data = BizActivity::select_by_column(&rb, "id","1").await;
     println!("select_by_id = {}", json!(data));
     
-    let data = BizActivity::select_all_by_id(&mut rb, "1", "1").await;
+    let data = BizActivity::select_all_by_id(&rb, "1", "1").await;
     println!("select_all_by_id = {}", json!(data));
 
-    let data = BizActivity::select_by_id(&mut rb, "1").await;
+    let data = BizActivity::select_by_id(&rb, "1").await;
     println!("select_by_id = {}", json!(data));
 }
 ```
@@ -405,13 +405,13 @@ async fn main() {
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
 
-    let data = BizActivity::select_page(&mut rb, &PageRequest::new(1, 10)).await;
+    let data = BizActivity::select_page(&rb, &PageRequest::new(1, 10)).await;
     println!("select_page = {}", json!(data));
 
-    let data = BizActivity::select_page_by_name(&mut rb, &PageRequest::new(1, 10), "").await;
+    let data = BizActivity::select_page_by_name(&rb, &PageRequest::new(1, 10), "").await;
     println!("select_page_by_name = {}", json!(data));
 
-    let data = BizActivity::select_page_by_limit(&mut rb, &PageRequest::new(1, 10), "2", " limit 0,10 ").await;
+    let data = BizActivity::select_page_by_limit(&rb, &PageRequest::new(1, 10), "2", " limit 0,10 ").await;
     println!("select_page_by_limit = {}", json!(data));
 }
 ```
@@ -466,10 +466,10 @@ async fn main() {
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
 
-    let data = BizActivity::delete_by_column(&mut rb, "id", "2").await;
+    let data = BizActivity::delete_by_column(&rb, "id", "2").await;
     println!("delete_by_column = {}", json!(data));
 
-    let data = BizActivity::delete_by_name(&mut rb, "2").await;
+    let data = BizActivity::delete_by_name(&rb, "2").await;
     println!("delete_by_column = {}", json!(data));
 }
 ```
@@ -529,7 +529,7 @@ fast_log::LOGGER.set_level(log::LevelFilter::Debug);
 cargo run
 ............gen macro py_sql :
  pub async fn do_select_all(
-    rb: &mut dyn rbatis::executor::Executor,
+    rb: &dyn rbatis::executor::Executor,
     table_name: String,
 ) -> Result<Vec<BizActivity>, rbatis::rbdc::Error> {
     let mut rb_arg_map = rbs::value::map::ValueMap::new();
@@ -624,7 +624,7 @@ pub async fn main() {
     //     }
     // });
     //tx.exec("select 1", vec![]).await.unwrap();
-    BizActivity::insert(&mut tx, &t).await.unwrap();
+    BizActivity::insert(& tx, &t).await.unwrap();
 
     tx.commit().await.unwrap();
     tx.rollback().await.unwrap();
@@ -754,7 +754,7 @@ let mut args = Vec::with_capacity(20);
             </trim>
         </where>
   </select>"#)]
-async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
+async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
     impled!()
 }
 ```
@@ -806,7 +806,7 @@ async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTim
 > rsut code
 ```rust
 #[html_sql("example/example.html")]
-async fn select_by_condition(rb: &mut dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
+async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
     impled!()
 }
 ```
@@ -856,7 +856,7 @@ pub async fn main() {
     rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .await
         .unwrap();
-    let a = select_page_data(&mut rb.clone(),&PageRequest::new(1, 10),"test",&FastDateTime::now().set_micro(0))
+    let a = select_page_data(&rb,&PageRequest::new(1, 10),"test",&FastDateTime::now().set_micro(0))
         .await
         .unwrap();
     println!("{:?}", a);
@@ -944,7 +944,7 @@ for example:
                   if name != '':
                     ` and name=#{name}`"
 )]
-async fn py_select(rb: &mut dyn Executor, name: &str) -> Result<Vec<BizActivity>, Error> {
+async fn py_select(rb: & dyn Executor, name: &str) -> Result<Vec<BizActivity>, Error> {
     impled!()
 }
 ```
@@ -1156,15 +1156,15 @@ for example:
 
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
-* step0: create your cargo project,and add 'rbdc = "4.3"' on Cargo.toml
+* step0: create your cargo project,and add 'rbdc = "4.4"' on Cargo.toml
 ```
 cargo new mock_driver --lib
 ```
 
 * step1: add Depend,or add your database driver crates depend.
 ```toml
-rbdc = "4.3"
-rbs  = "4.3"
+rbdc = "4.4"
+rbs  = "4.4"
 fastdate = { version = "0.1" }
 # xx_driver = {version = "xxx"}
 ```
