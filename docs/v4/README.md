@@ -841,11 +841,6 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) 
 ```rust
 #[macro_use]
 extern crate rbatis;
-
-pub mod model;
-
-use model::*;
-
 use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::FastDateTime;
 use rbatis::sql::PageRequest;
