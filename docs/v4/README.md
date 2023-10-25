@@ -703,7 +703,7 @@ let mut args = Vec::with_capacity(20);
 | Syntax/method                                                                                 | Generated `Rust` code                                                             |
 |-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------|
 | ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                                          |
-| ``` <if test="key == 'id'"/> ```                                                              | `if  key == "id"{}                     `                                          |
+| ``` <if test="key == 'id'">`select * from table`</if> ```                                     | `if  key == "id"{sql.push_str("select * from table");}                      `     |
 | ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | `for (key,item) in arg{}               `                                          |
 | ``` <continue/>  ```                                                                          | `for (key,item) in arg{ continue;}     `                                          |
 | ``` <set>  ```                                                                                | `sql.push_str("SET").trim("SET")       `                                          |
