@@ -807,7 +807,7 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) 
 </mapper>
 ```
 
-> rsut code
+> rust code
 ```rust
 #[html_sql("example/example.html")]
 async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
@@ -815,6 +815,10 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) 
 }
 ```
 
+> rust code
+```rust
+htmlsql!(select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> rbatis::Result<Vec<BizActivity>> => "example.html");
+```
 
 ##### Page
 > impl html_sql select page.
@@ -945,16 +949,40 @@ for example:
 
 
 ```rust
+pub struct User{
+    pub delete_flag:i32,
+    pub name:String
+}
+
 #[py_sql(
-    "`select * from biz_activity where delete_flag = 0`
+    "`select * from user where delete_flag = 0`
                   if name != '':
                     ` and name=#{name}`"
 )]
-async fn py_select(rb: & dyn Executor, name: &str) -> Result<Vec<BizActivity>, Error> {
+async fn py_select(rb: & dyn Executor, name: &str) -> Result<Vec<User>, Error> {
     impled!()
 }
 ```
 
+```rust
+pub struct User{
+    pub delete_flag:i32,
+    pub name:String
+}
+
+pysql!(user_delete_by_name(rb: &dyn Executor, name: &str) -> Result<ExecResult, Error> =>
+    "`delete from user where delete_flag = 0`
+                   if name != '':
+                     ` and name=#{name}`" );
+
+impl User{
+    pysql!(user_delete_by_name(rb: &dyn Executor, name: &str) -> Result<ExecResult, Error> =>
+    "`delete from user where delete_flag = 0`
+                   if name != '':
+                     ` and name=#{name}`" );
+}
+
+```
 
 #### plugin: table-sync
 
