@@ -1014,12 +1014,17 @@ pub struct RBUser {
 pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     let rb = RBatis::new();
+    // ------------choose database driver------------
+    //rb.init(rbdc_mysql::driver::MysqlDriver {}, "mysql://root:123456@localhost:3306/test").unwrap();
+    // rb.init(rbdc_pg::driver::PgDriver {}, "postgres://postgres:123456@localhost:5432/postgres").unwrap();
+    // rb.init(rbdc_mssql::driver::MssqlDriver {}, "mssql://SA:TestPass!123456@localhost:1433/test").unwrap();
     rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .unwrap();
-    let mapper = &SqliteTableMapper{} as &dyn ColumMapper;
-    // let mapper = &PGTableMapper{} as &dyn ColumMapper;
-    // let mapper = &MysqlTableMapper{} as &dyn ColumMapper;
-    // let mapper = &MssqlTableMapper{} as &dyn ColumMapper;
+    // ------------choose database column mapper------------
+    let mapper = &table_sync::SqliteTableMapper{} as &dyn ColumMapper;
+    // let mapper = &table_sync::PGTableMapper{} as &dyn ColumMapper;
+    //let mapper = &table_sync::MysqlTableMapper{} as &dyn ColumMapper;
+    // let mapper = &table_sync::MssqlTableMapper{} as &dyn ColumMapper;
     table_sync::sync(
         &rb.acquire().await.unwrap(),
         mapper,
