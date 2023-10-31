@@ -1035,6 +1035,23 @@ pub async fn main() {
     )
         .await
         .unwrap();
+
+    // ///Custom String Database Type
+    // table_sync::sync(
+    //     &rb.acquire().await.unwrap(),
+    //     mapper,
+    //     to_value!(RBUser {
+    //         id: 0,
+    //         name: Some("TEXT".to_string()),
+    //         remark: Some("TEXT".to_string()),
+    //         create_time: Some(DateTime::utc()),
+    //         version: Some(1),
+    //         delete_flag: Some(1),
+    //     }),
+    //     "rb_user",
+    // )
+    //     .await
+    //     .unwrap();
 }
 
 ```
