@@ -995,12 +995,13 @@ impl User{
 ```rust
 use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::FastDateTime;
-use rbatis::table_sync::{SqliteTableSync, TableSync};
+use rbatis::table_sync;
+use rbatis::table_sync::SqliteTableMapper;
 use rbdc_sqlite::driver::SqliteDriver;
 use rbs::to_value;
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
-pub struct RBUser {
+pub struct User {
     pub id: i32,
     pub name: Option<String>,
     pub remark: Option<String>,
@@ -1015,16 +1016,19 @@ pub async fn main() {
     let rb = RBatis::new();
     rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .unwrap();
-    let mut s = SqliteTableSync::default();
-    s.sql_id = " PRIMARY KEY AUTOINCREMENT NOT NULL ".to_string();
-    s.sync(rb.acquire().await.unwrap(), to_value!(RBUser {
-        id: 0,
-        name: Some("".to_string()),
-        remark: Some("".to_string()),
-        create_time: Some(FastDateTime::utc()),
-        version: Some(1),
-        delete_flag: Some(1),
-    }), "rb_user")
+    table_sync::sync(
+        &rb.acquire().await.unwrap(),
+        &SqliteTableMapper{},
+        to_value!(User {
+            id: 0,
+            name: Some("".to_string()),
+            remark: Some("".to_string()),
+            create_time: Some(DateTime::utc()),
+            version: Some(1),
+            delete_flag: Some(1),
+        }),
+        "rb_user",
+    )
         .await
         .unwrap();
 }
