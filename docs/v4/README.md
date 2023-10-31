@@ -100,7 +100,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -229,7 +229,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -267,7 +267,7 @@ async fn main() {
         sort: None,
         status: Some(2),
         remark: Some("2".into()),
-        create_time: Some(FastDateTime::now()),
+        create_time: Some(DateTime::now()),
         version: Some(1),
         delete_flag: Some(1),
     };
@@ -303,7 +303,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -367,7 +367,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -437,7 +437,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -585,7 +585,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -611,7 +611,7 @@ pub async fn main() {
         sort: None,
         status: Some(2),
         remark: Some("2".into()),
-        create_time: Some(FastDateTime::now()),
+        create_time: Some(DateTime::now()),
         version: Some(1),
         delete_flag: Some(1),
     };
@@ -653,7 +653,7 @@ pub struct BizActivity {
     pub sort: Option<String>,
     pub status: Option<i32>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -758,7 +758,7 @@ let mut args = Vec::with_capacity(20);
             </trim>
         </where>
   </select>"#)]
-async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
+async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> Vec<BizActivity> {
     impled!()
 }
 ```
@@ -810,14 +810,14 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) 
 > rust code
 ```rust
 #[html_sql("example/example.html")]
-async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> Vec<BizActivity> {
+async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> Vec<BizActivity> {
     impled!()
 }
 ```
 
 > rust code
 ```rust
-htmlsql!(select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) -> rbatis::Result<Vec<BizActivity>> => "example.html");
+htmlsql!(select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> rbatis::Result<Vec<BizActivity>> => "example.html");
 ```
 
 ##### Page
@@ -846,11 +846,11 @@ htmlsql!(select_by_condition(rb: & dyn Executor, name: &str, dt: &FastDateTime) 
 #[macro_use]
 extern crate rbatis;
 use rbatis::rbatis::RBatis;
-use rbatis::rbdc::datetime::FastDateTime;
+use rbatis::rbdc::datetime::DateTime;
 use rbatis::sql::PageRequest;
 use rbdc_sqlite::driver::SqliteDriver;
 
-htmlsql_select_page!(select_page_data(name: &str, dt: &FastDateTime) -> BizActivity => "example/example.html");
+htmlsql_select_page!(select_page_data(name: &str, dt: &DateTime) -> BizActivity => "example/example.html");
 
 #[tokio::main]
 pub async fn main() {
@@ -859,7 +859,7 @@ pub async fn main() {
     rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .await
         .unwrap();
-    let a = select_page_data(&rb,&PageRequest::new(1, 10),"test",&FastDateTime::now().set_micro(0))
+    let a = select_page_data(&rb,&PageRequest::new(1, 10),"test",&DateTime::now().set_micro(0))
         .await
         .unwrap();
     println!("{:?}", a);
@@ -994,7 +994,7 @@ impl User{
 
 ```rust
 use rbatis::rbatis::RBatis;
-use rbatis::rbdc::datetime::FastDateTime;
+use rbatis::rbdc::datetime::DateTime;
 use rbatis::table_sync;
 use rbatis::table_sync::SqliteTableMapper;
 use rbdc_sqlite::driver::SqliteDriver;
@@ -1005,7 +1005,7 @@ pub struct RBUser {
     pub id: i32,
     pub name: Option<String>,
     pub remark: Option<String>,
-    pub create_time: Option<FastDateTime>,
+    pub create_time: Option<DateTime>,
     pub version: Option<i64>,
     pub delete_flag: Option<i32>,
 }
@@ -1117,7 +1117,7 @@ fn main(){
 
 for example:
 ```rust
-    use rbatis::rbdc::datetime::FastDateTime;
+    use rbatis::rbdc::datetime::DateTime;
     use serde::{Deserialize, Serialize};
     #[derive(Clone, Debug, Deserialize, Serialize)]
     pub struct BizActivity {
@@ -1130,7 +1130,7 @@ for example:
         pub sort: Option<String>,
         pub status: Option<i32>,
         pub remark: Option<String>,
-        pub create_time: Option<FastDateTime>,
+        pub create_time: Option<DateTime>,
         pub version: Option<BigDecimal>,
         pub delete_flag: Option<i32>,
     }
