@@ -1001,7 +1001,7 @@ use rbdc_sqlite::driver::SqliteDriver;
 use rbs::to_value;
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
-pub struct User {
+pub struct RBUser {
     pub id: i32,
     pub name: Option<String>,
     pub remark: Option<String>,
@@ -1019,7 +1019,7 @@ pub async fn main() {
     table_sync::sync(
         &rb.acquire().await.unwrap(),
         &SqliteTableMapper{},
-        to_value!(User {
+        to_value!(RBUser {
             id: 0,
             name: Some("".to_string()),
             remark: Some("".to_string()),
