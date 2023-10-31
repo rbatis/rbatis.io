@@ -1016,9 +1016,13 @@ pub async fn main() {
     let rb = RBatis::new();
     rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .unwrap();
+    let mapper = &SqliteTableMapper{} as &dyn ColumMapper;
+    // let mapper = &PGTableMapper{} as &dyn ColumMapper;
+    // let mapper = &MysqlTableMapper{} as &dyn ColumMapper;
+    // let mapper = &MssqlTableMapper{} as &dyn ColumMapper;
     table_sync::sync(
         &rb.acquire().await.unwrap(),
-        &SqliteTableMapper{},
+        mapper,
         to_value!(RBUser {
             id: 0,
             name: Some("".to_string()),
