@@ -49,12 +49,12 @@ It is an ORM, a small compiler, a dynamic SQL languages
 
 ```toml
 #rbatis deps
-rbs = { version = "4.4"}
-rbatis = { version = "4.4"}
-rbdc-sqlite = { version = "4.4" }
-#rbdc-mysql={version="4.4"}
-#rbdc-pg={version="4.4"}
-#rbdc-mssql={version="4.4"}
+rbs = { version = "4.5"}
+rbatis = { version = "4.5"}
+rbdc-sqlite = { version = "4.5" }
+#rbdc-mysql={version="4.5"}
+#rbdc-pg={version="4.5"}
+#rbdc-mssql={version="4.5"}
 
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
@@ -65,12 +65,12 @@ fast_log = "1.6"
 * `toml` `native-tls` (option)
 
 ```toml
-rbs = { version = "4.4" }
-rbdc-sqlite = { version = "4.4", default-features = false, features = ["tls-native-tls"] }
-#rbdc-mysql={version="4.4", default-features = false, features = ["tls-native-tls"]}
-#rbdc-pg={version="4.4", default-features = false, features = ["tls-native-tls"]}
-#rbdc-mssql={version="4.4", default-features = false, features = ["tls-native-tls"]}
-rbatis = { version = "4.4", default-features = false, features = ["tls-native-tls","default_mode"] }
+rbs = { version = "4.5" }
+rbdc-sqlite = { version = "4.5", default-features = false, features = ["tls-native-tls"] }
+#rbdc-mysql={version="4.5", default-features = false, features = ["tls-native-tls"]}
+#rbdc-pg={version="4.5", default-features = false, features = ["tls-native-tls"]}
+#rbdc-mssql={version="4.5", default-features = false, features = ["tls-native-tls"]}
+rbatis = { version = "4.5", default-features = false, features = ["tls-native-tls","default_mode"] }
 
 serde = { version = "1", features = ["derive"] }
 tokio = { version = "1", features = ["full"] }
@@ -1220,15 +1220,15 @@ for example:
 
 * example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
-* step0: create your cargo project,and add 'rbdc = "4.4"' on Cargo.toml
+* step0: create your cargo project,and add 'rbdc = "4.5"' on Cargo.toml
 ```
 cargo new mock_driver --lib
 ```
 
 * step1: add Depend,or add your database driver crates depend.
 ```toml
-rbdc = "4.4"
-rbs  = "4.4"
+rbdc = "4.5"
+rbs  = "4.5"
 fastdate = { version = "0.1" }
 # xx_driver = {version = "xxx"}
 ```
