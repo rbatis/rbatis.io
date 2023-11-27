@@ -1025,38 +1025,33 @@ pub async fn main() {
     // let mapper = &table_sync::PGTableMapper{} as &dyn ColumMapper;
     //let mapper = &table_sync::MysqlTableMapper{} as &dyn ColumMapper;
     // let mapper = &table_sync::MssqlTableMapper{} as &dyn ColumMapper;
-    table_sync::sync(
+
+    let map = rbs::to_value!{
+            "id":"INT",
+            "name":"TEXT",
+     };
+    let _ = RBatis::sync(&rb,mapper,&map,"rb_user").await;
+
+
+    RBatis::sync(
         &rb.acquire().await.unwrap(),
         mapper,
-        to_value!(RBUser {
+        &RBUser {
             id: 0,
+            //// Custom String Database Type
+            //name: Some("TEXT".to_string()),
             name: Some("".to_string()),
+            //// Custom String Database Type
+            //remark: Some("TEXT".to_string()),
             remark: Some("".to_string()),
             create_time: Some(DateTime::utc()),
             version: Some(1),
             delete_flag: Some(1),
-        }),
+        },
         "rb_user",
     )
         .await
         .unwrap();
-
-    // ///Custom String Database Type
-    // table_sync::sync(
-    //     &rb.acquire().await.unwrap(),
-    //     mapper,
-    //     to_value!(RBUser {
-    //         id: 0,
-    //         name: Some("TEXT".to_string()),
-    //         remark: Some("TEXT".to_string()),
-    //         create_time: Some(DateTime::utc()),
-    //         version: Some(1),
-    //         delete_flag: Some(1),
-    //     }),
-    //     "rb_user",
-    // )
-    //     .await
-    //     .unwrap();
 }
 
 ```
