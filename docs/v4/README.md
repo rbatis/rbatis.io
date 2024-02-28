@@ -913,7 +913,9 @@ for example:
 
 | Syntax/method                                                 | Generated `Rust` code                                                             |
 |---------------------------------------------------------------|-----------------------------------------------------------------------------------|
-| `trim 'AND ':      `                                          | `sql.trim("AND ")      `                                                          |
+| `trim 'AND ':      `                                          | `sql.trim_end_matches("AND ").trim_start_matches("AND ")       `                  |
+| `trim start='AND ':      `                                    | `sql.trim_start_matches("AND ")      `                                            |
+| `trim end='AND ':      `                                      | `sql.trim_end_matches("AND ")      `                                              |
 | `if arg!=1:         `                                         | `if arg !=1 {}               `                                                    |
 | `if true:`<br/>   ```  `select * from table` ```              | ```if true { sql.push_str("select * from table");}  ```                           |
 | `for key,item in arg:      `                                  | `for (key,item) in arg{ }     `                                                   |
