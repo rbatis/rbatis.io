@@ -507,18 +507,18 @@ select_page = {"Ok":{"page_no":1,"page_size":10,"pages":1,"records":[{"create_ti
 
 #### debug_mode
 
->  show the project build Generated code(`rbatis_codgen` Generated code). and then you can see build log.</br>
->  show the database rows data or error. and then you can see data log.
->  show invalid type Which field did the parsing fail(`"invalid type: integer `1`, expected a string, key=String(\"status\")"`)
+*  show the project build Generated code(`rbatis_codgen` Generated code). you can see build log(`............gen macro py_sql :............`)
+*  show the database `rows` data (`query <= len=1,rows=[{"id":1}]`)
+*  show invalid type Which field did the parsing fail(`"invalid type: integer `1`, expected a string, key=String(\"status\")"`)
 
 Note! debug_mode should set log level to 'debug'
 
-* open features on Cargo.toml
+> open features on Cargo.toml
 ```toml
 rbatis = { version = "4",features = ["debug_mode"]}
 ```
 
-* need fast_log set level = Debug
+> need fast_log set level = Debug
 ```rust
 #[tokio::main]
 async fn main(){
@@ -527,7 +527,9 @@ async fn main(){
 ```
 
 
-* ```cargo run``` build log
+> ```cargo run``` build log
+
+
 ```log
 cargo run
 ............gen macro py_sql :
