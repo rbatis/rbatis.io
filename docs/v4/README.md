@@ -511,7 +511,7 @@ if you open features on Cargo.toml "debug_mode", You will see the following feat
 
 *  show the project build Generated code(`rbatis_codgen` Generated code). you can see build log(`............gen macro py_sql :............`)
 *  show the database `rows` data . you can see log(```query <= len=1,rows=[{"id":1}]```)
-*  show invalid type Which field did the parsing fail. you can see error(```"invalid type: integer `1`, expected a string, key=String(\"status\")"```)
+*  show decoding invalid type Which field did the parsing fail. you can see error(```"invalid type: integer `1`, expected a string, key=String(\"status\")"```)
 
 Note! debug_mode should set log level to 'debug'
 
