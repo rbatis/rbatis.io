@@ -509,6 +509,7 @@ select_page = {"Ok":{"page_no":1,"page_size":10,"pages":1,"records":[{"create_ti
 
 >  show the project build Generated code(`rbatis_codgen` Generated code). and then you can see build log.</br>
 >  show the database rows data or error. and then you can see data log.
+>  show invalid type Which specific field did the parsing fail in(only `rbs` crate )
 
 Note! debug_mode should set log level to 'debug'
 
@@ -516,13 +517,19 @@ Note! debug_mode should set log level to 'debug'
 ```toml
 rbatis = { version = "4",features = ["debug_mode"]}
 ```
-
 * just like fast_log set level
 ```rust
 //fast_log::init(fast_log::Config::new().console().level(log::LevelFilter::Debug));
 ....
 fast_log::LOGGER.set_level(log::LevelFilter::Debug);
 ```
+
+* or open rbs features(Note that enabling rbs debug_mode will reduce performance)
+```toml
+rbs = { version = "4",features = ["debug_mode"]}
+```
+
+
 
 * ```cargo run``` build log
 ```log
