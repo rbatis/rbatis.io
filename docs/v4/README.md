@@ -16,9 +16,8 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * Dynamic configuration connection pool(Based on the https://github.com/rbatis/fast_pool)
 * Supports Logging based on interceptor implementation
 * 100% Safe pure `Rust` with `#![forbid(unsafe_code)]` enabled
-* [rbatis/example (import into Clion!)](example/src)
-* [abs_admin project](https://github.com/rbatis/abs_admin)  an complete background user management system(
-  Vue.js+rbatis+actix-web)
+* [rbatis/example](https://github.com/rbatis/example)
+* [abs_admin project](https://github.com/rbatis/abs_admin) an background user management system(Vue.js+rbatis+axum)
 
 
 #### Supported database driver
