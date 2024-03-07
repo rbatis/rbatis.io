@@ -507,7 +507,7 @@ select_page = {"Ok":{"page_no":1,"page_size":10,"pages":1,"records":[{"create_ti
 
 #### debug_mode
 
-if you open features on Cargo.toml "debug_mode", You will see the following featues
+if you open features on Cargo.toml "debug_mode", You will see the following features
 
 *  show the project build Generated code(`rbatis_codgen` Generated code). you can see build log(`............gen macro py_sql :............`)
 *  show the database `rows` data (`query <= len=1,rows=[{"id":1}]`)
