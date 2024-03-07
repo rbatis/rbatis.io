@@ -16,8 +16,6 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * Dynamic configuration connection pool(Based on the https://github.com/rbatis/fast_pool)
 * Supports Logging based on interceptor implementation
 * 100% Safe pure `Rust` with `#![forbid(unsafe_code)]` enabled
-* Support use Trait System Add ```py_sql/ html_sql```
-  functions.[see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_custom_func.rs)
 * [rbatis/example (import into Clion!)](example/src)
 * [abs_admin project](https://github.com/rbatis/abs_admin)  an complete background user management system(
   Vue.js+rbatis+actix-web)
