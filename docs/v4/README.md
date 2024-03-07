@@ -693,10 +693,6 @@ pub async fn main() {
 * you can call any method/trait on ```rbs::Value``` such as ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'}  ``` or  ```  if sql.contans('count'):   ```
 * Strings can be reserved for Spaces using ``` ` ``` such as ``` ` select * from table where ` ```
 * method will create 2 variable on method body.So you can determine whether the variable SQL contains a COUNT statement or a SELECT statement in a paging operation
-```rust
-let mut sql = String::with_capacity(1000);
-let mut args = Vec::with_capacity(20);
-```
 
 * HtmlSql Syntax tree
 
