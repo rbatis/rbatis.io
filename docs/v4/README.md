@@ -13,7 +13,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * All database drivers supported ```#{arg}```, ```${arg}```,```?```  placeholder(pg/mssql auto processing '?' to '$1'
   and '@P1')
 * Dynamic SQL(Write code freely in SQL),pagination, ```py_sql``` query lang and ```html_sql```(Inspired Mybatis).
-* Dynamic configuration connection pool(Based on the mobc)
+* Dynamic configuration connection pool(Based on the https://github.com/rbatis/fast_pool)
 * Supports logging, customizable logging based on `log` crate
 * 100% Safe `Rust` with `#![forbid(unsafe_code)]` enabled
 * Support use Trait System Add ```py_sql/ html_sql```
