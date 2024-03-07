@@ -513,7 +513,7 @@ if you open features on Cargo.toml "debug_mode", You will see the following feat
 *  show the database `rows` data . you can see log(```query <= len=1,rows=[{"id":1}]```)
 *  show decoding invalid type Which field did the parsing fail. you can see error(```"invalid type: integer `1`, expected a string, key=`status`"```)
 
-Note! debug_mode should set log level to 'debug'
+please notice, debug_mode should set log level to 'debug'
 
 > how to open debug_mode features on Cargo.toml?
 ```toml
