@@ -515,7 +515,7 @@ if you open features on Cargo.toml "debug_mode", You will see the following feat
 
 Note! debug_mode should set log level to 'debug'
 
-> open features on Cargo.toml
+> how to open debug_mode features on Cargo.toml?
 ```toml
 rbatis = { version = "4",features = ["debug_mode"]}
 ```
@@ -527,10 +527,6 @@ async fn main(){
     fast_log::init(fast_log::Config::new().console().level(log::LevelFilter::Debug));
 }
 ```
-
-
-> ```cargo run``` build log
-
 
 ```log
 cargo run
