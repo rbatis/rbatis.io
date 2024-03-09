@@ -601,18 +601,6 @@ pub enum Value {
 }
 ```
 
-
-*  rbs make a value
-```rust
-fn main(){
-    let v = rbs::to_value!(1);
-    let arg = vec![1,2,3];
-    let v = rbs::to_value!(&arg);
-    let arg = "1".to_string();
-    let v = rbs::to_value!(&arg);
-}
-```
-
 *  rbs build a map value
 ```rust
 fn main(){
@@ -620,6 +608,17 @@ fn main(){
         "key":"value",
         "key2":"value2"
     };
+}
+```
+
+*  rbs encode to value
+```rust
+fn main(){
+    let v = rbs::to_value!(1);
+    let arg = vec![1,2,3];
+    let v = rbs::to_value!(&arg);
+    let arg = "1".to_string();
+    let v = rbs::to_value!(&arg);
 }
 ```
 
