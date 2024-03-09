@@ -756,7 +756,7 @@ pub async fn main() {
 ```
 
 
-#### HtmlSql
+#### `HtmlSql`
 > It is implemented by RBatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
 
 * When the RBatis dependency in Cargo.toml turns on the ```debug_mode``` feature, the generated function implementation code is printed
@@ -975,7 +975,7 @@ for example:
 </mapper>
 ```
 
-#### PySql
+#### `PySql`
 
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
 * Syntax tree 
