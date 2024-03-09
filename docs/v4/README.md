@@ -566,7 +566,7 @@ cargo run
 
 `rbs` is a specialized serialization framework written by `rbatis` for the ORM intermediate language `html_sql`,`py_sql`,
 used to conveniently use and replace JSON like objects in HTML statements instead of manipulating native structures.
-You can understand RSS as an intermediate structure similar to JSON `Value`.
+You can understand `rbs` as an intermediate structure similar to JSON `Value`.
 ```rust
 #[derive(Clone, Debug, PartialEq)]
 pub enum Value {
