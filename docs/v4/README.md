@@ -562,7 +562,48 @@ cargo run
 ```
 
 
+#### rbs
 
+`rbs` is a specialized serialization framework written by rbatis for the ORM intermediate language html_sql,
+used to conveniently use and replace JSON like objects in HTML statements instead of manipulating native structures.
+You can understand RSS as an intermediate structure similar to JSON.
+
+*  rbs make a value
+```rust
+fn main(){
+    let v = rbs::to_value!(1);
+    let arg = vec![1,2,3];
+    let v = rbs::to_value!(&arg);
+    let arg = "1".to_string();
+    let v = rbs::to_value!(&arg);
+}
+```
+
+*  rbs build a map value
+```rust
+fn main(){
+    let v = rbs::to_value!{
+        "key":"value",
+        "key2":"value2"
+    };
+}
+```
+
+*  rbs decode from value
+```rust
+fn main(){
+    let v:i32 = rbs::from_value(Value::I32(1)).unwrap();
+}
+```
+
+*  display value
+```rust
+fn main(){
+    let value = Value::I32(1);
+    assert_eq!(value.to_string(),"1");
+    assert_eq!(format!("{}",value),"1");
+}
+```
 
 
 #### Transaction
