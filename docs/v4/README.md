@@ -562,7 +562,7 @@ cargo run
 ```
 
 
-#### rbs
+#### `rbs`
 
 `rbs` is a specialized serialization framework written by `rbatis` for the ORM intermediate language `html_sql`,`py_sql`,
 used to conveniently use and replace JSON like objects in HTML statements instead of manipulating native structures.
