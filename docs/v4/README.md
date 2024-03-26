@@ -771,7 +771,7 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> V
 ```
 
 
-* define on `Rust` from file [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_an_file.rs)
+* define on `Rust` from file [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_file.rs)
 
 > example/example.html
 ```html
