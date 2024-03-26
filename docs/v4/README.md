@@ -13,14 +13,11 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * All database drivers supported ```#{arg}```, ```${arg}```,```?```  placeholder(pg/mssql auto processing '?' to '$1'
   and '@P1')
 * Dynamic SQL(Write code freely in SQL),pagination, ```py_sql``` query lang and ```html_sql```(Inspired Mybatis).
-* Dynamic configuration connection pool(Based on the mobc)
-* Supports logging, customizable logging based on `log` crate
-* 100% Safe `Rust` with `#![forbid(unsafe_code)]` enabled
-* Support use Trait System Add ```py_sql/ html_sql```
-  functions.[see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_custom_func.rs)
-* [rbatis/example (import into Clion!)](example/src)
-* [abs_admin project](https://github.com/rbatis/abs_admin)  an complete background user management system(
-  Vue.js+rbatis+actix-web)
+* Dynamic configuration connection pool(Based on the https://github.com/rbatis/fast_pool)
+* Supports Logging based on interceptor implementation
+* 100% Safe pure `Rust` with `#![forbid(unsafe_code)]` enabled
+* [rbatis/example](https://github.com/rbatis/example)
+* [abs_admin project](https://github.com/rbatis/abs_admin) an background user management system(Vue.js+rbatis+axum)
 
 
 #### Supported database driver
@@ -28,17 +25,17 @@ It is an ORM, a small compiler, a dynamic SQL languages
 > the RBatis support any impl [rdbc](https://crates.io/crates/rbdc) drivers.
 > If you don't have the following driver you want, you can write one yourself, just as long as the impl ``` rbdc::db::* ``` traits
 
-| database(crates.io)                                 | github_link                                                                    |
-|-----------------------------------------------------|--------------------------------------------------------------------------------|
-| [Mysql](https://crates.io/crates/rbdc-mysql)        | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)   |
-| [Postgres](https://crates.io/crates/rbdc-pg)        | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)         |
-| [Sqlite](https://crates.io/crates/rbdc-sqlite)      | [rbatis/rbdc-sqlite](https://github.com/rbatis/rbatis/tree/master/rbdc-sqlite) |
-| [Mssql](https://crates.io/crates/rbdc-mssql)        | [rbatis/rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)   |
-| [MariaDB](https://crates.io/crates/rbdc-mysql)      | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)   |
-| [TiDB](https://crates.io/crates/rbdc-mysql)         | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)   |
-| [CockroachDB](https://crates.io/crates/rbdc-pg)     | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)         |
-| [Oracle](https://crates.io/crates/rbdc-oracle)      | [chenpengfan/rbdc-oracle](https://github.com/chenpengfan/rbdc-oracle)          |
-| [TDengine](https://crates.io/crates/rbdc-tdengine)  | [tdcare/rbdc-tdengine](https://github.com/tdcare/rbdc-tdengine)                |
+| database(crates.io)                                 | github_link                                                                           |
+|-----------------------------------------------------|---------------------------------------------------------------------------------------|
+| [Mysql](https://crates.io/crates/rbdc-mysql)        | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)          |
+| [Postgres](https://crates.io/crates/rbdc-pg)        | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)                | 
+| [Sqlite](https://crates.io/crates/rbdc-sqlite)      | [rbatis/rbdc-sqlite](https://github.com/rbatis/rbatis/tree/master/rbdc-sqlite)        |
+| [Mssql](https://crates.io/crates/rbdc-mssql)        | [rbatis/rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)          |
+| [MariaDB](https://crates.io/crates/rbdc-mysql)      | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)          |
+| [TiDB](https://crates.io/crates/rbdc-mysql)         | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)          |
+| [CockroachDB](https://crates.io/crates/rbdc-pg)     | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)                |
+| [Oracle](https://crates.io/crates/rbdc-oracle)      | [chenpengfan/rbdc-oracle](https://github.com/chenpengfan/rbdc-oracle)                 |
+| [TDengine](https://crates.io/crates/rbdc-tdengine)  | [tdcare/rbdc-tdengine](https://github.com/tdcare/rbdc-tdengine)                       |
 
 
 #### CRUD-install/use
@@ -507,31 +504,27 @@ select_page = {"Ok":{"page_no":1,"page_size":10,"pages":1,"records":[{"create_ti
 
 #### debug_mode
 
->  show the project build Generated code(`rbatis_codgen` Generated code). and then you can see build log.</br>
->  show the database rows data or error. and then you can see data log.
->  show invalid type Which specific field did the parsing fail in(only `rbs` crate )
+if you open features on Cargo.toml "debug_mode", You will see the following features
 
-Note! debug_mode should set log level to 'debug'
+*  show the project build Generated code(`rbatis_codgen` Generated code). you can see build log(`............gen macro py_sql :............`)
+*  show the database `rows` data . you can see log(```query <= len=1,rows=[{"id":1}]```)
+*  show decoding invalid type Which field did the parsing fail. you can see error(```"invalid type: integer `1`, expected a string, key=`status`"```)
 
-* open features on Cargo.toml
+please notice, debug_mode should set log level to 'debug'
+
+> how to open debug_mode features on Cargo.toml?
 ```toml
 rbatis = { version = "4",features = ["debug_mode"]}
 ```
-* just like fast_log set level
+
+> need fast_log set level = Debug
 ```rust
-//fast_log::init(fast_log::Config::new().console().level(log::LevelFilter::Debug));
-....
-fast_log::LOGGER.set_level(log::LevelFilter::Debug);
+#[tokio::main]
+async fn main(){
+    fast_log::init(fast_log::Config::new().console().level(log::LevelFilter::Debug));
+}
 ```
 
-* or open rbs features(Note that enabling rbs debug_mode will reduce performance)
-```toml
-rbs = { version = "4",features = ["debug_mode"]}
-```
-
-
-
-* ```cargo run``` build log
 ```log
 cargo run
 ............gen macro py_sql :
@@ -569,7 +562,81 @@ cargo run
 ```
 
 
+#### `rbs`
 
+`rbs` is a specialized serialization framework written by `rbatis` for the ORM intermediate language `html_sql`,`py_sql`,
+used to conveniently use and replace JSON like objects in HTML statements instead of manipulating native structures.
+You can understand `rbs` as an intermediate structure similar to JSON `Value`.
+
+* Here we show the definition of `rbs::Value`
+```rust
+#[derive(Clone, Debug, PartialEq)]
+pub enum Value {
+    /// null
+    Null,
+    /// true or false
+    Bool(bool),
+    /// Int32
+    I32(i32),
+    /// Int64
+    I64(i64),
+    /// Uint32
+    U32(u32),
+    /// Uint64
+    U64(u64),
+    /// A 32-bit float number.
+    F32(f32),
+    /// A 64-bit float number.
+    F64(f64),
+    /// String
+    String(String),
+    /// Binary/Bytes.
+    Binary(Vec<u8>),
+    /// Array/Vec.
+    Array(Vec<Self>),
+    /// Map<Key,Value>.
+    Map(ValueMap),
+    /// Extended implements Extension interface
+    Ext(&'static str, Box<Self>),
+}
+```
+
+*  rbs build a map value
+```rust
+fn main(){
+    let v = rbs::to_value!{
+        "key":"value",
+        "key2":"value2"
+    };
+}
+```
+
+*  rbs encode to value
+```rust
+fn main(){
+    let v = rbs::to_value!(1);
+    let arg = vec![1,2,3];
+    let v = rbs::to_value!(&arg);
+    let arg = "1".to_string();
+    let v = rbs::to_value!(&arg);
+}
+```
+
+*  rbs decode from value
+```rust
+fn main(){
+    let v:i32 = rbs::from_value(Value::I32(1)).unwrap();
+}
+```
+
+*  display value
+```rust
+fn main(){
+    let value = Value::I32(1);
+    assert_eq!(value.to_string(),"1");
+    assert_eq!(format!("{}",value),"1");
+}
+```
 
 
 #### Transaction
@@ -690,7 +757,7 @@ pub async fn main() {
 ```
 
 
-#### HtmlSql
+#### `HtmlSql`
 > It is implemented by RBatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
 
 * When the RBatis dependency in Cargo.toml turns on the ```debug_mode``` feature, the generated function implementation code is printed
@@ -700,10 +767,6 @@ pub async fn main() {
 * you can call any method/trait on ```rbs::Value``` such as ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'}  ``` or  ```  if sql.contans('count'):   ```
 * Strings can be reserved for Spaces using ``` ` ``` such as ``` ` select * from table where ` ```
 * method will create 2 variable on method body.So you can determine whether the variable SQL contains a COUNT statement or a SELECT statement in a paging operation
-```rust
-let mut sql = String::with_capacity(1000);
-let mut args = Vec::with_capacity(20);
-```
 
 * HtmlSql Syntax tree
 
@@ -913,7 +976,7 @@ for example:
 </mapper>
 ```
 
-#### PySql
+#### `PySql`
 
 * It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
 * Syntax tree 
