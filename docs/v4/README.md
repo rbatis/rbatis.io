@@ -770,37 +770,37 @@ pub async fn main() {
 
 * HtmlSql Syntax tree
 
-| Syntax/method                                                                                 | Generated `Rust` code                                                                     |
-|-----------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------|
-| ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                                                  |
-| ``` <if test="key == 'id'">`select * from table`</if> ```                                     | `if  key == "id"{sql.push_str("select * from table");}                      `             |
-| ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | `for (key,item) in arg{}               `                                                  |
-| ``` <continue/>  ```                                                                          | `for (key,item) in arg{ continue;}     `                                                  |
-| ``` <set>  ```                                                                                | `sql.trim("set ").push_str(" set ")        `                                              |
-| ``` <set collection="arg">  ```                                                               | `collection={name:"",age:""};  sql.trim("set ").push_str(" set name=?,age=? ")          ` |
-| ``` <choose>  ```                                                                             | `match {}                              `                                                  |
-| ``` <when test="true">  ```                                                                   | `match true{ true=>{} _ => {} }        `                                                  |
-| ``` <otherwise>  ```                                                                          | `match { _ =>{} }                      `                                                  |
-| ``` <where>  ```                                                                              | `sql.push_str("WHERE").trim("WHERE")       `                                              |
-| ``` <bind name="a" value="1+1"></bind> ```                                                    | `let a = rbs::Value::I32(1 + 1)            `                                              |
-| ``` `select * from table`    ```                                                              | `sql.push_str("select * from table"); `                                                   |
-| ``` `#{name}`    ```                                                                          | `sql.push_str("?");args.push(rbs::Value::String(name));`                                  |
-| ``` `${name}`     ```                                                                         | `sql.push_str(&format!("{}",name));                    `                                  |
-| ``` `${1 + 1}`   ```                                                                          | `sql.push_str(&format!("{}", 1 + 1));    `                                                |
-| ``` `#{1 + 1}`   ```                                                                          | `sql.push_str("?");args.push(rbs::Value::from(1+1));`                                     |
-| ``` `${name + '_tag'}`  ```                                                                   | `sql.push_str(&format!("{}",name + "_tag"));    `                                         |
-| ``` `#{name + '_tag'}`  ```                                                                   | `sql.push_str("?");args.push(rbs::Value::from(format!("{}",name + "_tag")));    `         |
-| ``` `${age + 1}`  ```                                                                         | `sql.push_str(&format!("{}", age + 1));    `                                              |
-| ``` `#{age + 1}`  ```                                                                         | `sql.push_str("?");args.push(rbs::Value::from(age+1));     `                              |
-| ``` `${true  & true}`  ```                                                                    | `sql.push_str(&format!("{}", true & true));    `                                          |
-| ``` `#{true  & true}`  ```                                                                    | `sql.push_str("?");args.push(rbs::Value::from(true & true));    `                         |
-| ``` `${2 >  1}`  ```                                                                          | `sql.push_str(&format!("{}",2 >  1));    `                                                |
-| ``` `${2 /  1}`  ```                                                                          | `sql.push_str(&format!("{}", 2 / 1));    `                                                |
-| ``` `${2 ==  1}`  ```                                                                         | `sql.push_str(&format!("{}", 2 == 1));    `                                               |
-| ``` `${2 *  1}`  ```                                                                          | `sql.push_str(&format!("{}", 2 * 1));    `                                                |
-| ``` `${ !false }`  ```                                                                        | `sql.push_str(&format!("{}", !false));    `                                               |
-| ``` `${ 2 % 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 % 1));    `                                                |
-| ``` `${ 2 - 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 - 1));    `                                                |
+| Syntax/method                                                                                 | Generated `Rust` code                                                                               |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
+| ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                                                            |
+| ``` <if test="key == 'id'">`select * from table`</if> ```                                     | `if  key == "id"{sql.push_str("select * from table");}                      `                       |
+| ``` <foreach collection="arg" index="key" item="item" open="(" close=")" separator=","/>  ``` | `for (key,item) in arg{}               `                                                            |
+| ``` <continue/>  ```                                                                          | `for (key,item) in arg{ continue;}     `                                                            |
+| ``` <set>  ```                                                                                | `sql.trim("set ").push_str(" set ");        `                                                       |
+| ``` <set collection="arg">  ```                                                               | `sql.trim("set ").push_str(" set name=?,age=? "); //notice collection={name:"",age:""};           ` |
+| ``` <choose>  ```                                                                             | `match {}                              `                                                            |
+| ``` <when test="true">  ```                                                                   | `match true{ true=>{} _ => {} }        `                                                            |
+| ``` <otherwise>  ```                                                                          | `match { _ =>{} }                      `                                                            |
+| ``` <where>  ```                                                                              | `sql.push_str("WHERE").trim("WHERE");       `                                                       |
+| ``` <bind name="a" value="1+1"></bind> ```                                                    | `let a = rbs::Value::I32(1 + 1)            `                                                        |
+| ``` `select * from table`    ```                                                              | `sql.push_str("select * from table"); `                                                             |
+| ``` `#{name}`    ```                                                                          | `sql.push_str("?");args.push(rbs::Value::String(name));`                                            |
+| ``` `${name}`     ```                                                                         | `sql.push_str(&format!("{}",name));                    `                                            |
+| ``` `${1 + 1}`   ```                                                                          | `sql.push_str(&format!("{}", 1 + 1));    `                                                          |
+| ``` `#{1 + 1}`   ```                                                                          | `sql.push_str("?");args.push(rbs::Value::from(1+1));`                                               |
+| ``` `${name + '_tag'}`  ```                                                                   | `sql.push_str(&format!("{}",name + "_tag"));    `                                                   |
+| ``` `#{name + '_tag'}`  ```                                                                   | `sql.push_str("?");args.push(rbs::Value::from(format!("{}",name + "_tag")));    `                   |
+| ``` `${age + 1}`  ```                                                                         | `sql.push_str(&format!("{}", age + 1));    `                                                        |
+| ``` `#{age + 1}`  ```                                                                         | `sql.push_str("?");args.push(rbs::Value::from(age+1));     `                                        |
+| ``` `${true  & true}`  ```                                                                    | `sql.push_str(&format!("{}", true & true));    `                                                    |
+| ``` `#{true  & true}`  ```                                                                    | `sql.push_str("?");args.push(rbs::Value::from(true & true));    `                                   |
+| ``` `${2 >  1}`  ```                                                                          | `sql.push_str(&format!("{}",2 >  1));    `                                                          |
+| ``` `${2 /  1}`  ```                                                                          | `sql.push_str(&format!("{}", 2 / 1));    `                                                          |
+| ``` `${2 ==  1}`  ```                                                                         | `sql.push_str(&format!("{}", 2 == 1));    `                                                         |
+| ``` `${2 *  1}`  ```                                                                          | `sql.push_str(&format!("{}", 2 * 1));    `                                                          |
+| ``` `${ !false }`  ```                                                                        | `sql.push_str(&format!("{}", !false));    `                                                         |
+| ``` `${ 2 % 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 % 1));    `                                                          |
+| ``` `${ 2 - 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 - 1));    `                                                          |
 * define on `Rust` code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
 ```rust
 // Clion Smart tips: click code, choose 'Inject Language or Reference', and then choose html
