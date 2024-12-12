@@ -689,7 +689,7 @@ pub async fn main() {
         version: Some(1),
         delete_flag: Some(1),
     };
-    let mut tx = rb.acquire_begin().await.unwrap();
+    let tx = rb.acquire_begin().await.unwrap();
     // defer_async will be rollback if tx drop
     // let mut tx = tx.defer_async(|mut tx| async move {
     //     if !tx.done {
