@@ -692,7 +692,7 @@ pub async fn main() {
     let tx = rb.acquire_begin().await.unwrap();
     // defer_async will be rollback if tx drop
     // let mut tx = tx.defer_async(|mut tx| async move {
-    //     if !tx.done {
+    //     if !tx.done() {
     //         tx.rollback().await.unwrap();
     //         println!("rollback");
     //     }
