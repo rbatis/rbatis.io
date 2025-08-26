@@ -1,4 +1,4 @@
-<img src="_media/logo.png" style="width: 200px;height: 140px" />
+<img src="../_media/logo.png" style="width: 200px;height: 140px" />
 
 <div style="margin-left: 500px;" >
 <a href="https://github.com/rbatis/rbatis" target="_blank">
@@ -14,7 +14,7 @@
 <li align="left" style="color: aliceblue" >- 丰富的插件、分页SQL  page/interceptors/crud!/PySQL/HtmlSQL</li>
 </ul>
 
-[V3(已废弃)](/zh-cn/v3/)
-[V4-当前版本](/zh-cn/v4/)
+[V3(已废弃)](v3/)
+[V4-当前版本](v4/)
 
-![](_media/bg.jpg)
+![](../_media/bg.jpg)
