@@ -275,7 +275,7 @@ async fn main() {
 }
 ```
 
-###### 宏-选择
+###### 宏-查询
 
 ```rust
 //#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
@@ -339,7 +339,7 @@ async fn main() {
 ```
 
 
-###### 宏-选择-分页
+###### 宏-分页查询
 
 ```rust
 //#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
@@ -467,7 +467,68 @@ async fn main() {
     println!("delete_by_name = {}", json!(data));
 }
 ```
+#### 数据类型的转换
+| Data Type                                                               | Support |
+|-------------------------------------------------------------------------|---------|
+| `Option`                                                                | ✓       |
+| `Vec`                                                                   | ✓       |
+| `HashMap`                                                               | ✓       |
+| `i32, i64, f32, f64, bool, String`, 以及其他 Rust 基类型           | ✓       |
+| `rbatis::rbdc::types::{Bytes, Date, DateTime, Time, Timestamp, Decimal, Json}` | ✓ |
+| `rbatis::plugin::page::{Page, PageRequest}`                             | ✓       |
+| `rbs::Value`                                                            | ✓       |
+| `serde_json::Value` 和其他 serde 类型                               | ✓       |
+| 来自 rbdc-mysql、rbdc-pg、rbdc-sqlite、rbdc-mssql 的驱动程序特定类型 | ✓       |
 
+
+注：如果你遇到了一些类型不知道怎么转换，或者转换失败，你可以尝试先转换为serde_json::Value。
+
+以下是作者的示例：将mysql 的 tinyint类型转换为rust的bool类型
+```rust
+use serde::{Deserialize, Deserializer, de};
+
+#[derive(Debug, Deserialize)]
+struct MyStruct {
+    #[serde(deserialize_with = "bool_or_int")]
+    my_field: bool,
+}
+
+fn bool_or_int<'de, D>(deserializer: D) -> Result<bool, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    struct BoolOrIntVisitor;
+
+    impl<'de> de::Visitor<'de> for BoolOrIntVisitor {
+        type Value = bool;
+
+        fn expecting(&self, formatter: &mut std::fmt::Formatter) -> std::fmt::Result {
+            formatter.write_str("a boolean or an integer")
+        }
+
+        fn visit_bool<E>(self, value: bool) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            Ok(value)
+        }
+
+        fn visit_i32<E>(self, value: i32) -> Result<Self::Value, E>
+        where
+            E: de::Error,
+        {
+            // Map 0 to false, any other value to true
+            Ok(value != 0)
+        }
+    }
+
+    deserializer.deserialize_any(BoolOrIntVisitor)
+}
+```
+
+参考：
+-   https://github.com/rbatis/rbatis/pull/472
+-   https://github.com/rbatis/rbatis/issues/324
 
 #### debug_mode
 
@@ -611,7 +672,7 @@ fn main(){
 > 事务的本质是使用SQL语句BEGIN、COMMIT和ROLLBACK。
 > RBatis提供这三个函数，但也支持```defer_async()```来防止忘记提交
 
-示例[见](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
+示例[点这里](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
 ```rust
 use serde::{Deserialize, Serialize};
@@ -768,7 +829,7 @@ pub async fn main() {
 | ``` `${ !false }`  ```                                                                        | `sql.push_str(&format!("{}", !false));    `                                                         |
 | ``` `${ 2 % 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 % 1));    `                                                          |
 | ``` `${ 2 - 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 - 1));    `                                                          |
-* 在`Rust`代码中定义[见](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
+* 在`Rust`代码中定义[点这里](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
 ```rust
 // Clion智能提示: 点击代码，选择'Inject Language or Reference'，然后选择html
 #[html_sql(r#"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
@@ -802,7 +863,7 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> V
 ```
 
 
-* 在`Rust`中从文件定义[见](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_file.rs)
+* 在`Rust`中从文件定义[点这里](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_file.rs)
 
 > example/example.html
 ```html
@@ -1260,7 +1321,7 @@ fn main(){
 
 * 这个文档用于设计一个新的数据库驱动加入rbatis
 
-* 示例见[rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
+* 示例点这里[rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
 * 步骤0: 创建你的cargo项目，并在Cargo.toml中添加'rbdc = "4.5"'
 ```

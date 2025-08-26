@@ -12,6 +12,7 @@
 <li align="left" style="color: aliceblue" >- 高性能、全异步、编译时（动态SQL）</li>
 <li align="left" style="color: aliceblue" >- 内存安全、协程安全、事务安全（防止忘记提交）、100%安全代码</li>
 <li align="left" style="color: aliceblue" >- 丰富的插件、分页SQL  page/interceptors/crud!/PySQL/HtmlSQL</li>
+<li align="left" style="color: aliceblue" >- 中文文档来自ai翻译，如有差异以英文文档为准，翻译问题请提issue</li>
 </ul>
 
 [V3(已废弃)](v3/)
