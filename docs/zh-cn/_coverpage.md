@@ -15,7 +15,7 @@
 <li align="left" style="color: aliceblue" >- 中文文档来自ai翻译，如有差异以英文文档为准，翻译问题请提issue</li>
 </ul>
 
-[V3(已废弃)](rbatis.io/v3/)
-[V4-当前版本](rbatis.io/v4/)
+[V3(已废弃)](/zh-cn/v3/)
+[V4-当前版本](/zh-cn/v4/)
 
 ![](_media/bg.jpg)

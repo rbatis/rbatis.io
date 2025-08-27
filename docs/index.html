@@ -1,20 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Document</title>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-  <meta name="description" content="Description">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css" />
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+    <meta name="description" content="Description">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/docsify@4/themes/vue.css"/>
 </head>
 <body>
 <nav>
-  <a href="#/">EN</a>
-  <a href="#/zh-cn/">中文</a>
+
+
+
+
+    <span style="font-weight: bold; color: #42b983; border: 2px solid #42b983; border-radius: 5px; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">
+        <a href="#/zh-cn/" style="color: #42b983; text-decoration: none; transition: all 0.3s ease;"
+       onmouseover="this.parentElement.style.backgroundColor='#42b983'; this.style.color='white';"
+       onmouseout="this.parentElement.style.backgroundColor='transparent'; this.style.color='#42b983';">简体中文</a>
+    </span>
+    <span style="font-weight: bold; color: #42b983; border: 2px solid #42b983; border-radius: 5px; padding: 5px 10px; margin: 0 5px; transition: all 0.3s ease;">
+        <a href="#/" style="color: #42b983; text-decoration: none; transition: all 0.3s ease;"
+       onmouseover="this.parentElement.style.backgroundColor='#42b983'; this.style.color='white';"
+       onmouseout="this.parentElement.style.backgroundColor='transparent'; this.style.color='#42b983';">En</a>
+    </span>
 </nav>
-  <div id="app"></div>
-  <script>
+<div id="app"></div>
+<script>
     window.$docsify = {
       name: 'features',
       repo: '',
@@ -22,20 +35,20 @@
       coverpage: ['/', '/zh-cn/'],
       loadNavbar: false
     }
-  </script>
-  <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-toml.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
+</script>
+<script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-rust.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-toml.min.js"></script>
+<script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-json.min.js"></script>
 </body>
 <style>
-  section.cover.has-mask .mask {
-    background-color: #000000;
-    opacity: 0.0;
-    position: absolute;
-    top: 0;
-    height: 100%;
-    width: 100%;
-  }
+    section.cover.has-mask .mask {
+      background-color: #000000;
+      opacity: 0.0;
+      position: absolute;
+      top: 0;
+      height: 100%;
+      width: 100%;
+    }
 </style>
 </html>
