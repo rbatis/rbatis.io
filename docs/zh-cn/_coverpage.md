@@ -1,4 +1,4 @@
-<img src="../_media/logo.png" style="width: 200px;height: 140px" />
+<img src="_media/logo.png" style="width: 200px;height: 140px" />
 
 <div style="margin-left: 500px;" >
 <a href="https://github.com/rbatis/rbatis" target="_blank">
@@ -15,7 +15,7 @@
 <li align="left" style="color: aliceblue" >- 中文文档来自ai翻译，如有差异以英文文档为准，翻译问题请提issue</li>
 </ul>
 
-[V3(已废弃)](v3/)
-[V4-当前版本](v4/)
+[V3(已废弃)](rbatis.io/v3/)
+[V4-当前版本](rbatis.io/v4/)
 
-![](../_media/bg.jpg)
+![](_media/bg.jpg)
