@@ -17,6 +17,13 @@
 * [abs_admin项目](https://github.com/rbatis/abs_admin) 一个后台用户管理系统(Vue.js+rbatis+axum)
 
 
+#### 疑难解答
+文档内可能写的不够详细，如果有不够明白的问题，你可以从以下几个渠道获取帮助：
+1. [example 示例项目](https://github.com/rbatis/rbatis/tree/master/example) 这里展示了绝大部分的crud使用示例
+2. [tests 测试用例](https://github.com/rbatis/rbatis/tree/master/tests) 这里也提供了很多测试用例
+3. [Rbatis AI Wiki](https://deepwiki.com/rbatis/rbatis) deepwiki提供的ai，这里可以直接去rbatis的功能进行提问
+
+
 #### 支持的数据库驱动
 
 > RBatis支持任何实现[rdbc](https://crates.io/crates/rbdc)驱动。
@@ -76,10 +83,37 @@ fast_log = "1.6"
 
 ##### 表定义
 
-> RBatis遵循简洁代码风格，因此数据库表结构只是一个可能使用RBatis提供的数据库类型的普通结构
-> 我们使用```crud!()```宏```impl_*!()```宏使表结构具有查询和修改数据库的能力
+> RBatis遵循简洁代码风格，因此数据库表结构只是一个可能使用RBatis提供的数据库类型的普通结构体。     
+> 结构体必须实现 `Serialize` 和 `Deserialize` trait                 
+> 通过宏来生成的操作数据库的代码               
 
-> ```crud!```宏包含多个impl_**()宏，因此```crud!```是宏```impl_*!()```的超集
+###### crud!宏
+
+> 我们使用```crud!()```宏```impl_*!()```宏使表结构具有查询和修改数据库的能力        
+> `crud!` 宏是 RBatis 中最常用的宏，用于自动生成完整的 CRUD 操作方法。
+
+
+> 语法规则
+```rust
+// 基本语法
+crud!(StructName {});
+
+// 指定表名
+crud!(StructName {}, "table_name");
+```
+
+
+> 生成的方法
+
+`crud!` 宏会展开为四个子宏的调用：
+
+- `impl_insert!` - 生成插入方法
+- `impl_select!` - 生成查询方法
+- `impl_update!` - 生成更新方法
+- `impl_delete!` - 生成删除方法
+
+
+
 
 ```rust
 use serde::{Deserialize, Serialize};
@@ -108,9 +142,19 @@ rbatis::crud!(BizActivity {});
 > rbatis允许自定义表名，crud宏和impl_*()宏不同
 > 就像sql ```select * from ${table_name} ```
 ```rust
-rbatis::crud!(BizActivity {},"biz_activity"); // 这种方式自定义表名
-rbatis::impl_select!(BizActivity{select_by_id(id:String) -> Option => "`where id = #{id} limit 1`"},"biz_activity");// 这种方式自定义表名/表列
-rbatis::impl_select!(BizActivity{select_by_id2(table_name:&str,id:String) -> Option => "`where id = #{id} limit 1`"});// 这种方式自定义表名/表列
+//方法1：通过 crud! 宏参数指定
+rbatis::crud!(BizActivity {},"biz_activity"); // 自定义表名为 biz_activity
+
+//方法2：通过 impl_* 宏的最后一个参数指定
+rbatis::impl_select!(BizActivity{select_by_id(id:String) -> Option => "`where id = #{id} limit 1`"},"biz_activity");
+
+//方法3：通过函数参数动态指定,参数固定是 table_name:&str
+rbatis::impl_select!(BizActivity{select_by_id2(table_name:&str,id:String) -> Option => "`where id = #{id} limit 1`"});
+
+//"select * from mock_table2 where id = ?"
+let r = MockTable::select_from_table_name_by_id(&mut rb, "1", "mock_table2")
+            .await
+            .unwrap();
 ```
 
 ###### 自定义表列
@@ -118,12 +162,684 @@ rbatis::impl_select!(BizActivity{select_by_id2(table_name:&str,id:String) -> Opt
 > rbatis允许自定义表列，它支持任何```rbatis::impl_*!()```宏   
 > 就像sql ```select ${table_column} from ${table_name} ```
 
+> 语法：
+```rust
+// 固定的两个参数名是table_name和table_column，其他参数时sql的自定义参数。参数顺序不限制
+//table_name是表名,默认值为 "*"
+//table_column是列，多个列用,隔开
+rbatis::impl_*!(
+    StructName｛ 
+        method_name(table_name:&str,table_column:&str, param1:Type1, param2:Type2,...) 
+            -> returnType => " SQL条件语句" 
+    ｝
+)
+
+```
+
+> 示例1：
 ```rust
 rbatis::impl_select!(BizActivity{select_by_id(table_name:&str,table_column:&str,id:String) -> Option => "`where id = #{id} limit 1`"});
 ```
+> 示例2：
+```rust
+impl_select!(MockTable{select_table_column_from_table_name_by_id(id:&str,table_column:&str) => "`where id = #{id}`"});
+
+//"select id,name from mock_table where id = ?"
+let r = MockTable::select_table_column_from_table_name_by_id(&mut rb, "1", "id,name")
+.await
+.unwrap();
+
+
+```
+
+> called `Result::unwrap()` on an `Err` value: E("missing field `xxxx`") 问题：           
+> RBatis 的反序列化机制基于 serde，当从数据库查询结果转换为 Rust 结构体时，serde 期望所有非 Option 字段都存在于数据中。      
+> 对于某些字段是 Option<T> 类型（尤其是自定义反序列化的字段），如果没有使用 #[serde(default)] 注解，serde 仍然会要求该字段在输入数据中存在。         
+> 所以，对于非Option字段，必须查询该字段，对于Option字段，某些情况需要使用 #[serde(default)] 注解来指定默认值。        
+
+
+###### 宏-查询
+
+`impl_select!` 宏用于为 Rust 结构体自动生成数据库查询方法，支持动态 SQL 生成和类型安全的查询操作。
+
+
+> 基本语法格式
+
+```rust
+impl_select!(结构体类型{方法名(参数列表) -> 返回类型 => "SQL模板"}[, "表名"]);
+```
+
+> 参数说明
+
+- **结构体类型**: 要为其生成方法的数据结构
+- **方法名**: 生成的方法名称
+- **参数列表**: 方法参数，格式为 `参数名:参数类型`
+- **返回类型**: 可选，默认为 `Vec<结构体>`，支持 `Vec`、`Option` 等
+- **SQL模板**: PySql 格式的动态 SQL 模板
+- **表名**: 可选，指定数据库表名
+
+> 默认生成的方法
+
+当使用 `impl_select!(Table{})` 时，会自动生成以下方法：
+
+- `select_all()`: 查询所有记录
+- `select_by_column<V>(column: &str, column_value: V) -> Vec`: 根据列值查询
+- `select_by_map(condition: rbs::Value) -> Vec`: 根据映射条件查询
+- `select_in_column<V>(column: &str, column_values: &[V]) -> Vec`: IN 查询
+
+
+> 基本用法
+
+```rust
+#[derive(serde::Serialize, serde::Deserialize)]
+pub struct MockTable {
+    pub id: Option<String>,
+    pub name: Option<String>,
+}
+
+// 生成默认查询方法
+impl_select!(MockTable{});
+
+// 自定义查询方法
+impl_select!(MockTable{select_all_by_id(id:&str,name:&str) => "`where id = #{id} and name = #{name}`"});
+```  
+
+> 指定返回类型
+
+```rust
+// 返回 Option<T>
+impl_select!(MockTable{select_by_id(id:&str) -> Option => "`where id = #{id} limit 1`"});
+
+// 返回 Vec<T>（默认）
+impl_select!(MockTable{select_by_id2(id:String) -> Vec => "`where id = #{id} limit 1`"});
+``` 
+
+> 指定表名
+
+```rust
+// 使用自定义表名
+impl_select!(MockTable{}, "custom_table_name");
+``` 
+
+> LIKE 查询实现
+
+> 基本 LIKE 查询
+
+```rust
+impl_select!(MockTable{
+    select_by_name_like(name: &str) -> Vec => 
+    "`where name like #{name}`"
+});
+```
+
+> 动态 LIKE 查询
+
+使用 PySql 语法实现条件性 LIKE 查询：
+
+```rust
+impl_select!(MockTable{
+    select_by_name_like_dynamic(name: &str) -> Vec => 
+    "if name != '':
+        ` where name like #{name}`"
+});
+``` 
+
+在实际使用中，您需要在传入参数时添加通配符：
+
+```rust
+// 使用示例
+let results = MockTable::select_by_name_like(&rb, "%test%").await?;
+```
+
+> IN 查询实现
+
+> 使用默认生成的 IN 查询方法
+
+当使用 `impl_select!(MockTable{})` 时，会自动生成 `select_in_column` 方法： [2](#1-1)
+
+```rust
+// 自动生成的方法
+let results = MockTable::select_in_column(&rb, "id", &["1", "2", "3"]).await?;
+``` 
+
+> 自定义 IN 查询
+
+使用 PySql 语法实现自定义 IN 查询：
+
+```rust
+impl_select!(MockTable{
+    select_by_ids(ids: &[String]) -> Vec => 
+    "if !ids.is_empty():
+        ` where id in `
+        ${ids.sql()}"
+});
+``` 
+
+> 复杂 IN 查询示例
+
+结合条件的 IN 查询：
+
+```rust
+impl_select!(MockTable{
+    select_by_status_and_ids(status: i32, ids: &[String]) -> Vec => 
+    "`where status = #{status}`
+    if !ids.is_empty():
+        ` and id in `
+        ${ids.sql()}"
+});
+```
+
+> HTML 风格的 LIKE 和 IN 查询
+
+也可以使用 HTML 风格的动态 SQL：
+
+```rust
+#[html_sql(
+r#"<select id="select_by_condition">
+    `select * from mock_table`
+    <where>
+        <if test="name != ''">
+            ` and name like #{name}`
+        </if>
+        <if test="!is_empty(ids)">
+            ` and id in `
+            <foreach collection="ids" item="id" open="(" close=")" separator=",">
+                #{id}
+            </foreach>
+        </if>
+    </where>
+</select>"#
+)]
+async fn select_by_condition(
+    rb: &dyn Executor,
+    name: &str,
+    ids: &[String],
+) -> rbatis::Result<Vec<MockTable>> {
+    impled!()
+}
+``` 
+
+> 关键语法说明
+
+1. **LIKE 查询**: 直接在 SQL 模板中使用 `like #{参数名}`，通配符需要在调用时添加
+2. **IN 查询**: 使用 `${数组参数.sql()}` 自动生成 IN 子句的格式
+3. **条件判断**: 使用 `if !数组.is_empty():` 检查数组是否为空
+4. **空值检查**: 使用 `!= ''` 检查字符串是否为空
+
+
+
+> 综合示例
+```rust
+//#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
+#[macro_use]
+extern crate rbatis;
+
+
+use rbatis::rbdc::datetime::DateTime;
+use serde_json::json;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<DateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+crud!(BizActivity{});//crud = insert+select_by_map+update_by_map+delete_by_map
+impl_select!(BizActivity{select_all_by_id(id:&str,name:&str) => "`where id = #{id} and name = #{name}`"});
+impl_select!(BizActivity{select_by_id(id:&str) -> Option => "`where id = #{id} limit 1`"});
+
+
+#[tokio::main]
+async fn main() {
+    /// 启用日志crate显示sql日志
+    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    /// 初始化rbatis。你也可以调用rb.clone()。这是一个Arc指针
+    let rb = RBatis::new();
+    /// 连接数据库 
+
+    //init() 只设置驱动
+    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    
+    // link() 将设置驱动并尝试使用acquire()连接数据库
+    // sqlite 
+    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
+    // mysql 
+    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // postgresql 
+    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // mssql/sqlserver
+    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
+
+    let data = BizActivity::select_by_map(&rb, value!{"id":"1"}).await;
+    println!("select_by_map = {}", json!(data));
+    
+    let data = BizActivity::select_all_by_id(&rb, "1", "1").await;
+    println!("select_all_by_id = {}", json!(data));
+
+    let data = BizActivity::select_by_id(&rb, "1").await;
+    println!("select_by_id = {}", json!(data));
+}
+```
+
+
+###### 宏-分页查询
+
+`impl_select_page!` 是 RBatis 框架中用于生成分页查询方法的宏，它可以自动生成带有分页功能的查询方法。
+
+> 无条件分页查询语法
+
+最简单的无条件分页查询语法如下：
+```rust
+impl_select_page!(结构体类型{方法名() => ""});
+```
+
+> 带条件分页语法规则
+
+```rust
+impl_select_page!(结构体类型{方法名(参数列表) => "WHERE条件SQL"});  
+impl_select_page!(结构体类型{方法名(参数列表) => "WHERE条件SQL"}, "表名");
+```
+
+
+> 参数说明
+
+- **结构体类型**: 要为其生成方法的数据结构
+- **方法名**: 生成的分页查询方法名称
+- **参数列表**: 方法参数，格式为 `参数名:参数类型`
+- **WHERE条件SQL**: PySql 格式的动态 WHERE 条件模板
+- **表名**: 可选，指定数据库表名
+
+
+
+>  输入参数
+
+生成的方法接受以下参数：
+- `executor: &dyn Executor`: 数据库执行器
+- `page_request: &dyn IPageRequest`: 分页请求对象
+- 自定义参数列表
+    - 参数引用语法:
+        - #{参数名}: 用于参数化查询，防止 SQL 注入
+        - ${参数名}: 直接字符串替换（谨慎使用）
+        - 条件判断: 直接使用参数名进行条件判断
+
+
+>  返回值
+
+返回 `Result<Page<T>, Error>`，其中 `Page<T>` 包含：
+- `page_no`: 当前页码
+- `page_size`: 每页大小
+- `total`: 总记录数
+- `records`: 当前页数据列表
+
+
+>特殊参数说明
+
+在 WHERE 条件 SQL 中，可以通过${}使用以下特殊参数：
+
+- `do_count`: bool 布尔值，用于区分是统计查询还是数据查询
+- `page_no`: 页码偏移量 (page_no - 1) * page_size
+- `page_size`: 每页大小
+- `sql`: 当前生成的 SQL 字符串，可用于条件判断
+
+>使用特殊参数
+
+在 WHERE 条件 SQL 中，可以使用以下特殊参数：
+
+> 1. `do_count` 参数
+
+用于区分是统计查询还是数据查询：
+
+```rust
+impl_select_page!(Activity{select_page() =>"
+     if do_count == false:
+       `order by create_time desc`"});
+```
+
+> 2. `page_no` 和 `page_size` 参数
+
+- `page_no`: 页码偏移量，计算为 `(page_no - 1) * page_size`
+- `page_size`: 每页大小
+
+```rust
+impl_select_page!(Activity{select_page_custom() =>"
+     `where status = 1`
+     if do_count == false:
+       ` limit ${page_no}, ${page_size}`"});
+```
+
+> 3. `sql` 参数
+
+当前生成的 SQL 字符串，可用于条件判断：
+
+```rust
+impl_select_page!(Activity{select_page() =>"
+     if !sql.contains('count(1)'):
+       `order by create_time desc`"});
+```
+
+
+
+
+
+
+> 分页查询的双重执行机制
+
+该宏内部使用 `pysql_select_page!` 宏来处理分页逻辑 。
+分页查询会自动处理以下变量：
+- `${page_no}` = (page_no - 1) * page_size
+- `${page_size}` = page_size
+- `do_count` 参数用于区分是查询总数还是查询数据
+
+
+宏会生成两次 SQL 执行：
+
+1. **计数查询**：执行时 `do_count=true`，SQL 会被 `PageIntercept` 拦截器修改为 `select count(1) as count from table_name`
+2. **数据查询**：执行时 `do_count=false`，SQL 保持原样并添加 LIMIT 分页条件
+
+实际生成的 SQL：
+- **数据查询**：`select * from mock_table order by create_time desc limit 0,10`
+- **计数查询**：`select count(1) as count from mock_table order by create_time desc`
+
+>  使用示例
+
+> 基本用法
+
+```rust
+//无条件
+impl_select_page!(Activity{select_page() => ""});
+let page_data = Activity::select_page(&rb, &PageRequest::new(1, 10)).await?;
+
+
+//无条件带排序
+impl_select_page!(MockTable{select_page() => "`order by create_time desc`"});
+
+//或：更好的性能，在计数查询中不带排序
+impl_select_page!(MockTable{select_page() => "  
+     if !sql.contains('count(1)'):  
+       `order by create_time desc`"});
+       
+let r = MockTable::select_page(&mut rb, &PageRequest::new(1, 10))
+                .await
+                .unwrap();
+
+```
+
+
+
+> 带条件查询
+```rust
+impl_select_page!(MockTable{select_page_by_name(name:&str) =>"
+     if name != null && name != '':
+       `where name = #{name}`
+"});
+
+let r = MockTable::select_page_by_name(&mut rb, &PageRequest::new(1, 10), "张三")
+            .await
+            .unwrap();
+
+//生成的sql： "select * from mock_table where name = '张三' limit 0,10 "
+
+```
+
+> like查询
+```rust 
+
+//方式1：在 SQL 中直接使用 LIKE
+impl_select_page!(Activity{select_page_by_name(name: &str) => "where name like #{name}"});  
+  
+// 调用时传入包含通配符的字符串  
+let page_data = Activity::select_page_by_name(&rb, &PageRequest::new(1, 10), "%test%").await?;
+
+
+//方式2：在 SQL 中拼接通配符
+impl_select_page!(Activity{select_page_by_name(name: &str) => "where name like concat('%', #{name}, '%')"});  
+  
+// 调用时只传入关键词  
+let page_data = Activity::select_page_by_name(&rb, &PageRequest::new(1, 10), "test").await?;
+
+
+```
+
+> in查询
+
+> 基本 IN 查询
+
+使用 `impl_select_page!` 实现 IN 查询的示例：
+
+```rust
+impl_select_page!(Activity{select_page_by_ids(ids: &[String]) => "
+    if !ids.is_empty():
+        `where id in `
+        ${ids.sql()}"});
+``` 
+
+> 复杂条件 + IN 查询
+
+结合多个条件的 IN 查询示例：
+
+```rust
+impl_select_page!(Activity{select_page_by_status_and_ids(status: i32, ids: &[String]) => "
+    `where status = #{status}`
+    if !ids.is_empty():
+        ` and id in `
+        ${ids.sql()}
+    if do_count == false:
+        ` order by create_time desc`"});
+```
+
+> 综合示例
+```rust
+//#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
+#[macro_use]
+extern crate rbatis;
+
+use rbatis::rbdc::datetime::DateTime;
+use rbatis::sql::page::PageRequest;
+use serde_json::json;
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<DateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+
+impl_select_page!(BizActivity{select_page() =>"
+     if !sql.contains('count(1)'):
+       `order by create_time desc`"});
+impl_select_page!(BizActivity{select_page_by_name(name:&str) =>"
+     if name != null && name != '':
+       `where name != #{name}`
+     if name == '':
+       `where name != ''`"});
+
+/// postgres/mssql数据库不支持`limit 0,10`，你应该使用limit_sql:&str并设置`limit 10 offset 0`
+impl_select_page!(BizActivity{select_page_by_limit(name:&str,limit_sql:&str) => "`where name != #{name}`"});
+
+#[tokio::main]
+async fn main() {
+    /// 启用日志crate显示sql日志
+    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    /// 初始化rbatis。你也可以调用rb.clone()。这是一个Arc指针
+    let rb = RBatis::new();
+    /// 连接数据库 
+
+    //init() 只设置驱动
+    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    
+    // link() 将设置驱动并尝试使用acquire()连接数据库
+    // sqlite 
+    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
+    // mysql 
+    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // postgresql 
+    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // mssql/sqlserver
+    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
+
+    let data = BizActivity::select_page(&rb, &PageRequest::new(1, 10)).await;
+    println!("select_page = {}", json!(data));
+
+    let data = BizActivity::select_page_by_name(&rb, &PageRequest::new(1, 10), "").await;
+    println!("select_page_by_name = {}", json!(data));
+
+    let data = BizActivity::select_page_by_limit(&rb, &PageRequest::new(1, 10), "2", " limit 0,10 ").await;
+    println!("select_page_by_limit = {}", json!(data));
+}
+```
+
 
 ###### 宏-插入
+`impl_insert!` 是 RBatis 框架中用于自动生成插入操作方法的宏。
 
+为指定的结构体自动生成两个插入方法：
+- `insert`: 插入单条记录
+- `insert_batch`: 批量插入记录，支持分批处理
+
+
+> 基本语法
+
+```rust
+impl_insert!(StructName {});
+```
+
+> 指定表名语法
+
+```rust
+impl_insert!(StructName {}, "table_name");
+```
+
+> 生成的方法签名
+
+宏会为结构体生成以下两个方法： 
+
+1. 单条插入方法：
+```rust
+pub async fn insert(
+    executor: &dyn Executor,
+    table: &StructName,
+) -> Result<ExecResult, Error>
+```
+
+2. 批量插入方法： 
+```rust
+pub async fn insert_batch(
+    executor: &dyn Executor,
+    tables: &[StructName],
+    batch_size: u64,
+) -> Result<ExecResult, Error>
+```
+
+参数说明:
+
+- `executor`: 数据库执行器（`&RBatis` 或事务对象）
+- `table`/`tables`: 要插入的数据
+- `batch_size`: 批量插入时每批的大小
+
+返回值:
+
+两个方法都返回 `Result<ExecResult, Error>`，其中： 
+- `ExecResult` 包含 `rows_affected`（影响行数）和 `last_insert_id`（最后插入的ID）
+- `Error` 为 RBatis 错误类型
+
+> 使用示例
+
+数据结构 
+```rust
+#[derive(serde::Serialize, serde::Deserialize, Clone)]
+pub struct Activity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<DateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+impl_insert!(Activity {});
+
+```
+
+单条插入示例 
+```rust
+   let table = Activity {
+        id: Some("1".into()),
+        name: Some("1".into()),
+        pc_link: Some("1".into()),
+        h5_link: Some("1".into()),
+        pc_banner_img: None,
+        h5_banner_img: None,
+        sort: Some("1".to_string()),
+        status: Some(1),
+        remark: Some("1".into()),
+        create_time: Some(DateTime::now()),
+        version: Some(1),
+        delete_flag: Some(1),
+    };
+
+    let data = Activity::insert(&rb, &table).await;
+    println!("insert = {}", json!(data));
+```
+批量插入示例
+```rust
+    let tables = vec![
+        Activity {
+            id: Some("2".into()),
+            name: Some("2".into()),
+            pc_link: Some("2".into()),
+            h5_link: Some("2".into()),
+            pc_banner_img: None,
+            h5_banner_img: None,
+            sort: Some("2".to_string()),
+            status: Some(2),
+            remark: Some("2".into()),
+            create_time: Some(DateTime::now()),
+            version: Some(2),
+            delete_flag: Some(2),
+        },
+        Activity {
+            id: Some("3".into()),
+            name: Some("3".into()),
+            pc_link: Some("3".into()),
+            h5_link: Some("3".into()),
+            pc_banner_img: None,
+            h5_banner_img: None,
+            sort: Some("3".to_string()),
+            status: Some(3),
+            remark: Some("3".into()),
+            create_time: Some(DateTime::now()),
+            version: Some(3),
+            delete_flag: Some(3),
+        },
+    ];
+    let data = Activity::insert_batch(&rb, &tables, 10).await;
+    println!("insert_batch = {}", json!(data));
+```
+
+综合示例：
 ```rust
 //#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
 #[macro_use]
@@ -201,8 +917,59 @@ async fn main() {
 }
 ```
 
+> 注意事项：
+
+- 宏会自动处理 `None` 值字段，只插入非空字段
+- 如果不指定表名，会使用结构体名的蛇形命名作为表名
+- 批量插入会根据 `batch_size` 参数自动分批执行，避免单次插入过多数据
+
+
+
 ###### 宏-更新
 
+用于生成更新操作的方法。
+
+> 语法规则
+
+```rust
+// 基本语法
+impl_update!(StructName {});
+
+// 自定义更新方法
+impl_update!(StructName {
+    method_name(param: Type) => "WHERE条件"
+});
+```
+
+>生成的方法
+
+- `update_by_column(executor, table, column)` - 按列更新
+```rust
+    ///  will skip null column
+    pub async fn update_by_column(
+        executor: &dyn $crate::executor::Executor,
+        table: &$table,
+        column: &str) -> std::result::Result<$crate::rbdc::db::ExecResult, $crate::rbdc::Error>{
+        <$table>::update_by_column_skip(executor,table,column,true).await
+    }
+```
+
+
+- `update_by_column_batch(executor, tables, column, batch_size)` - 批量更新
+```rust
+    ///will skip null column
+    pub async fn update_by_column_batch(
+        executor: &dyn $crate::executor::Executor,
+        tables: &[$table],
+        column: &str,
+        batch_size: u64
+    ) -> std::result::Result<$crate::rbdc::db::ExecResult, $crate::rbdc::Error> {
+      <$table>::update_by_column_batch_skip(executor,tables,column,batch_size,true).await
+    }
+```
+
+
+>综合示例
 ```rust
 //#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
 #[macro_use]
@@ -275,142 +1042,87 @@ async fn main() {
 }
 ```
 
-###### 宏-查询
-
-```rust
-//#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
-#[macro_use]
-extern crate rbatis;
-
-
-use rbatis::rbdc::datetime::DateTime;
-use serde_json::json;
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct BizActivity {
-    pub id: Option<String>,
-    pub name: Option<String>,
-    pub pc_link: Option<String>,
-    pub h5_link: Option<String>,
-    pub pc_banner_img: Option<String>,
-    pub h5_banner_img: Option<String>,
-    pub sort: Option<String>,
-    pub status: Option<i32>,
-    pub remark: Option<String>,
-    pub create_time: Option<DateTime>,
-    pub version: Option<i64>,
-    pub delete_flag: Option<i32>,
-}
-crud!(BizActivity{});//crud = insert+select_by_map+update_by_map+delete_by_map
-impl_select!(BizActivity{select_all_by_id(id:&str,name:&str) => "`where id = #{id} and name = #{name}`"});
-impl_select!(BizActivity{select_by_id(id:&str) -> Option => "`where id = #{id} limit 1`"});
-
-
-#[tokio::main]
-async fn main() {
-    /// 启用日志crate显示sql日志
-    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-    /// 初始化rbatis。你也可以调用rb.clone()。这是一个Arc指针
-    let rb = RBatis::new();
-    /// 连接数据库 
-
-    //init() 只设置驱动
-    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
-    
-    // link() 将设置驱动并尝试使用acquire()连接数据库
-    // sqlite 
-    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
-    // mysql 
-    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // postgresql 
-    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
-    // mssql/sqlserver
-    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
-
-    let data = BizActivity::select_by_map(&rb, value!{"id":"1"}).await;
-    println!("select_by_map = {}", json!(data));
-    
-    let data = BizActivity::select_all_by_id(&rb, "1", "1").await;
-    println!("select_all_by_id = {}", json!(data));
-
-    let data = BizActivity::select_by_id(&rb, "1").await;
-    println!("select_by_id = {}", json!(data));
-}
-```
-
-
-###### 宏-分页查询
-
-```rust
-//#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
-#[macro_use]
-extern crate rbatis;
-
-use rbatis::rbdc::datetime::DateTime;
-use rbatis::sql::page::PageRequest;
-use serde_json::json;
-
-#[derive(Clone, Debug, Serialize, Deserialize)]
-pub struct BizActivity {
-    pub id: Option<String>,
-    pub name: Option<String>,
-    pub pc_link: Option<String>,
-    pub h5_link: Option<String>,
-    pub pc_banner_img: Option<String>,
-    pub h5_banner_img: Option<String>,
-    pub sort: Option<String>,
-    pub status: Option<i32>,
-    pub remark: Option<String>,
-    pub create_time: Option<DateTime>,
-    pub version: Option<i64>,
-    pub delete_flag: Option<i32>,
-}
-
-impl_select_page!(BizActivity{select_page() =>"
-     if !sql.contains('count(1)'):
-       `order by create_time desc`"});
-impl_select_page!(BizActivity{select_page_by_name(name:&str) =>"
-     if name != null && name != '':
-       `where name != #{name}`
-     if name == '':
-       `where name != ''`"});
-
-/// postgres/mssql数据库不支持`limit 0,10`，你应该使用limit_sql:&str并设置`limit 10 offset 0`
-impl_select_page!(BizActivity{select_page_by_limit(name:&str,limit_sql:&str) => "`where name != #{name}`"});
-
-#[tokio::main]
-async fn main() {
-    /// 启用日志crate显示sql日志
-    fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
-    /// 初始化rbatis。你也可以调用rb.clone()。这是一个Arc指针
-    let rb = RBatis::new();
-    /// 连接数据库 
-
-    //init() 只设置驱动
-    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
-    
-    // link() 将设置驱动并尝试使用acquire()连接数据库
-    // sqlite 
-    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
-    // mysql 
-    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // postgresql 
-    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
-    // mssql/sqlserver
-    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
-
-    let data = BizActivity::select_page(&rb, &PageRequest::new(1, 10)).await;
-    println!("select_page = {}", json!(data));
-
-    let data = BizActivity::select_page_by_name(&rb, &PageRequest::new(1, 10), "").await;
-    println!("select_page_by_name = {}", json!(data));
-
-    let data = BizActivity::select_page_by_limit(&rb, &PageRequest::new(1, 10), "2", " limit 0,10 ").await;
-    println!("select_page_by_limit = {}", json!(data));
-}
-```
 
 ###### 宏-删除
+
+
+`impl_delete!` 宏用于为 Rust 结构体自动生成数据库删除方法，支持动态 SQL 生成和类型安全的删除操作。 
+
+
+> 基本语法格式
+
+```rust
+impl_delete!(结构体类型{方法名(参数列表) => "WHERE条件SQL"}[, "表名"]);
+```
+
+>  参数说明
+
+- **结构体类型**: 要为其生成方法的数据结构
+- **方法名**: 生成的删除方法名称
+- **参数列表**: 方法参数，格式为 `参数名:参数类型`
+- **WHERE条件SQL**: PySql 格式的动态 WHERE 条件模板
+- **表名**: 可选，指定数据库表名
+
+>  默认生成的方法
+
+当使用 `impl_delete!(Table{})` 时，会自动生成以下方法：
+
+- `delete_by_column<V>(column: &str, column_value: V)`: 根据列值删除
+- `delete_by_map(condition: rbs::Value)`: 根据映射条件删除
+- `delete_in_column<V>(column: &str, column_values: &[V])`: IN 删除
+- `delete_by_column_batch<V>(column: &str, values: &[V], batch_size: u64)`: 批量删除
+
+>  输入参数
+
+生成的方法接受以下参数：
+- `executor: &dyn Executor`: 数据库执行器
+- 自定义参数列表
+
+>  返回值
+
+返回 `Result<ExecResult, Error>`，其中 `ExecResult` 包含受影响的行数等信息。
+
+
+>  基本删除方法
+```rust
+impl_delete!(MockTable {delete_by_name(name:&str) => "`where name= '2'`"});
+
+// 使用示例
+let r = MockTable::delete_by_name(&mut rb, "2").await.unwrap();
+// 生成的 SQL: "delete from mock_table where name= '2'"
+```
+
+> 复杂条件删除
+
+```rust
+// 使用映射条件删除
+let r = MockTable::delete_by_map(
+    &mut rb,
+    to_value!{
+        "id":"1",
+        "name":"1",
+    },
+).await.unwrap();
+// 生成的 SQL: "delete from mock_table where id = ? and name = ?"
+```
+
+> 批量删除示例 
+
+```rust
+// 批量删除
+let r = MockTable::delete_by_column_batch(&mut rb, "1", &["1", "2", "3", "4"], 2)
+    .await.unwrap();
+```
+
+
+> 注意事项
+
+1. **WHERE 条件**: 删除操作必须包含 WHERE 条件，避免误删全表数据
+2. **参数化查询**: 使用 `#{参数名}` 进行安全的参数绑定
+3. **批量操作**: 支持批量删除，可以指定批次大小控制性能
+4. **返回值**: 返回 `ExecResult` 包含受影响的行数信息
+
+>综合示例
 
 ```rust
 //#[macro_use] 在'root crate'或'mod.rs'或'main.rs'中定义
