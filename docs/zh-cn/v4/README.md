@@ -224,9 +224,7 @@ impl_select!(结构体类型{方法名(参数列表) -> 返回类型 => "SQL模�
 当使用 `impl_select!(Table{})` 时，会自动生成以下方法：
 
 - `select_all()`: 查询所有记录
-- `select_by_column<V>(column: &str, column_value: V) -> Vec`: 根据列值查询
 - `select_by_map(condition: rbs::Value) -> Vec`: 根据映射条件查询
-- `select_in_column<V>(column: &str, column_values: &[V]) -> Vec`: IN 查询
 
 
 > 基本用法
@@ -942,33 +940,6 @@ impl_update!(StructName {
 });
 ```
 
->生成的方法
-
-- `update_by_column(executor, table, column)` - 按列更新
-```rust
-    ///  will skip null column
-    pub async fn update_by_column(
-        executor: &dyn $crate::executor::Executor,
-        table: &$table,
-        column: &str) -> std::result::Result<$crate::rbdc::db::ExecResult, $crate::rbdc::Error>{
-        <$table>::update_by_column_skip(executor,table,column,true).await
-    }
-```
-
-
-- `update_by_column_batch(executor, tables, column, batch_size)` - 批量更新
-```rust
-    ///will skip null column
-    pub async fn update_by_column_batch(
-        executor: &dyn $crate::executor::Executor,
-        tables: &[$table],
-        column: &str,
-        batch_size: u64
-    ) -> std::result::Result<$crate::rbdc::db::ExecResult, $crate::rbdc::Error> {
-      <$table>::update_by_column_batch_skip(executor,tables,column,batch_size,true).await
-    }
-```
-
 
 >综合示例
 ```rust
@@ -1068,10 +1039,7 @@ impl_delete!(结构体类型{方法名(参数列表) => "WHERE条件SQL"}[, "表
 
 当使用 `impl_delete!(Table{})` 时，会自动生成以下方法：
 
-- `delete_by_column<V>(column: &str, column_value: V)`: 根据列值删除
 - `delete_by_map(condition: rbs::Value)`: 根据映射条件删除
-- `delete_in_column<V>(column: &str, column_values: &[V])`: IN 删除
-- `delete_by_column_batch<V>(column: &str, values: &[V], batch_size: u64)`: 批量删除
 
 >  输入参数
 
