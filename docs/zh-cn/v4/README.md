@@ -15,6 +15,7 @@
 * 100%安全的纯`Rust`，启用`#![forbid(unsafe_code)]`
 * [rbatis/example](https://github.com/rbatis/example)
 * [abs_admin项目](https://github.com/rbatis/abs_admin) 一个后台用户管理系统(Vue.js+rbatis+axum)
+* [salvo_admin项目](https://github.com/feihua/salvo-admin) 一个后台权限管理系统(react+rbatis+salvo)
 
 
 #### 疑难解答
