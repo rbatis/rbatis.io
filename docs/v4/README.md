@@ -18,7 +18,7 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * 100% Safe pure `Rust` with `#![forbid(unsafe_code)]` enabled
 * [rbatis/example](https://github.com/rbatis/example)
 * [abs_admin project](https://github.com/rbatis/abs_admin) an background user management system(Vue.js+rbatis+axum)
-
+* [salvo_admin project](https://github.com/feihua/salvo-admin) an background permission management system(react+rbatis+salvo)
 
 #### Supported database driver
 
