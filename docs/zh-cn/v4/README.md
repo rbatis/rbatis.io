@@ -13,7 +13,7 @@
 * 动态配置连接池(基于https://github.com/rbatis/fast_pool)
 * 支持基于拦截器实现的日志记录
 * 100%安全的纯`Rust`，启用`#![forbid(unsafe_code)]`
-* [rbatis/example](https://github.com/rbatis/example)
+* [rbatis/example](https://github.com/rbatis/rbatis/tree/master/example)
 * [abs_admin项目](https://github.com/rbatis/abs_admin) 一个后台用户管理系统(Vue.js+rbatis+axum)
 * [salvo_admin项目](https://github.com/feihua/salvo-admin) 一个后台权限管理系统(react+rbatis+salvo)
 
@@ -22,7 +22,7 @@
 文档内可能写的不够详细，如果有不够明白的问题，你可以从以下几个渠道获取帮助：
 1. [example 示例项目](https://github.com/rbatis/rbatis/tree/master/example) 这里展示了绝大部分的crud使用示例
 2. [tests 测试用例](https://github.com/rbatis/rbatis/tree/master/tests) 这里也提供了很多测试用例
-3. [Rbatis AI Wiki](https://deepwiki.com/rbatis/rbatis) deepwiki提供的ai，这里可以直接去rbatis的功能进行提问
+3. [Rbatis AI Wiki](https://deepwiki.com/rbatis/rbatis) deepwiki提供的ai，这里可以直接去rbatis的功能进行提问（注意可能有过时函数，请实际测试再使用）
 
 
 #### 支持的数据库驱动
@@ -88,7 +88,13 @@ fast_log = "1.6"
 > 结构体必须实现 `Serialize` 和 `Deserialize` trait                 
 > 通过宏来生成的操作数据库的代码               
 
-###### crud!宏
+##### 过时的方法
+
+- xxx_by_column 在最新的4.6.8版本全部被删除，请使用xxx_by_map,或者用htmlsql等
+- update_by_column_batch 
+- 当你询问DeepWiki时，它可能给出的是过时的函数，这时候请复制运行一下看看是否存在
+
+##### crud!宏
 
 > 我们使用```crud!()```宏```impl_*!()```宏使表结构具有查询和修改数据库的能力        
 > `crud!` 宏是 RBatis 中最常用的宏，用于自动生成完整的 CRUD 操作方法。
@@ -140,8 +146,11 @@ rbatis::crud!(BizActivity {});
 
 ###### 自定义表名
 
-> rbatis允许自定义表名，crud宏和impl_*()宏不同
+> rbatis允许自定义表名
 > 就像sql ```select * from ${table_name} ```
+> 需要注意的是，crud宏和impl_*()宏不同
+
+
 ```rust
 //方法1：通过 crud! 宏参数指定
 rbatis::crud!(BizActivity {},"biz_activity"); // 自定义表名为 biz_activity
@@ -197,6 +206,23 @@ let r = MockTable::select_table_column_from_table_name_by_id(&mut rb, "1", "id,n
 > RBatis 的反序列化机制基于 serde，当从数据库查询结果转换为 Rust 结构体时，serde 期望所有非 Option 字段都存在于数据中。      
 > 对于某些字段是 Option<T> 类型（尤其是自定义反序列化的字段），如果没有使用 #[serde(default)] 注解，serde 仍然会要求该字段在输入数据中存在。         
 > 所以，对于非Option字段，必须查询该字段，对于Option字段，某些情况需要使用 #[serde(default)] 注解来指定默认值。        
+
+###### 返回值类型的定义
+对于impl_select相关的方法，默认返回的是Vec<结构体> 类型，如果想自定义返回值类型，可以参照以下示例：
+
+```rust
+/// 通过 `-> 返回值` 来指定类型
+/// 注意，返回值的类型不能再有泛型，比如只能是Vec, 不能是Vec<T>。只能是Option，不能是Option<T>
+impl_select!(结构体{方法名(参数列表) -> 返回类型 => "SQL模板"});
+```
+
+###### 参数的传递
+大部分情况下，impl_xxx 的模板内都可以使用 #{参数名} 的形式来传递。
+
+
+###### pysql模板内`` 的使用
+根据观察，凡是用到了pysql代码，比如if判断的，不应该包含在`` 内
+
 
 
 ###### 宏-查询
@@ -292,41 +318,25 @@ let results = MockTable::select_by_name_like(&rb, "%test%").await?;
 
 > IN 查询实现
 
-> 使用默认生成的 IN 查询方法
-
-当使用 `impl_select!(MockTable{})` 时，会自动生成 `select_in_column` 方法： [2](#1-1)
-
+> 使用select_by_map方法
 ```rust
-// 自动生成的方法
-let results = MockTable::select_in_column(&rb, "id", &["1", "2", "3"]).await?;
+
+let v: Vec<String> = vec!["1","2"];
+Dict::select_by_map(
+		&rb,
+        value! {
+             "id":&v,
+             "access_type":"OTHER",
+             "dict_type":"STOP_WORDS",
+        }
+    )
+    .await?
+	
+//生成的sql类似： select * from dict where id in ('1','2') and access_type = "OTHER" and dict_type = "STOP_WORDS"
 ``` 
 
-> 自定义 IN 查询
 
-使用 PySql 语法实现自定义 IN 查询：
 
-```rust
-impl_select!(MockTable{
-    select_by_ids(ids: &[String]) -> Vec => 
-    "if !ids.is_empty():
-        ` where id in `
-        ${ids.sql()}"
-});
-``` 
-
-> 复杂 IN 查询示例
-
-结合条件的 IN 查询：
-
-```rust
-impl_select!(MockTable{
-    select_by_status_and_ids(status: i32, ids: &[String]) -> Vec => 
-    "`where status = #{status}`
-    if !ids.is_empty():
-        ` and id in `
-        ${ids.sql()}"
-});
-```
 
 > HTML 风格的 LIKE 和 IN 查询
 
@@ -360,10 +370,7 @@ async fn select_by_condition(
 
 > 关键语法说明
 
-1. **LIKE 查询**: 直接在 SQL 模板中使用 `like #{参数名}`，通配符需要在调用时添加
-2. **IN 查询**: 使用 `${数组参数.sql()}` 自动生成 IN 子句的格式
-3. **条件判断**: 使用 `if !数组.is_empty():` 检查数组是否为空
-4. **空值检查**: 使用 `!= ''` 检查字符串是否为空
+1. **LIKE 查询**: 直接在 SQL 模板中使用 `like #{参数名}`，通配符需要在调用时添加 '%张三%'
 
 
 
@@ -433,6 +440,8 @@ async fn main() {
 ###### 宏-分页查询
 
 `impl_select_page!` 是 RBatis 框架中用于生成分页查询方法的宏，它可以自动生成带有分页功能的查询方法。
+
+请注意，默认的crud!不会包含impl_select_page，需要你手动生成。
 
 > 无条件分页查询语法
 
@@ -609,31 +618,8 @@ let page_data = Activity::select_page_by_name(&rb, &PageRequest::new(1, 10), "te
 ```
 
 > in查询
+参考后面的 [htmlsql章节](https://rbatis.github.io/rbatis.io/#/zh-cn/v4/?id=htmlsql) 或 [pysql章节](https://rbatis.github.io/rbatis.io/#/zh-cn/v4/?id=pysql)
 
-> 基本 IN 查询
-
-使用 `impl_select_page!` 实现 IN 查询的示例：
-
-```rust
-impl_select_page!(Activity{select_page_by_ids(ids: &[String]) => "
-    if !ids.is_empty():
-        `where id in `
-        ${ids.sql()}"});
-``` 
-
-> 复杂条件 + IN 查询
-
-结合多个条件的 IN 查询示例：
-
-```rust
-impl_select_page!(Activity{select_page_by_status_and_ids(status: i32, ids: &[String]) => "
-    `where status = #{status}`
-    if !ids.is_empty():
-        ` and id in `
-        ${ids.sql()}
-    if do_count == false:
-        ` order by create_time desc`"});
-```
 
 > 综合示例
 ```rust
@@ -1067,7 +1053,7 @@ let r = MockTable::delete_by_name(&mut rb, "2").await.unwrap();
 // 使用映射条件删除
 let r = MockTable::delete_by_map(
     &mut rb,
-    to_value!{
+    value!{
         "id":"1",
         "name":"1",
     },
@@ -1075,12 +1061,17 @@ let r = MockTable::delete_by_map(
 // 生成的 SQL: "delete from mock_table where id = ? and name = ?"
 ```
 
-> 批量删除示例 
+> 批量删除示例 （in 删除）
 
 ```rust
-// 批量删除
-let r = MockTable::delete_by_column_batch(&mut rb, "1", &["1", "2", "3", "4"], 2)
-    .await.unwrap();
+let ids:Vec<i64> = vec![1,2,3,4,5];
+let r = MockTable::delete_by_map(
+    &mut rb,
+    value!{
+        "id":&ids
+    },
+).await.unwrap();
+// 生成的 SQL: "delete from mock_table where id in (1,2,3,4,5) "
 ```
 
 
@@ -1088,8 +1079,7 @@ let r = MockTable::delete_by_column_batch(&mut rb, "1", &["1", "2", "3", "4"], 2
 
 1. **WHERE 条件**: 删除操作必须包含 WHERE 条件，避免误删全表数据
 2. **参数化查询**: 使用 `#{参数名}` 进行安全的参数绑定
-3. **批量操作**: 支持批量删除，可以指定批次大小控制性能
-4. **返回值**: 返回 `ExecResult` 包含受影响的行数信息
+3. **返回值**: 返回 `ExecResult` 包含受影响的行数信息
 
 >综合示例
 
@@ -1210,6 +1200,13 @@ where
 参考：
 -   https://github.com/rbatis/rbatis/pull/472
 -   https://github.com/rbatis/rbatis/issues/324
+
+
+#### 关于序列化给前端需要指定格式
+建议单独使用一个DTO 或者VO，然后在这个VO上加上相关注解，比如`小驼峰：#[serde(rename_all = "camelCase")]`。
+
+而不要在实体类上加这个属性。 因为rbatis序列化到数据库也会使用serde的宏。
+
 
 #### debug_mode
 
@@ -1415,11 +1412,186 @@ pub async fn main() {
 ```
 
 
-#### 原始Sql
+#### 原生Sql
 
-> RBatis也支持编写数据库的原始语句
+
+
+RBatis 提供了多种执行原生 SQL 的方式，主要分为直接调用方法和宏定义两大类。
+
+##### 1. 直接方法调用
+
+###### 1.1 RBatis 实例方法
+
+**查询方法：**
+
+- `query()` - 返回原始 rbs::Value 类型
+- `query_decode<T>()` - 查询并自动解码为指定类型(由编译器推断返回值类型)
+
+**执行方法：**
+
+- `exec()` - 执行 INSERT、UPDATE、DELETE 等操作
+
+**使用示例：**
+
+```rust
+// 查询并解码为结构体
+let users: Vec<User> = rb.query_decode(
+    "SELECT * FROM users WHERE status = ?", 
+    vec![to_value!(1)]
+).await?;
+
+// 执行更新操作
+let result = rb.exec(
+    "UPDATE users SET status = ? WHERE id = ?",
+    vec![to_value!(0), to_value!(1)]
+).await?;
+
+// 查询原始 Value
+let raw_data = rb.query(
+    "SELECT COUNT(*) FROM users",
+    vec![]
+).await?;
+```
+
+###### 1.2 事务执行器方法
+
+`RBatisTxExecutor` 提供相同的方法，但在事务上下文中执行：
+
+```rust
+// 事务中执行多个 SQL
+let tx = rb.acquire_begin().await?;
+let result1 = tx.exec("INSERT INTO users (name) VALUES (?)", vec![to_value!("user1")]).await?;
+let result2 = tx.exec("UPDATE users SET status = ? WHERE id = ?", vec![to_value!(1), to_value!(1)]).await?;
+tx.commit().await?;
+```
+
+##### 2. 宏定义方式
+
+###### 2.1 `#[sql]` 宏 - 静态 SQL
+
+适用于固定的 SQL 语句：
+
+```rust
+#[sql("SELECT * FROM users WHERE id = ?")]
+async fn get_user_by_id(rb: &dyn Executor, id: i64) -> Result<Option<User>, Error> {
+    impled!()
+}
+
+#[sql("SELECT COUNT(*) FROM users")]
+async fn count_users(rb: &dyn Executor) -> Result<i64, Error> {
+    impled!()
+}
+```
+
+###### 2.2 `#[py_sql]` 宏 - 动态 SQL
+
+支持 Python 风格的条件判断：
+
+```rust
+#[py_sql(
+"`SELECT * FROM activity WHERE delete_flag = 0`
+  if name != '':
+    ` AND name = #{name}`"
+)]
+async fn py_select(rb: &dyn Executor, name: &str) -> Result<Vec<Activity>, Error> {
+    impled!()
+}
+```
+
+###### 2.3 `#[html_sql]` 宏 - XML 风格动态 SQL
+
+支持类似 MyBatis 的 XML 风格：
+
+```rust
+#[html_sql(
+r#"
+<select id="select_by_condition">
+    SELECT * FROM users
+    <where>
+        <if test="name != null">
+            AND name LIKE #{name}
+        </if>
+        <if test="age != null">
+            AND age > #{age}
+        </if>
+    </where>
+</select>
+"#
+)]
+async fn select_by_condition(
+    rb: &dyn Executor,
+    name: Option<&str>,
+    age: Option<i32>
+) -> Result<Vec<User>, Error> {
+    impled!()
+}
+```
+
+##### 3. 宏的返回类型自动推断
+
+RBatis 宏通过分析函数返回类型自动决定执行方法：
+
+- **查询操作**：返回类型不包含 `ExecResult` 时，调用 `query` 方法
+- **执行操作**：返回类型包含 `ExecResult` 时，调用 `exec` 方法
+
+##### 4. 参数绑定
+
+###### 4.1 安全参数绑定
+
+使用 `#{}` 进行参数绑定，防止 SQL 注入：
+
+```rust
+// 安全的参数绑定
+"SELECT * FROM users WHERE id = #{id} AND name = #{name}"
+```
+
+###### 4.2 字符串插值
+
+使用 `${}` 进行字符串插值（谨慎使用）：
+
+```rust
+// 动态表名或列名
+"SELECT ${columns} FROM ${table_name} WHERE id = #{id}"
+```
+
+##### 5. 无参数 SQL 执行
+
+当 SQL 不需要参数时，传递空向量：
+
+```rust
+// 无参数执行
+let result = tx.exec("TRUNCATE TABLE logs", vec![]).await?;
+let result = rb.query("SELECT NOW()", vec![]).await?;
+```
+
+
+
+
+##### 使用场景对比
+
+| 方法 | 适用场景 | 优势 | 限制 |
+|------|----------|------|------|
+| `query_decode<T>` | 简单查询，需要类型转换 | 类型安全，自动解码 | 静态 SQL |
+| `query` | 需要手动处理结果 | 灵活性高 | 需要手动解析 |
+| `exec` | 执行操作（增删改） | 简单直接 | 单条 SQL |
+| `#[sql]` | 固定 SQL 语句 | 编译时检查 | 不支持动态条件 |
+| `#[py_sql]` | 动态 SQL，条件判断 | Python 风格，易读 | 学习成本 |
+| `#[html_sql]` | 复杂动态 SQL | XML 标签，功能丰富 | 语法复杂 |
+
+##### Notes
+
+1. **单 SQL 限制**：每个 `exec` 调用只能执行一条 SQL 语句，多条 SQL 需要多次调用
+2. **参数安全**：始终使用 `vec![to_value!(param)]` 进行参数绑定，确保 SQL 注入安全
+3. **事务一致性**：相关操作应在事务中执行以保证数据一致性
+4. **类型推断**：宏会根据函数返回类型自动选择 `query` 或 `exec` 方法
+5. **占位符**：`impled!()` 是编译时占位符，会被实际生成的代码替换
+
+
+
+> RBatis也支持编写数据库的原始语句   
 > RBatis提供的驱动都支持占位符'?'，所以你可以在Postgres/mssql等上写'?'
 
+##### 综合示例
 ```rust
 use rbs::to_value;
 use std::time::Duration;
