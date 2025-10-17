@@ -926,21 +926,6 @@ impl_update!(StructName {
 });
 ```
 
->生成的方法
-
-- `update_by_column(executor, table, column)` - 按列更新
-```rust
-    ///  will skip null column
-    pub async fn update_by_column(
-        executor: &dyn $crate::executor::Executor,
-        table: &$table,
-        column: &str) -> std::result::Result<$crate::rbdc::db::ExecResult, $crate::rbdc::Error>{
-        <$table>::update_by_column_skip(executor,table,column,true).await
-    }
-```
-
-
-
 
 >综合示例
 ```rust
