@@ -27,6 +27,12 @@
 3. [Rbatis AI Wiki](https://deepwiki.com/rbatis/rbatis) deepwiki提供的ai，这里可以直接去rbatis的功能进行提问（注意可能有过时函数，请实际测试再使用）
 
 
+#### 视频教程
+
+1. [基于ai的使用教程](https://www.bilibili.com/video/BV1YwUQBXEKf/)  作者亲自录制
+2. [简单的入门教程](https://www.bilibili.com/video/BV1HzSFB8E8n)
+
+
 #### 支持的数据库驱动
 
 > RBatis支持任何实现[rdbc](https://crates.io/crates/rbdc)驱动。
