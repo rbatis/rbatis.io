@@ -1,48 +1,45 @@
-
 ### rbatis-v4
 
-A highly Performant SQL Toolkit and Compile time ORM Library. An async, pure `Rust` SQL crate featuring compile-time Dynamic SQL
+一个高性能的 SQL 工具包和编译时 ORM 库。一个异步、纯 `Rust` SQL 工具库，具有编译时动态 SQL 特性。
 
-It is an ORM, a small compiler, a dynamic SQL languages
+它是一个 ORM，一个小型编译器，一个动态 SQL 语言。
 
-* Compatible with most mybatis3 syntax.You can start recoding Java projects into `Rust`!
-* No Runtimes，No Garbage Collection,High performance, Based on Future/Tokio
-* Zero cost Dynamic SQL, implemented using (proc-macro,compile-time,Cow(Reduce unnecessary cloning))
-  techniques。 don't need ONGL engine(mybatis)
-* JDBC-like driver design, driver use cargo.toml dependency and ```Box<dyn Driver>``` separation
-* All database drivers supported ```#{arg}```, ```${arg}```,```?```  placeholder(pg/mssql auto processing '?' to '$1'
-  and '@P1')
-* Dynamic SQL(Write code freely in SQL),pagination, ```py_sql``` query lang and ```html_sql```(Inspired Mybatis).
-* Dynamic configuration connection pool(Based on the https://github.com/rbatis/fast_pool)
-* Supports Logging based on interceptor implementation
-* 100% Safe pure `Rust` with `#![forbid(unsafe_code)]` enabled
+* 兼容大多数 mybatis3 语法。你可以将 Java 项目重构为 `Rust`！
+* 无运行时，无垃圾回收，高性能，基于 Future/Tokio
+* 零成本动态 SQL，使用（proc-macro、编译时、Cow减少不必要的克隆）技术实现。不需要 ONGL 引擎（mybatis）
+* 类似 JDBC 的驱动设计，驱动使用 cargo.toml 依赖和 ```Box<dyn Driver>``` 分离
+* 所有数据库驱动支持 ```#{arg}```、```${arg}```、```?``` 占位符（pg/mssql 自动处理 '?' 转换为 '$1' 和 '@P1'）
+* 动态 SQL（在 SQL 中自由编写代码）、分页、```py_sql``` 查询语言和 ```html_sql```（灵感来自 Mybatis）。
+* 动态配置连接池（基于 https://github.com/rbatis/fast_pool）
+* 支持基于拦截器实现的日志记录
+* 100% 安全的纯 `Rust`，启用了 `#![forbid(unsafe_code)]`
 * [rbatis/example](https://github.com/rbatis/example)
-* [abs_admin project](https://github.com/rbatis/abs_admin) an background user management system(Vue.js+rbatis+axum)
-* [salvo_admin project](https://github.com/feihua/salvo-admin) an background permission management system(react+rbatis+salvo)
+* [abs_admin 项目](https://github.com/rbatis/abs_admin) 一个后台用户管理系统（Vue.js+rbatis+axum）
+* [salvo_admin 项目](https://github.com/feihua/salvo-admin) 一个后台权限管理系统（react+rbatis+salvo）
 
-#### Supported database driver
+#### 支持的数据库驱动
 
-> the RBatis support any impl [rdbc](https://crates.io/crates/rbdc) drivers.
-> If you don't have the following driver you want, you can write one yourself, just as long as the impl ``` rbdc::db::* ``` traits
+> RBatis 支持任何实现了 [rdbc](https://crates.io/crates/rbdc) 驱动的数据库。
+> 如果你没有找到想要的驱动，你可以自己编写一个，只需要实现 ``` rbdc::db::* ``` trait 即可。
 
-| database(crates.io)                                 | github_link                                                                           |
-|-----------------------------------------------------|---------------------------------------------------------------------------------------|
+| 数据库 (crates.io)                               | github 链接                                                                         |
+|-------------------------------------------------|---------------------------------------------------------------------------------------|
 | [Mysql](https://crates.io/crates/rbdc-mysql)        | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)          |
-| [Postgres](https://crates.io/crates/rbdc-pg)        | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)                | 
+| [Postgres](https://crates.io/crates/rbdc-pg)        | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)                |
 | [Sqlite](https://crates.io/crates/rbdc-sqlite)      | [rbatis/rbdc-sqlite](https://github.com/rbatis/rbatis/tree/master/rbdc-sqlite)        |
 | [Mssql](https://crates.io/crates/rbdc-mssql)        | [rbatis/rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)          |
 | [MariaDB](https://crates.io/crates/rbdc-mysql)      | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)          |
 | [TiDB](https://crates.io/crates/rbdc-mysql)         | [rbatis/rbdc-mysql](https://github.com/rbatis/rbatis/tree/master/rbdc-mysql)          |
 | [CockroachDB](https://crates.io/crates/rbdc-pg)     | [rbatis/rbdc-pg](https://github.com/rbatis/rbatis/tree/master/rbdc-pg)                |
 | [Oracle](https://crates.io/crates/rbdc-oracle)      | [chenpengfan/rbdc-oracle](https://github.com/chenpengfan/rbdc-oracle)                 |
-| [TDengine](https://crates.io/crates/rbdc-tdengine)  | [tdcare/rbdc-tdengine](https://github.com/tdcare/rbdc-tdengine)                       |
+| [TDengine](https://crates.io/crates/rbdc-tdengine)  | [tdcare/rbdc-tdengine](https://github.com/tdcare/rbdc-tdengine)                     |
 
 
-#### CRUD-install/use
+#### CRUD 安装/使用
 
-* install step: Cargo.toml(run command `cargo update`)
+* 安装步骤：修改 Cargo.toml（运行命令 `cargo update`）
 
-* `toml`(default)
+* `toml`（默认配置）
 
 ```toml
 #rbatis deps
@@ -59,7 +56,7 @@ log = "0.4"
 fast_log = "1.6"
 ```
 
-* `toml` `native-tls` (option)
+* `toml` `native-tls`（可选配置）
 
 ```toml
 rbs = { version = "4" }
@@ -77,11 +74,11 @@ fast_log = "1.6"
 
 
 
-##### TableDefine
+##### 表定义
 
-> RBatis follows a clean code style,so that A database table structure is just a normal structure that may use the database types provided by RBatis
-> We use the ```crud!()``` macro Enables the table structure to have the ability to query and modify the database
-> crud! macro provides: ```insert()``` , ```insert_batch()``` , ```select_by_map()``` , ```update_by_map()``` , ```delete_by_map()``` and more
+> RBatis 遵循简洁的代码风格，数据库表结构只是一个普通结构体，可以使用 RBatis 提供的数据库类型
+> 我们使用 ```crud!()``` 宏使表结构具有查询和修改数据库的能力
+> crud 宏提供：```insert()```、```insert_batch()```、```select_by_map()```、```update_by_map()```、```delete_by_map()``` 等方法
 
 ```rust
 use serde::{Deserialize, Serialize};
@@ -101,22 +98,22 @@ pub struct BizActivity {
     pub delete_flag: Option<i32>,
 }
 //crud = async fn insert(...)+async fn  select_by_map(...)+ async fn  update_by_map(...)+async fn  delete_by_map(...)...and more
-rbatis::crud!(BizActivity {}); 
+rbatis::crud!(BizActivity {});
 
 ```
 
-###### custom table_name
+###### 自定义表名
 
-> rbatis allow custom your table_name
-> just like sql ```select * from ${table_name} ```
+> rbatis 允许自定义表名
+> 就像 SQL 一样 ```select * from ${table_name} ```
 ```rust
 rbatis::crud!(BizActivity {},"biz_activity");
 ```
 
-###### macros-insert
+###### 宏-插入
 
 ```rust
-//#[macro_use] define in 'root crate' or 'mod.rs' or 'main.rs'
+//#[macro_use] 定义在 'root crate' 或 'mod.rs' 或 'main.rs'
 #[macro_use]
 extern crate rbatis;
 
@@ -149,17 +146,17 @@ async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
     let rb = RBatis::new();
-    /// connect to database 
+    /// connect to database
 
     //init() just set driver
     //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
-    
+
     // link() will set driver and try use acquire() link database
-    // sqlite 
+    // sqlite
     rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
-    // mysql 
+    // mysql
     // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // postgresql 
+    // postgresql
     // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
@@ -192,10 +189,10 @@ async fn main() {
 }
 ```
 
-###### macros-update
+###### 宏-更新
 
 ```rust
-//#[macro_use] define in 'root crate' or 'mod.rs' or 'main.rs'
+//#[macro_use] 定义在 'root crate' 或 'mod.rs' 或 'main.rs'
 #[macro_use]
 extern crate rbatis;
 
@@ -226,17 +223,17 @@ async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
     let rb = RBatis::new();
-    /// connect to database 
+    /// connect to database
 
     //init() just set driver
     //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
-    
+
     // link() will set driver and try use acquire() link database
-    // sqlite 
+    // sqlite
     rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
-    // mysql 
+    // mysql
     // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // postgresql 
+    // postgresql
     // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
@@ -262,10 +259,10 @@ async fn main() {
 }
 ```
 
-###### macros-select
+###### 宏-查询
 
 ```rust
-//#[macro_use] define in 'root crate' or 'mod.rs' or 'main.rs'
+//#[macro_use] 定义在 'root crate' 或 'mod.rs' 或 'main.rs'
 #[macro_use]
 extern crate rbatis;
 
@@ -296,17 +293,17 @@ async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
     let rb = RBatis::new();
-    /// connect to database 
+    /// connect to database
 
     //init() just set driver
     //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
-    
+
     // link() will set driver and try use acquire() link database
-    // sqlite 
+    // sqlite
     rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
-    // mysql 
+    // mysql
     // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // postgresql 
+    // postgresql
     // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
     // mssql/sqlserver
     // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
@@ -317,22 +314,22 @@ async fn main() {
 ```
 
 
-#### debug_mode
+#### 调试模式
 
-if you open features on Cargo.toml "debug_mode", You will see the following features
+如果你在 Cargo.toml 中启用了 "debug_mode" 功能，你将看到以下特性
 
-*  show the project build Generated code(`rbatis_codgen` Generated code). you can see build log(`............gen macro py_sql :............`)
-*  show the database `rows` data . you can see log(```query <= len=1,rows=[{"id":1}]```)
-*  show decoding invalid type Which field did the parsing fail. you can see error(```"invalid type: integer `1`, expected a string, key=`status`"```)
+* 显示项目构建时生成的代码（`rbatis_codgen` 生成的代码）。你可以在构建日志中看到（`............gen macro py_sql :............`）
+* 显示数据库 `rows` 数据。你可以看到日志（```query <= len=1,rows=[{"id":1}]```）
+* 显示解码失败的无效类型字段。你可以查看错误信息（```"invalid type: integer `1`, expected a string, key=`status`"```）
 
-please notice, debug_mode should set log level to 'debug'
+请注意，debug_mode 需要将日志级别设置为 'debug'
 
-> how to open debug_mode features on Cargo.toml?
+> 如何在 Cargo.toml 中启用 debug_mode 功能？
 ```toml
 rbatis = { version = "4",features = ["debug_mode"]}
 ```
 
-> need fast_log set level = Debug
+> 需要将 fast_log 设置为 Debug 级别
 ```rust
 #[tokio::main]
 async fn main(){
@@ -379,11 +376,11 @@ cargo run
 
 #### `rbs`
 
-`rbs` is a specialized serialization framework written by `rbatis` for the ORM intermediate language `html_sql`,`py_sql`,
-used to conveniently use and replace JSON like objects in HTML statements instead of manipulating native structures.
-You can understand `rbs` as an intermediate structure similar to JSON `Value`.
+`rbs` 是 rbatis 为 ORM 中间语言 `html_sql`、`py_sql` 编写的专用序列化框架，
+用于在 HTML 语句中方便地使用和替换类似 JSON 的对象，而不是操作原生结构。
+你可以将 `rbs` 理解为类似于 JSON `Value` 的中间结构。
 
-* Here we show the definition of `rbs::Value`
+* 这里我们展示 `rbs::Value` 的定义
 ```rust
 #[derive(Clone, Debug, PartialEq)]
 pub enum Value {
@@ -416,7 +413,7 @@ pub enum Value {
 }
 ```
 
-*  rbs build a map value
+*  rbs 构建 map 值
 ```rust
 fn main(){
     let v = rbs::to_value!{
@@ -426,7 +423,7 @@ fn main(){
 }
 ```
 
-*  rbs encode to value
+*  rbs 编码为 value
 ```rust
 fn main(){
     let v = rbs::to_value!(1);
@@ -437,14 +434,14 @@ fn main(){
 }
 ```
 
-*  rbs decode from value
+*  rbs 从 value 解码
 ```rust
 fn main(){
     let v:i32 = rbs::from_value(Value::I32(1)).unwrap();
 }
 ```
 
-*  display value
+*  显示 value
 ```rust
 fn main(){
     let value = Value::I32(1);
@@ -454,12 +451,12 @@ fn main(){
 ```
 
 
-#### Transaction
+#### 事务
 
-> The essence of a transaction is to use the SQL statements BEGIN, COMMIT, and ROLLBACK.
-> The RBatis provides these three functions but also support ```defer_async()``` to prevent forgotten commits
+> 事务的本质是使用 SQL 语句 BEGIN、COMMIT 和 ROLLBACK。
+> RBatis 提供这三个函数，还支持 ```defer_async()``` 来防止忘记提交
 
-example [see](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
+示例请参见 [这里](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
 ```rust
 use serde::{Deserialize, Serialize};
@@ -521,10 +518,10 @@ pub async fn main() {
 ```
 
 
-#### Raw Sql
+#### 原生 SQL
 
-> the RBatis also support Write the original statements of the database
-> And the drivers provided by RBatis all support placeholder '?',so you can write '?' on Postgres/mssql...and more
+> RBatis 也支持编写数据库的原始语句
+> RBatis 提供的驱动都支持占位符 '?'，因此你可以在 Postgres/mssql 等数据库上使用 '?'
 
 ```rust
 use rbs::to_value;
@@ -573,19 +570,20 @@ pub async fn main() {
 
 
 #### `HtmlSql`
-> It is implemented by RBatis a set of compatible MyBtais3 SQL editing language, support common such as if, Foreach, string interpolation
 
-* When the RBatis dependency in Cargo.toml turns on the ```debug_mode``` feature, the generated function implementation code is printed
-* Language parsing -> Lexical analysis -> Syntax analysis -> generation of abstract syntax trees ->  translation to `Rust` code。Have the performance of native `Rust`
-* Of course, PySql is also a syntax tree using HtmlSql,PySql will be Convert to HtmlSql
-* It uses crates [rbs](https://crates.io/crates/rbs)  of   ```rbs::Value``` as the base object and operates on and any func
-* you can call any method/trait on ```rbs::Value``` such as ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'}  ``` or  ```  if sql.contans('count'):   ```
-* Strings can be reserved for Spaces using ``` ` ``` such as ``` ` select * from table where ` ```
-* method will create 2 variable on method body.So you can determine whether the variable SQL contains a COUNT statement or a SELECT statement in a paging operation
+> 这是 RBatis 实现的一套兼容 MyBtais3 的 SQL 编辑语言，支持 if、Foreach、字符串插值等常用功能
 
-* HtmlSql Syntax tree
+* 当 Cargo.toml 中 RBatis 依赖开启了 ```debug_mode``` 功能时，会打印生成的函数实现代码
+* 语言解析 -> 词法分析 -> 语法分析 -> 生成抽象语法树 -> 转换为 `Rust` 代码。具有原生 `Rust` 的性能
+* 当然，PySql 也是使用 HtmlSql 作为语法树，PySql 会被转换为 HtmlSql
+* 它使用 crates [rbs](https://crates.io/crates/rbs) 中的 ```rbs::Value``` 作为基础对象，可以对其执行任何操作和调用任何方法
+* 你可以在 ```rbs::Value``` 上调用任何方法/trait，例如 ``` #{1 + 1}, #{arg}, #{arg [0]}, #{arg [0] + 'string'} ``` 或 ``` if sql.contans('count'): ```
+* 可以使用反引号 ``` ` ``` 保留字符串中的空格，例如 ``` ` select * from table where ` ```
+* 方法会在方法体中创建 2 个变量。因此你可以在分页操作中判断变量 SQL 是否包含 COUNT 语句或 SELECT 语句
 
-| Syntax/method                                                                                 | Generated `Rust` code                                                                               |
+* HtmlSql 语法树
+
+| 语法/方法                                                                                     | 生成的 `Rust` 代码                                                                               |
 |-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------|
 | ``` <trim prefixOverrides=" and">` and name != '' `</trim> ```                                | `sql.trim(" and")                      `                                                            |
 | ``` <if test="key == 'id'">`select * from table`</if> ```                                     | `if  key == "id"{sql.push_str("select * from table");}                      `                       |
@@ -616,7 +614,7 @@ pub async fn main() {
 | ``` `${ !false }`  ```                                                                        | `sql.push_str(&format!("{}", !false));    `                                                         |
 | ``` `${ 2 % 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 % 1));    `                                                          |
 | ``` `${ 2 - 1 }`  ```                                                                         | `sql.push_str(&format!("{}", 2 - 1));    `                                                          |
-* define on `Rust` code [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
+* 在 `Rust` 代码中定义请参见 [这里](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql.rs)
 ```rust
 // Clion Smart tips: click code, choose 'Inject Language or Reference', and then choose html
 #[html_sql(r#"<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
@@ -650,7 +648,7 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> V
 ```
 
 
-* define on `Rust` from file [see](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_file.rs)
+* 在 `Rust` 中从文件定义请参见 [这里](https://github.com/rbatis/rbatis/blob/master/example/src/macro_proc_htmlsql_file.rs)
 
 > example/example.html
 ```html
@@ -693,7 +691,7 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> V
 </mapper>
 ```
 
-> rust code
+> rust 代码
 ```rust
 #[html_sql("example/example.html")]
 async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> Vec<BizActivity> {
@@ -701,22 +699,23 @@ async fn select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> V
 }
 ```
 
-> rust code
+> rust 代码
 ```rust
 htmlsql!(select_by_condition(rb: & dyn Executor, name: &str, dt: &DateTime) -> rbatis::Result<Vec<BizActivity>> => "example.html");
 ```
 
-##### Page
-> impl html_sql select page.
+##### 分页
 
-you must deal with 3 param:
-(do_count:bool,page_no:u64,page_size:u64)
+> 实现 html_sql 分页查询。
 
-you must deal with sql:
-return Vec<Record>（if param do_count = false）
-return u64（if param do_count = true）
+你必须处理 3 个参数：
+(do_count:bool, page_no:u64, page_size:u64)
 
-just like this exmaple:
+你必须处理 SQL：
+返回 Vec<Record>（如果参数 do_count = false）
+返回 u64（如果参数 do_count = true）
+
+就像这个例子：
    ```html
    <select id="select_page_data">
            `select`
@@ -753,15 +752,15 @@ pub async fn main() {
 ```
 
 
-##### Include
+##### 包含
 
-```<include>``` allows reference  SQL blocks and even SQL blocks from `xxxx.html` files, requiring ```refid``` to be specified for proper reference
+```<include>``` 允许引用 SQL 块，甚至来自 `xxxx.html` 文件的 SQL 块，需要指定 ```refid``` 才能正确引用
 
-> step1.define ```<sql id="a">` and id != '' `</sql>```
+> 步骤1. 定义 ```<sql id="a">` and id != '' `</sql>```
 
-> step2.use ``` <include refid="a"></include> ``` or ```<include refid="file://../rbatis/example/example.html?refid=a"></include>```
+> 步骤2. 使用 ``` <include refid="a"></include> ``` 或 ```<include refid="file://../rbatis/example/example.html?refid=a"></include>```
 
-for example:
+例如：
 ```html
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "https://raw.githubusercontent.com/rbatis/rbatis/master/rbatis-codegen/mybatis-3-mapper.dtd">
 <mapper>
@@ -794,10 +793,10 @@ for example:
 
 #### `PySql`
 
-* It is a Python-like syntax, a language for manipulating SQL statements and inserting SQL parameters
-* Syntax tree
+* 这是一种类似 Python 的语法，用于操作 SQL 语句和插入 SQL 参数
+* 语法树
 
-| Syntax/method                                                 | Generated `Rust` code                                                                                   |
+| 语法/方法                                                 | 生成的 `Rust` 代码                                                                                   |
 |---------------------------------------------------------------|---------------------------------------------------------------------------------------------------------|
 | `trim 'AND ':      `                                          | `sql.trim_end_matches("AND ").trim_start_matches("AND ")       `                                        |
 | `trim start='AND ':      `                                    | `sql.trim_start_matches("AND ")      `                                                                  |
@@ -873,13 +872,13 @@ impl User{
 
 ```
 
-#### plugin: table-sync
+#### 插件：表同步
 
-> This IS a PLUGIN THAT SYNCHRONIZES THE TABLE STRUCTURE WITH THE TABLE STRUCTURE IN THE code, which I believe is VERY important in MOBILE DEVELOPMENT.
-> Note that it does not change the table structure.
+> 这是一个将表结构与代码中的表结构同步的插件，我认为这在移动开发中非常重要。
+> 请注意，它不会改变表结构。
 
-* If the table does not exist, it is created
-* If the table exists but a column is missing, increment the column of the missing section
+* 如果表不存在，则创建
+* 如果表存在但缺少列，则增量添加缺少的列
 
 ```rust
 use rbatis::rbatis::RBatis;
@@ -946,9 +945,9 @@ pub async fn main() {
 ```
 
 
-#### plugin: Intercept
+#### 插件：拦截器
 
-> Implementing an interface
+> 实现一个接口
 
 ```rust
 use rbatis::{Error, RBatis};
@@ -1002,19 +1001,19 @@ fn main(){
 ```
 
 
-#### Plug-in: distributed unique ID (snowflake algorithm(i64))
+#### 插件：分布式唯一ID（雪花算法(i64)）
 
 ```rust
     use rbatis::plugin::snowflake::new_snowflake_id;
     #[test]
     fn test_new_async_id() {
-         //Snowflake::new()  //Snowflake::new(Must be a singleton or global variable)
-         //default use
+         //Snowflake::new()  //Snowflake::new(必须是单例或全局变量)
+         //默认使用
          println!("{}", new_snowflake_id().to_string());
     }
 ```
 
-#### Plug-in: distributed unique ID (MongoDB object id algorithm(String/u128))
+#### 插件：分布式唯一ID（MongoDB 对象ID算法(String/u128)）
 
 ```rust
     #[test]
@@ -1025,13 +1024,13 @@ fn main(){
 
 
 
-#### macro-built-in
+#### 内置宏
 
-* ``` make_table```  Simplifies table construction by relying on the Default trait
-* ``` make_table_field_vec ``` take the target Vec member attribute Vec collection
-* ``` make_table_field_map ```  Gets the HashMap collection of member attributes of the target Vec
+* ``` make_table``` 依赖 Default trait 简化表结构构建
+* ``` make_table_field_vec ``` 获取目标 Vec 成员属性的 Vec 集合
+* ``` make_table_field_map ``` 获取目标 Vec 成员属性的 HashMap 集合
 
-for example:
+例如：
 ```rust
     use rbatis::rbdc::datetime::DateTime;
     use serde::{Deserialize, Serialize};
@@ -1104,18 +1103,18 @@ for example:
 ```
 
 
-#### design-driver
+#### 设计驱动
 
-* This doc is used to design a new database driver to join into rbatis
+* 本文档用于设计一个新的数据库驱动以加入 rbatis
 
-* example see [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
+* 示例请参见 [rbdc-mssql](https://github.com/rbatis/rbatis/tree/master/rbdc-mssql)
 
-* step0: create your cargo project,and add 'rbdc = "4"' on Cargo.toml
+* 步骤0: 创建你的 cargo 项目，并在 Cargo.toml 中添加 'rbdc = "4"'
 ```
 cargo new mock_driver --lib
 ```
 
-* step1: add Depend,or add your database driver crates depend.
+* 步骤1: 添加依赖，或添加你的数据库驱动 crates 依赖。
 ```toml
 rbdc = "4"
 rbs  = "4"
@@ -1123,7 +1122,7 @@ fastdate = { version = "0.1" }
 # xx_driver = {version = "xxx"}
 ```
 
-* step2: define you driver struct
+* 步骤2: 定义你的驱动结构
 ```rust
 #[derive(Debug, Clone)]
 struct MockDriver {}
@@ -1138,7 +1137,7 @@ struct MockConnectOptions {}
 
 ```
 
-* step3: impl trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
+* 步骤3: 实现 trait rbdc::db::{Driver, MetaData, Row, Connection, ConnectOptions, Placeholder};
 
 ```rust
 use std::any::Any;
@@ -1213,7 +1212,7 @@ impl Placeholder for MockDriver {
 }
 ```
 
-* step4: load your driver on rbatis
+* 步骤4: 在 rbatis 中加载你的驱动
 
 ```rust
 #[tokio::main]
