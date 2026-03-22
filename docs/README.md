@@ -9,19 +9,7 @@ First of all, I think the wrapper has no benefit for static analysis, and it is 
 
 ###  Removed the sqlx-core，add  [rbdc](https://crates.io/crates/rbdc) the database abstract driver
 
-```toml
-rbdc={version="0.1"}
-# choose any rbdc drivier
-rbdc-sqlite={version="0.1"}
-#rbdc-mysql={version="0.1"}
-#rbdc-pg={version="0.1"}
-#rbdc-mssql={version="0.1"}
-#rbdc-oracle={version="0.1"}
-```
-
 We are not deliberately creating splits. Many asynchronous ORM will choose to directly rely on sqlx, including the version of rbatis-v3。The reason why we choose fork is to support - extensibility, serialization，clean。
-
-
 
 
 * for extensibility
@@ -46,12 +34,3 @@ so. we add crates [rbs](https://crates.io/crates/rbs)
 I think that when a project becomes a dunghill, it is because there are too many unrelated functions stacked.
 So the driver only does two things, method exec and method query。 no Strange logging crates leads to multi language failure，
 no  No hard coded explan statement。
-
-This introduction is temporarily ended, but the introduce on modern compile time ORM is not finished. In the next introduce:
-
-
-####  Num-2 the rbatis Design concept，Compatible with mybatis3，no contaminated table structure definition
-####  Num-3 rbatis serialization framework applicable to orm ----  [rbs](https://crates.io/crates/rbs)
-####  Num-4 the rbatis Automatic table creation plugin [table_sync](https://github.com/rbatis/rbatis/blob/master/src/plugin/table_sync/sqlite_table_sync.rs)
-####  Num-5 the rbatis ```py_sql / html_sql ``` Parsing, translation, code generation  [rbatis-codegen](https://github.com/rbatis/rbatis/tree/master/rbatis-codegen)
-####  Num-6 Separate drive and dynamically adjusted connection pool
