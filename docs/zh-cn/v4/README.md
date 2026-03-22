@@ -1733,6 +1733,35 @@ fn main(){
 > 事务的本质是使用SQL语句BEGIN、COMMIT和ROLLBACK。
 > RBatis提供这三个函数，但也支持```defer_async()```来防止忘记提交
 
+
+##### 简单说一下用法
+
+```rust
+// 1. 开始事务  
+let tx = rb.acquire_begin().await?;  
+  
+// 2. 注册defer回调（这里只是注册，不会立即执行）  
+let guard = tx.defer_async(|tx| async move {  
+    if !tx.done() {  // 检查事务是否已完成  
+        let _ = tx.rollback().await;  // 如果未完成则回滚  
+    }  
+});  
+  
+// 3. 在这里,用guard  而不是rb对象，来执行你的业务逻辑
+BizActivity::insert(&guard, &t).await.unwrap();
+  
+ 
+
+  
+// 4. 正常提交事务  
+guard.commit().await?;  // 设置done=true，defer回调不会回滚  
+// guard离开作用域，defer回调执行，但发现done=true，不会回滚
+
+// 5. 如果在commit之前发生了异常，则事务不会被提交，defer回调被执行，事务发生了回滚，错误的数据不会进入数据库
+
+```
+
+
 示例[点这里](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
 ```rust
@@ -1787,7 +1816,7 @@ pub async fn main() {
     //     }
     // });
     //tx.exec("select 1", vec![]).await.unwrap();
-    BizActivity::insert(& tx, &t).await.unwrap();
+    BizActivity::insert(&tx, &t).await.unwrap();
 
     tx.commit().await.unwrap();
     tx.rollback().await.unwrap();
