@@ -555,11 +555,11 @@ pub async fn main() {
         &format!("sqlite://{}target/sqlite.db", path),
     ).await.unwrap();
     let table: Option<BizActivity> = rb
-        .query_decode("select * from biz_activity limit ?", vec![to_value!(1)])
+        .exec_decode("select * from biz_activity limit ?", vec![to_value!(1)])
         .await
         .unwrap();
     let count: u64 = rb
-        .query_decode("select count(1) as count from biz_activity", vec![])
+        .exec_decode("select count(1) as count from biz_activity", vec![])
         .await
         .unwrap();
     sleep(Duration::from_secs(1)).await;
@@ -1189,7 +1189,7 @@ impl Row for MockRow {
 }
 
 impl Connection for MockConnection {
-    fn get_rows(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<Vec<Box<dyn Row>>, Error>> {  todo!() }
+    fn exec_rows(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<Vec<Box<dyn Row>>, Error>> {  todo!() }
 
     fn exec(&mut self, sql: &str, params: Vec<Value>) -> BoxFuture<Result<ExecResult, Error>> {  todo!() }
 
