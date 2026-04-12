@@ -17,6 +17,11 @@
 * [abs_admin 项目](https://github.com/rbatis/abs_admin) 一个后台用户管理系统（Vue.js+rbatis+axum）
 * [salvo_admin 项目](https://github.com/feihua/salvo-admin) 一个后台权限管理系统（react+rbatis+salvo）
 
+
+## Claude Code 集成
+
+本项目包含 Claude Code skill，用于 AI 辅助开发。使用方法请访问：[https://github.com/rbatis/rbatis-skill](https://github.com/rbatis/rbatis-skill)
+
 #### 支持的数据库驱动
 
 > RBatis 支持任何实现了 [rdbc](https://crates.io/crates/rbdc) 驱动的数据库。

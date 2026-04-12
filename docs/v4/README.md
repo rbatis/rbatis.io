@@ -20,6 +20,11 @@ It is an ORM, a small compiler, a dynamic SQL languages
 * [abs_admin project](https://github.com/rbatis/abs_admin) an background user management system(Vue.js+rbatis+axum)
 * [salvo_admin project](https://github.com/feihua/salvo-admin) an background permission management system(react+rbatis+salvo)
 
+## Claude Code Integration
+
+This project includes a Claude Code skill for AI-assisted development. For usage, please visit: [https://github.com/rbatis/rbatis-skill](https://github.com/rbatis/rbatis-skill)
+
+
 #### Supported database driver
 
 > the RBatis support any impl [rdbc](https://crates.io/crates/rbdc) drivers.
