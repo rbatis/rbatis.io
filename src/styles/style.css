@@ -415,7 +415,7 @@ img { max-width: 100%; height: auto; }
 
 /* ---- Documentation Layout ---- */
 .doc-layout {
-  display: none;
+  display: flex;
   min-height: calc(100vh - var(--topbar-height));
   padding-top: var(--topbar-height);
 }
@@ -478,13 +478,6 @@ img { max-width: 100%; height: auto; }
   padding: var(--space-xl) var(--space-xl);
   max-width: var(--content-max);
   min-height: calc(100vh - var(--topbar-height));
-}
-
-.content-area.home {
-  padding: 0;
-  min-height: auto;
-  margin: 0;
-  max-width: none;
 }
 
 /* ---- Markdown Content ---- */

@@ -2,4 +2,4 @@
 REM Start local dev server
 REM Requires: yarn install
 
-yarn start
+yarn dev
