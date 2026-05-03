@@ -241,10 +241,19 @@
     });
   }
 
+  /* ---- Home section toggles ---- */
+  function setHomeVisible(visible) {
+    var display = visible ? '' : 'none';
+    document.getElementById('hero').style.display = display;
+    document.querySelectorAll('.home-section').forEach(function (el) {
+      el.style.display = display;
+    });
+  }
+
   /* ---- Router ---- */
   function showHome() {
     console.log('[rbatis] route: home');
-    document.getElementById('hero').style.display = '';
+    setHomeVisible(true);
     document.getElementById('doc-layout').style.display = 'none';
     document.getElementById('content').innerHTML = '';
     document.getElementById('sidebar').innerHTML = '';
@@ -257,7 +266,7 @@
 
   function showDocs() {
     console.log('[rbatis] route: docs, currentLang=' + currentLang);
-    document.getElementById('hero').style.display = 'none';
+    setHomeVisible(false);
     document.getElementById('doc-layout').style.display = 'flex';
     document.getElementById('sidebar').classList.add('active');
     loadAndRender('v4', currentLang);
