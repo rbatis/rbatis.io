@@ -46,6 +46,7 @@
     'sec-dsql-sub':     { en: 'Two powerful dynamic SQL languages — write complex queries with ease', zh: '两种强大的动态 SQL 语言 — 轻松编写复杂查询' },
     'sec-dsql-html-desc': { en: 'MyBatis-compatible XML syntax with <if>, <foreach>, <where>, <trim>, and <choose> support.', zh: '兼容 MyBatis 的 XML 语法，支持 <if>、<foreach>、<where>、<trim>、<choose>。' },
     'sec-dsql-py-desc':   { en: 'Python-like syntax for dynamic SQL — concise, readable, and expressive.', zh: '类似 Python 的动态 SQL 语法 — 简洁、可读、表达力强。' },
+    'sec-dsql-crud-desc': { en: 'Macro that generates built-in CRUD functions for your table structs — zero boilerplate.', zh: '为表结构生成内置 CRUD 函数的宏 — 零样板代码。' },
     /* Database section */
     'sec-db-title':   { en: 'Supported Databases',            zh: '支持的数据库' },
     'sec-db-sub':     { en: 'Any database that implements the rbdc trait — or write your own driver', zh: '任何实现了 rbdc trait 的数据库 — 你也可以自己编写驱动' },

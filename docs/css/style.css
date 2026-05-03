@@ -798,6 +798,9 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
   display: flex;
   flex-direction: column;
 }
+.dsql-card-full {
+  grid-column: 1 / -1;
+}
 
 .dsql-label {
   display: inline-block;

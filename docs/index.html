@@ -145,6 +145,24 @@
       <h2 class="section-title" data-i18n="sec-dsql-title">Dynamic SQL</h2>
       <p class="section-subtitle" data-i18n="sec-dsql-sub">Two powerful dynamic SQL languages — write complex queries with ease</p>
       <div class="dsql-grid">
+        <div class="dsql-card dsql-card-full">
+          <div class="dsql-label">crud!</div>
+          <p data-i18n="sec-dsql-crud-desc">Macro that generates built-in CRUD functions for your table structs — zero boilerplate.</p>
+          <div class="terminal-window dsql-terminal">
+            <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+            <div class="terminal-body">
+              <span class="prompt">  </span><span class="comment">// One macro = full CRUD</span><br>
+              <span class="prompt">  </span><span class="keyword">rbatis</span>::<span class="function">crud!</span>(<span class="keyword">BizActivity</span> {});<br>
+              <br>
+              <span class="prompt">  </span><span class="comment">// Built-in functions:</span><br>
+              <span class="prompt">  </span><span class="keyword">let</span> r = <span class="keyword">BizActivity</span>::<span class="function">insert</span>(&rb, &table).<span class="keyword">await</span>?;<br>
+              <span class="prompt">  </span><span class="keyword">let</span> r = <span class="keyword">BizActivity</span>::<span class="function">insert_batch</span>(&rb, &tables, <span class="keyword">10</span>).<span class="keyword">await</span>?;<br>
+              <span class="prompt">  </span><span class="keyword">let</span> data = <span class="keyword">BizActivity</span>::<span class="function">select_by_map</span>(&rb, <span class="function">value!</span>{<span class="string">"id"</span>:<span class="string">"1"</span>}).<span class="keyword">await</span>?;<br>
+              <span class="prompt">  </span><span class="keyword">let</span> r = <span class="keyword">BizActivity</span>::<span class="function">update_by_map</span>(&rb, &table, <span class="function">value!</span>{<span class="string">"id"</span>:&table.id}).<span class="keyword">await</span>?;<br>
+              <span class="prompt">  </span><span class="keyword">let</span> r = <span class="keyword">BizActivity</span>::<span class="function">delete_by_map</span>(&rb, <span class="function">value!</span>{<span class="string">"id"</span>:<span class="string">"1"</span>}).<span class="keyword">await</span>?;
+            </div>
+          </div>
+        </div>
         <div class="dsql-card">
           <div class="dsql-label">html_sql</div>
           <p data-i18n="sec-dsql-html-desc">MyBatis-compatible XML syntax with <code>&lt;if&gt;</code>, <code>&lt;foreach&gt;</code>, <code>&lt;where&gt;</code>, <code>&lt;trim&gt;</code>, and <code>&lt;choose&gt;</code> support.</p>
