@@ -833,6 +833,7 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
 .dsql-terminal {
   margin-bottom: 0;
   flex: 1;
+  max-width: none;
 }
 .dsql-terminal .terminal-body {
   font-size: 0.78rem;
