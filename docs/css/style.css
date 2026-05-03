@@ -857,6 +857,7 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
   transition: all var(--ease-fast);
   min-width: 110px;
   text-align: center;
+  text-decoration: none;
 }
 .db-item:hover {
   border-color: var(--green-500);
