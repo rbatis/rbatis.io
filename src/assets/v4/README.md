@@ -889,8 +889,6 @@ impl User{
 ```rust
 use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::DateTime;
-use rbatis::table_sync;
-use rbatis::table_sync::SqliteTableMapper;
 use rbdc_sqlite::SqliteDriver;
 use rbs::to_value;
 
@@ -914,22 +912,17 @@ pub async fn main() {
     // rb.init(rbdc_mssql::MssqlDriver {}, "mssql://SA:TestPass!123456@localhost:1433/test").unwrap();
     rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .unwrap();
-    // ------------choose database column mapper------------
-    let mapper = &table_sync::SqliteTableMapper{} as &dyn ColumMapper;
-    // let mapper = &table_sync::PGTableMapper{} as &dyn ColumMapper;
-    //let mapper = &table_sync::MysqlTableMapper{} as &dyn ColumMapper;
-    // let mapper = &table_sync::MssqlTableMapper{} as &dyn ColumMapper;
-
+    // ------------use rb as column mapper(or custom impl ColumnMapper)------------
     let map = rbs::to_value!{
             "id":"INT",
             "name":"TEXT",
      };
-    let _ = RBatis::sync(&rb,mapper,&map,"rb_user").await;
+    let _ = RBatis::sync(&rb, &rb, &map, "rb_user").await;
 
 
     RBatis::sync(
         &rb.acquire().await.unwrap(),
-        mapper,
+        &rb,
         &RBUser {
             id: 0,
             //// Custom String Database Type
