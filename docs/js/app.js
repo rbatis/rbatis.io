@@ -231,6 +231,15 @@
     });
   }
 
+  /* ---- Nav Active State ---- */
+  function updateNav(hash) {
+    hash = hash || window.location.hash.slice(1) || '/';
+    document.querySelectorAll('.nav-link[href^="#/"]').forEach(function (link) {
+      var linkHash = link.getAttribute('href').slice(1) || '/';
+      link.classList.toggle('active', linkHash === hash);
+    });
+  }
+
   /* ---- Router ---- */
   function showHome() {
     console.log('[rbatis] route: home');
@@ -241,6 +250,7 @@
     document.title = currentLang === 'zh' ? 'RBatis - Rust 编译期 ORM' : 'RBatis - Compile-time ORM for Rust';
     if (typeof ParticleNetwork !== 'undefined') ParticleNetwork.init('particles-canvas');
     applyHomeI18n(currentLang);
+    updateNav('/');
     window.scrollTo(0, 0);
   }
 
@@ -250,12 +260,14 @@
     document.getElementById('doc-layout').style.display = 'flex';
     document.getElementById('sidebar').classList.add('active');
     loadAndRender('v4', currentLang);
+    updateNav('/v4');
     window.scrollTo(0, 0);
   }
 
   function resolveRoute() {
     var hash = window.location.hash.slice(1) || '/';
     console.log('[rbatis] resolveRoute:', hash);
+    updateNav(hash);
     if (hash === '/') { showHome(); return; }
     showDocs();
   }

@@ -127,8 +127,14 @@ img { max-width: 100%; height: auto; }
   transition: color var(--ease-fast);
   text-decoration: none;
   cursor: pointer;
+  padding: 6px 16px;
+  border-radius: 20px;
 }
-.nav-link:hover, .nav-link.active { color: var(--green-400); }
+.nav-link:hover { color: var(--green-400); }
+.nav-link.active {
+  color: var(--green-400);
+  background: rgba(66, 185, 131, 0.15);
+}
 
 .nav-link.github-link svg { width: 20px; height: 20px; fill: var(--text-secondary); transition: fill var(--ease-fast); }
 .nav-link.github-link:hover svg { fill: var(--green-400); }
