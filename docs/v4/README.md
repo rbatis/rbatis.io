@@ -157,7 +157,7 @@ async fn main() {
     /// connect to database 
 
     //init() just set driver
-    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
     
     // link() will set driver and try use acquire() link database
     // sqlite 
@@ -234,7 +234,7 @@ async fn main() {
     /// connect to database 
 
     //init() just set driver
-    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
     
     // link() will set driver and try use acquire() link database
     // sqlite 
@@ -304,7 +304,7 @@ async fn main() {
     /// connect to database 
 
     //init() just set driver
-    //rb.init(rbdc_sqlite::driver::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
     
     // link() will set driver and try use acquire() link database
     // sqlite 
@@ -739,7 +739,7 @@ extern crate rbatis;
 use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::DateTime;
 use rbatis::sql::PageRequest;
-use rbdc_sqlite::driver::SqliteDriver;
+use rbdc_sqlite::SqliteDriver;
 
 htmlsql_select_page!(select_page_data(name: &str, dt: &DateTime) -> BizActivity => "example/example.html");
 
@@ -891,7 +891,7 @@ use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::DateTime;
 use rbatis::table_sync;
 use rbatis::table_sync::SqliteTableMapper;
-use rbdc_sqlite::driver::SqliteDriver;
+use rbdc_sqlite::SqliteDriver;
 use rbs::to_value;
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
@@ -909,9 +909,9 @@ pub async fn main() {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     let rb = RBatis::new();
     // ------------choose database driver------------
-    //rb.init(rbdc_mysql::driver::MysqlDriver {}, "mysql://root:123456@localhost:3306/test").unwrap();
-    // rb.init(rbdc_pg::driver::PgDriver {}, "postgres://postgres:123456@localhost:5432/postgres").unwrap();
-    // rb.init(rbdc_mssql::driver::MssqlDriver {}, "mssql://SA:TestPass!123456@localhost:1433/test").unwrap();
+    //rb.init(rbdc_mysql::MysqlDriver {}, "mysql://root:123456@localhost:3306/test").unwrap();
+    // rb.init(rbdc_pg::PgDriver {}, "postgres://postgres:123456@localhost:5432/postgres").unwrap();
+    // rb.init(rbdc_mssql::MssqlDriver {}, "mssql://SA:TestPass!123456@localhost:1433/test").unwrap();
     rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
         .unwrap();
     // ------------choose database column mapper------------
