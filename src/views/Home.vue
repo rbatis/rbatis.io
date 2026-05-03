@@ -164,6 +164,91 @@
       </div>
     </section>
 
+    <!-- ====== Section: AI & Developer Experience ====== -->
+    <section class="home-section section-ai" id="section-ai">
+      <div class="section-inner">
+        <div class="ai-badge reveal">AI</div>
+        <h2 class="section-title reveal">{{ $t('sec-ai-title') }}</h2>
+        <p class="section-subtitle reveal reveal-delay-1">{{ $t('sec-ai-sub') }}</p>
+        <div class="ai-grid">
+          <!-- Card: rbdc-mcp -->
+          <div class="ai-card reveal reveal-delay-1">
+            <div class="ai-card-glow"></div>
+            <div class="ai-card-content">
+              <div class="ai-card-header">
+                <div class="ai-card-icon">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3>{{ $t('ai-mcp-title') }}</h3>
+                  <span class="ai-tag">MCP</span>
+                </div>
+              </div>
+              <p>{{ $t('ai-mcp-desc') }}</p>
+              <div class="terminal-window ai-terminal">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                <div class="terminal-body">
+                  <span class="comment">{{ $t('ai-mcp-terminal-label') }}</span><br>
+                  <span class="prompt">  </span>{<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;<span class="string">"mcpServers"</span>: {<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"rbdc-mcp"</span>: {<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"command"</span>: <span class="string">"rbdc-mcp"</span>,<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="string">"args"</span>: [<span class="string">"--database-url"</span>, <span class="string">"sqlite://./database.db"</span>]<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;&nbsp;&nbsp;}<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;}<br>
+                  <span class="prompt">  </span>}
+                </div>
+              </div>
+              <a href="https://github.com/rbatis/rbdc-mcp" class="ai-link" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub →
+              </a>
+            </div>
+          </div>
+
+          <!-- Card: rbatis-skill -->
+          <div class="ai-card reveal reveal-delay-2">
+            <div class="ai-card-glow"></div>
+            <div class="ai-card-content">
+              <div class="ai-card-header">
+                <div class="ai-card-icon">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3>{{ $t('ai-skill-title') }}</h3>
+                  <span class="ai-tag">Skill</span>
+                </div>
+              </div>
+              <p>{{ $t('ai-skill-desc') }}</p>
+              <div class="terminal-window ai-terminal">
+                <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
+                <div class="terminal-body">
+                  <span class="comment">{{ $t('ai-skill-terminal-label') }}</span><br>
+                  <span class="prompt">  </span><span class="comment"># User asks naturally:</span><br>
+                  <span class="prompt">$</span> how do I define a table struct with RBatis?<br>
+                  <br>
+                  <span class="prompt">  </span><span class="comment"># Claude responds with code:</span><br>
+                  <span class="prompt">  </span><span class="keyword">#[derive(Clone, Debug, Serialize, Deserialize)]</span><br>
+                  <span class="prompt">  </span><span class="keyword">pub struct</span> <span class="function">User</span> {<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;  <span class="keyword">pub</span> id: <span class="keyword">Option</span>&lt;<span class="keyword">i32</span>&gt;,<br>
+                  <span class="prompt">  </span>&nbsp;&nbsp;  <span class="keyword">pub</span> name: <span class="keyword">Option</span>&lt;<span class="keyword">String</span>&gt;,<br>
+                  <span class="prompt">  </span>}
+                </div>
+              </div>
+              <a href="https://github.com/rbatis/rbatis-skill" class="ai-link" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                GitHub →
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ====== Section: Supported Databases ====== -->
     <section class="home-section" id="section-db">
       <div class="section-inner">
