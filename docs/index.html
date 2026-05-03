@@ -29,8 +29,8 @@
         <span></span><span></span><span></span>
       </button>
       <div class="topbar-links" id="navLinks">
-        <a href="#/" class="nav-link" data-i18n="nav-home">Home</a>
-        <a href="#/v4" class="nav-link" data-i18n="nav-v4-docs">V4 Docs</a>
+        <a href="#/" class="nav-link" data-i18n="nav-home"></a>
+        <a href="#/v4" class="nav-link" data-i18n="nav-v4-docs"></a>
         <div class="lang-toggle" id="langToggle">
           <button class="lang-btn active" data-lang="en">EN</button>
           <button class="lang-btn" data-lang="zh">中文</button>
@@ -50,23 +50,23 @@
       <img src="assets/logo.png" alt="RBatis" class="hero-logo">
 
       <h1>RBatis</h1>
-      <p class="tagline" data-i18n="tagline">Compile-time ORM for Rust</p>
+      <p class="tagline" data-i18n="tagline"></p>
 
       <div class="hero-features">
         <div class="feature-card">
           <div class="icon">⚡</div>
-          <h3 data-i18n="feature-perf-title">High Performance</h3>
-          <p data-i18n="feature-perf-desc">Zero-cost dynamic SQL compiled at build time</p>
+          <h3 data-i18n="feature-perf-title"></h3>
+          <p data-i18n="feature-perf-desc"></p>
         </div>
         <div class="feature-card">
           <div class="icon">🛡️</div>
-          <h3 data-i18n="feature-safe-title">Type Safe</h3>
-          <p data-i18n="feature-safe-desc">100% safe Rust, compile-time query verification</p>
+          <h3 data-i18n="feature-safe-title"></h3>
+          <p data-i18n="feature-safe-desc"></p>
         </div>
         <div class="feature-card">
           <div class="icon">🔌</div>
-          <h3 data-i18n="feature-driver-title">Driver Abstraction</h3>
-          <p data-i18n="feature-driver-desc">Pluggable database drivers via rbdc trait system</p>
+          <h3 data-i18n="feature-driver-title"></h3>
+          <p data-i18n="feature-driver-desc"></p>
         </div>
       </div>
 
@@ -77,10 +77,10 @@
           <span class="terminal-dot green"></span>
         </div>
         <div class="terminal-body">
-          <span class="comment" data-i18n="terminal-cargo"># Cargo.toml</span><br>
+          <span class="comment" data-i18n="terminal-cargo"></span><br>
           <span class="prompt">$</span> cargo add rbatis<br>
           <br>
-          <span class="comment" data-i18n="terminal-start"># exec_decode</span><br>
+          <span class="comment" data-i18n="terminal-start"></span><br>
           <span class="prompt">$</span> <span class="keyword">let</span> rb = <span class="keyword">RBatis</span>::<span class="function">new</span>();<br>
           <span class="prompt">$</span> rb.<span class="function">init</span>(<br>
           <span class="prompt">$</span> &nbsp;&nbsp;<span class="keyword">rbdc_sqlite</span>::<span class="keyword">driver</span>::<span class="function">SqliteDriver</span> {},<br>
@@ -92,7 +92,7 @@
       </div>
 
       <div class="hero-cta">
-        <a href="#/v4" class="btn btn-primary btn-lg" data-i18n="cta-start">Get Started</a>
+        <a href="#/v4" class="btn btn-primary btn-lg" data-i18n="cta-start"></a>
       </div>
     </div>
 
@@ -102,38 +102,38 @@
   <!-- ====== Section: Why RBatis ====== -->
   <section class="home-section" id="section-why">
     <div class="section-inner">
-      <h2 class="section-title" data-i18n="sec-why-title">Why RBatis?</h2>
-      <p class="section-subtitle" data-i18n="sec-why-sub">A modern, high-performance ORM for Rust with compile-time safety</p>
+      <h2 class="section-title" data-i18n="sec-why-title"></h2>
+      <p class="section-subtitle" data-i18n="sec-why-sub"></p>
       <div class="feature-grid-6">
         <div class="feature-card-lg">
           <div class="icon">⚡</div>
-          <h3 data-i18n="sec-why-compile-title">Compile-time Dynamic SQL</h3>
-          <p data-i18n="sec-why-compile-desc">Zero-cost dynamic SQL powered by proc-macros at compile time. Uses Cow to minimize cloning — no ONGL engine needed.</p>
+          <h3 data-i18n="sec-why-compile-title"></h3>
+          <p data-i18n="sec-why-compile-desc"></p>
         </div>
         <div class="feature-card-lg">
           <div class="icon">🔄</div>
-          <h3 data-i18n="sec-why-mybatis-title">MyBatis3 Compatible</h3>
-          <p data-i18n="sec-why-mybatis-desc">Familiar MyBatis3 syntax support. Easily migrate existing Java projects to Rust with minimal changes.</p>
+          <h3 data-i18n="sec-why-mybatis-title"></h3>
+          <p data-i18n="sec-why-mybatis-desc"></p>
         </div>
         <div class="feature-card-lg">
           <div class="icon">🛡️</div>
-          <h3 data-i18n="sec-why-safe-title">100% Safe Rust</h3>
-          <p data-i18n="sec-why-safe-desc">Enforces <code>#![forbid(unsafe_code)]</code> — compile-time query verification, zero undefined behavior.</p>
+          <h3 data-i18n="sec-why-safe-title"></h3>
+          <p data-i18n="sec-why-safe-desc"></p>
         </div>
         <div class="feature-card-lg">
           <div class="icon">🚀</div>
-          <h3 data-i18n="sec-why-async-title">Async &amp; High Performance</h3>
-          <p data-i18n="sec-why-async-desc">Built on Tokio async runtime. No GC, no runtime overhead — pure zero-cost abstractions.</p>
+          <h3 data-i18n="sec-why-async-title"></h3>
+          <p data-i18n="sec-why-async-desc"></p>
         </div>
         <div class="feature-card-lg">
           <div class="icon">🔌</div>
-          <h3 data-i18n="sec-why-driver-title">Pluggable Drivers</h3>
-          <p data-i18n="sec-why-driver-desc">JDBC-like rbdc trait system. Switch databases by changing a single line of Cargo.toml.</p>
+          <h3 data-i18n="sec-why-driver-title"></h3>
+          <p data-i18n="sec-why-driver-desc"></p>
         </div>
         <div class="feature-card-lg">
           <div class="icon">🧩</div>
-          <h3 data-i18n="sec-why-plugin-title">Rich Plugin System</h3>
-          <p data-i18n="sec-why-plugin-desc">Interceptors, auto table-sync, snowflake &amp; ObjectId generators, pagination, and more.</p>
+          <h3 data-i18n="sec-why-plugin-title"></h3>
+          <p data-i18n="sec-why-plugin-desc"></p>
         </div>
       </div>
     </div>
@@ -142,12 +142,12 @@
   <!-- ====== Section: Dynamic SQL ====== -->
   <section class="home-section section-alt" id="section-dsql">
     <div class="section-inner">
-      <h2 class="section-title" data-i18n="sec-dsql-title">Dynamic SQL</h2>
-      <p class="section-subtitle" data-i18n="sec-dsql-sub">Two powerful dynamic SQL languages — write complex queries with ease</p>
+      <h2 class="section-title" data-i18n="sec-dsql-title"></h2>
+      <p class="section-subtitle" data-i18n="sec-dsql-sub"></p>
       <div class="dsql-grid">
         <div class="dsql-card dsql-card-full">
           <div class="dsql-label">crud!</div>
-          <p data-i18n="sec-dsql-crud-desc">Macro that generates built-in CRUD functions for your table structs — zero boilerplate.</p>
+          <p data-i18n="sec-dsql-crud-desc"></p>
           <div class="terminal-window dsql-terminal">
             <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
             <div class="terminal-body">
@@ -165,7 +165,7 @@
         </div>
         <div class="dsql-card">
           <div class="dsql-label">html_sql</div>
-          <p data-i18n="sec-dsql-html-desc">MyBatis-compatible XML syntax with <code>&lt;if&gt;</code>, <code>&lt;foreach&gt;</code>, <code>&lt;where&gt;</code>, <code>&lt;trim&gt;</code>, and <code>&lt;choose&gt;</code> support.</p>
+          <p data-i18n="sec-dsql-html-desc"></p>
           <div class="terminal-window dsql-terminal">
             <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
             <div class="terminal-body">
@@ -182,7 +182,7 @@
         </div>
         <div class="dsql-card">
           <div class="dsql-label">py_sql</div>
-          <p data-i18n="sec-dsql-py-desc">Python-like syntax for dynamic SQL — concise, readable, and expressive.</p>
+          <p data-i18n="sec-dsql-py-desc"></p>
           <div class="terminal-window dsql-terminal">
             <div class="terminal-header"><span class="terminal-dot red"></span><span class="terminal-dot yellow"></span><span class="terminal-dot green"></span></div>
             <div class="terminal-body">
@@ -203,8 +203,8 @@
   <!-- ====== Section: Supported Databases ====== -->
   <section class="home-section" id="section-db">
     <div class="section-inner">
-      <h2 class="section-title" data-i18n="sec-db-title">Supported Databases</h2>
-      <p class="section-subtitle" data-i18n="sec-db-sub">Any database that implements the rbdc trait — or write your own driver</p>
+      <h2 class="section-title" data-i18n="sec-db-title"></h2>
+      <p class="section-subtitle" data-i18n="sec-db-sub"></p>
       <div class="db-grid">
         <a href="https://crates.io/crates/rbdc-mysql" class="db-item" onclick="window.open(this.href,'_blank');return false">
           <img src="https://cdn.simpleicons.org/mysql/42b983" alt="" width="22" height="22"><span>MySQL</span>
@@ -246,19 +246,19 @@
   <!-- ====== Section: Ecosystem ====== -->
   <section class="home-section section-alt" id="section-eco">
     <div class="section-inner">
-      <h2 class="section-title" data-i18n="sec-eco-title">Ecosystem</h2>
-      <p class="section-subtitle" data-i18n="sec-eco-sub">Production-ready projects built with RBatis</p>
+      <h2 class="section-title" data-i18n="sec-eco-title"></h2>
+      <p class="section-subtitle" data-i18n="sec-eco-sub"></p>
       <div class="eco-grid">
         <a href="https://github.com/rbatis/abs_admin" class="eco-card" target="_blank" rel="noopener">
           <div class="eco-icon">📊</div>
           <h3>abs_admin</h3>
-          <p data-i18n="sec-eco-abs">Background user management system — Vue.js + RBatis + Axum</p>
+          <p data-i18n="sec-eco-abs"></p>
           <span class="eco-link">View on GitHub →</span>
         </a>
         <a href="https://github.com/feihua/salvo-admin" class="eco-card" target="_blank" rel="noopener">
           <div class="eco-icon">🔐</div>
           <h3>salvo_admin</h3>
-          <p data-i18n="sec-eco-salvo">Permission management system — React + RBatis + Salvo</p>
+          <p data-i18n="sec-eco-salvo"></p>
           <span class="eco-link">View on GitHub →</span>
         </a>
       </div>
@@ -276,8 +276,8 @@
   <!-- ====== Footer ====== -->
   <footer class="site-footer">
     <p>
-      <span data-i18n="footer-contrib">&copy; RBatis Contributors</span> &mdash;
-      <a href="https://github.com/rbatis/rbatis" target="_blank" rel="noopener" data-i18n="footer-github">GitHub</a>
+      <span data-i18n="footer-contrib"></span> &mdash;
+      <a href="https://github.com/rbatis/rbatis" target="_blank" rel="noopener" data-i18n="footer-github"></a>
     </p>
   </footer>
 
