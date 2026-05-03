@@ -10,6 +10,10 @@
         <h1>RBatis</h1>
         <p class="tagline">{{ $t('tagline') }}</p>
 
+        <div class="hero-cta">
+          <a href="#/v4" class="btn btn-primary btn-lg">{{ $t('cta-start') }}</a>
+        </div>
+
         <div class="hero-features">
           <div class="feature-card">
             <div class="icon">⚡</div>
@@ -49,8 +53,10 @@
           </div>
         </div>
 
-        <div class="hero-cta">
-          <a href="#/v4" class="btn btn-primary btn-lg">{{ $t('cta-start') }}</a>
+        <div class="scroll-down">
+          <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+          </svg>
         </div>
       </div>
 

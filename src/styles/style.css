@@ -343,6 +343,7 @@ img { max-width: 100%; height: auto; }
   gap: var(--space-md);
   flex-wrap: wrap;
   justify-content: center;
+  margin-bottom: var(--space-xl);
 }
 
 .btn {
@@ -403,6 +404,19 @@ img { max-width: 100%; height: auto; }
   background: var(--text-muted);
   border-radius: 1px;
   animation: scrollLine 2s ease-in-out infinite;
+}
+.scroll-down {
+  opacity: 0.3;
+  margin-top: var(--space-lg);
+  animation: float 2.5s ease-in-out infinite;
+  transition: opacity var(--ease-fast);
+  cursor: pointer;
+}
+.scroll-down:hover {
+  opacity: 0.7;
+}
+.scroll-down svg {
+  display: block;
 }
 @keyframes float {
   0%, 100% { transform: translateY(0); }
