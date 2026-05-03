@@ -202,17 +202,21 @@ import ParticleCanvas from '../components/ParticleCanvas.vue'
 
 const logoUrl = new URL('../assets/logo.png', import.meta.url).href
 
+const mssqlIcon = new URL('../assets/db-icons/mssql.svg', import.meta.url).href
+const oracleIcon = new URL('../assets/db-icons/oracle.svg', import.meta.url).href
+const tdengineIcon = new URL('../assets/db-icons/tdengine.svg', import.meta.url).href
+
 const databases = [
   { name: 'MySQL', url: 'https://crates.io/crates/rbdc-mysql', iconUrl: 'https://cdn.simpleicons.org/mysql/42b983' },
   { name: 'PostgreSQL', url: 'https://crates.io/crates/rbdc-pg', iconUrl: 'https://cdn.simpleicons.org/postgresql/42b983' },
   { name: 'SQLite', url: 'https://crates.io/crates/rbdc-sqlite', iconUrl: 'https://cdn.simpleicons.org/sqlite/42b983' },
-  { name: 'MSSQL', url: 'https://crates.io/crates/rbdc-mssql', iconUrl: 'assets/db-icons/mssql.svg' },
+  { name: 'MSSQL', url: 'https://crates.io/crates/rbdc-mssql', iconUrl: mssqlIcon },
   { name: 'Turso', url: 'https://crates.io/crates/rbdc-turso', iconUrl: 'https://cdn.simpleicons.org/turso/42b983' },
   { name: 'DuckDB', url: 'https://crates.io/crates/rbdc-duckdb', iconUrl: 'https://cdn.simpleicons.org/duckdb/42b983' },
   { name: 'MariaDB', url: 'https://crates.io/crates/rbdc-mysql', iconUrl: 'https://cdn.simpleicons.org/mariadb/42b983' },
   { name: 'TiDB', url: 'https://crates.io/crates/rbdc-mysql', iconUrl: 'https://cdn.simpleicons.org/tidb/42b983' },
   { name: 'CockroachDB', url: 'https://crates.io/crates/rbdc-pg', iconUrl: 'https://cdn.simpleicons.org/cockroachlabs/42b983' },
-  { name: 'Oracle', url: 'https://crates.io/crates/rbdc-oracle', iconUrl: 'assets/db-icons/oracle.svg' },
-  { name: 'TDengine', url: 'https://crates.io/crates/rbdc-tdengine', iconUrl: 'assets/db-icons/tdengine.svg' },
+  { name: 'Oracle', url: 'https://crates.io/crates/rbdc-oracle', iconUrl: oracleIcon },
+  { name: 'TDengine', url: 'https://crates.io/crates/rbdc-tdengine', iconUrl: tdengineIcon },
 ]
 </script>
