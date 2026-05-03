@@ -1,0 +1,13 @@
+{
+  "name": "rbatis.io",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RBatis - Compile-time ORM for Rust - Official Website",
+  "scripts": {
+    "start": "serve docs -p 3000",
+    "dev": "serve docs -p 3000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+}
