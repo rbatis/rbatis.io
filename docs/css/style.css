@@ -847,6 +847,9 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
 }
 
 .db-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-sm);
   background: rgba(26, 34, 26, 0.6);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
@@ -859,6 +862,8 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
   text-align: center;
   text-decoration: none;
 }
+.db-item img { flex-shrink: 0; }
+.db-icon { font-size: 1.3rem; line-height: 1; }
 .db-item:hover {
   border-color: var(--green-500);
   color: var(--green-400);
