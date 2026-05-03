@@ -21,7 +21,7 @@
     'feature-driver-title':  { en: 'Driver Abstraction',  zh: '驱动抽象' },
     'feature-driver-desc':   { en: 'Pluggable database drivers via rbdc trait system', zh: '通过 rbdc trait 系统实现可插拔驱动' },
     'terminal-cargo':  { en: '# Cargo.toml', zh: '# Cargo.toml' },
-    'terminal-start':  { en: '# Quick start', zh: '# 快速开始' },
+    'terminal-start':  { en: '# exec_decode', zh: '# exec_decode' },
     'cta-start':       { en: 'Get Started',   zh: '快速开始' },
     'cta-github':      { en: 'View on GitHub', zh: '查看 GitHub' },
     'footer-contrib':  { en: '© RBatis Contributors', zh: '© RBatis Contributors' },

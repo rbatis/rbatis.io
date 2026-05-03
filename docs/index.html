@@ -80,10 +80,13 @@
           <span class="comment" data-i18n="terminal-cargo"># Cargo.toml</span><br>
           <span class="prompt">$</span> cargo add rbatis<br>
           <br>
-          <span class="comment" data-i18n="terminal-start"># Quick start</span><br>
-          <span class="prompt">$</span> <span class="keyword">let</span> rb = <span class="keyword">rbatis</span>::<span class="function">RBatis</span>::<span class="function">new</span>();<br>
-          <span class="prompt">$</span> rb.<span class="function">link</span>(<span class="string">"mysql://user:pass@localhost/db"</span>)<span class="keyword">.await</span>;<br>
-          <span class="prompt">$</span> <span class="keyword">let</span> users: <span class="keyword">Vec</span>&lt;User&gt; = rb.<span class="function">fetch</span>().<span class="keyword">await</span>;<br>
+          <span class="comment" data-i18n="terminal-start"># exec_decode</span><br>
+          <span class="prompt">$</span> <span class="keyword">let</span> rb = <span class="keyword">RBatis</span>::<span class="function">new</span>();<br>
+          <span class="prompt">$</span> rb.<span class="function">init</span>(<br>
+          <span class="prompt">$</span> &nbsp;&nbsp;<span class="keyword">rbdc_sqlite</span>::<span class="keyword">driver</span>::<span class="function">SqliteDriver</span> {},<br>
+          <span class="prompt">$</span> &nbsp;&nbsp;<span class="string">"sqlite://target/sqlite.db"</span><br>
+          <span class="prompt">$</span> )?;<br>
+          <span class="prompt">$</span> <span class="keyword">let</span> table: <span class="keyword">Vec</span>&lt;Activity&gt; = rb.<span class="function">exec_decode</span>(<span class="string">"select * from activity limit ?"</span>, vec![<span class="function">value!</span>(<span class="keyword">1</span>)]).<span class="keyword">await</span>?;<br>
           <span class="cursor"></span>
         </div>
       </div>
