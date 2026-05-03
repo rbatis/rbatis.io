@@ -164,7 +164,7 @@
         <h2 class="section-title">{{ $t('sec-db-title') }}</h2>
         <p class="section-subtitle">{{ $t('sec-db-sub') }}</p>
         <div class="db-grid">
-          <a v-for="db in databases" :key="db.name" :href="db.url" class="db-item" target="_blank" rel="noopener">
+          <a v-for="db in databases" :key="db.name" :href="db.url" class="db-item" @click.prevent="openLink(db.url)">
             <img v-if="db.iconUrl" :src="db.iconUrl" alt="" width="22" height="22">
             <span>{{ db.name }}</span>
           </a>
@@ -201,6 +201,10 @@ import { inject } from 'vue'
 import ParticleCanvas from '../components/ParticleCanvas.vue'
 
 const logoUrl = new URL('../assets/logo.png', import.meta.url).href
+
+function openLink(url) {
+  window.open(url, '_blank')
+}
 
 const mssqlIcon = new URL('../assets/db-icons/mssql.svg', import.meta.url).href
 const oracleIcon = new URL('../assets/db-icons/oracle.svg', import.meta.url).href
