@@ -63,6 +63,15 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* ---- Custom Scrollbar ---- */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb {
+  background: var(--green-700);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--green-600); }
+
 a { color: var(--text-link); text-decoration: none; transition: color var(--ease-fast); }
 a:hover { color: var(--text-link-hover); }
 

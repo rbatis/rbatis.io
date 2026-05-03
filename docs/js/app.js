@@ -137,15 +137,29 @@
     var sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
 
+    // Use the rendered DOM headings instead of parsing markdown,
+    // so IDs always match what marked.js generated.
     var headings = [];
-    markdown.split('\n').forEach(function (line) {
-      var match = line.match(/^(#{2,4})\s+(.+)/);
-      if (match) {
-        var text = match[2].replace(/`([^`]+)`/g, '$1');
-        var id = text.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
-        headings.push({ level: match[1].length, text: text, id: id });
-      }
+    var headingEls = document.querySelectorAll('.content h2, .content h3, .content h4');
+    headingEls.forEach(function (el) {
+      var level = parseInt(el.tagName.slice(1));
+      var text = el.textContent.replace(/#$/, '').trim();
+      var id = el.id || text.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+      if (!el.id) el.id = id; // ensure it has an id
+      headings.push({ level: level, text: text, id: id });
     });
+
+    // Fallback: parse markdown if no DOM headings found
+    if (headings.length === 0) {
+      markdown.split('\n').forEach(function (line) {
+        var match = line.match(/^(#{2,4})\s+(.+)/);
+        if (match) {
+          var text = match[2].replace(/`([^`]+)`/g, '$1');
+          var id = text.toLowerCase().replace(/[^\w\s一-鿿-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-');
+          headings.push({ level: match[1].length, text: text, id: id });
+        }
+      });
+    }
 
     var html = '<div class="sidebar-header">V4 ' + (currentLang === 'zh' ? '文档' : 'Documentation') + '</div>';
     html += '<nav class="sidebar-nav">';
