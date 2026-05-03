@@ -25,7 +25,35 @@
     'cta-start':       { en: 'Get Started',   zh: '快速开始' },
     'cta-github':      { en: 'View on GitHub', zh: '查看 GitHub' },
     'footer-contrib':  { en: '© RBatis Contributors', zh: '© RBatis Contributors' },
-    'footer-github':   { en: 'GitHub',        zh: 'GitHub' }
+    'footer-github':   { en: 'GitHub',        zh: 'GitHub' },
+    /* Why RBatis section */
+    'sec-why-title':        { en: 'Why RBatis?',                      zh: '为什么选择 RBatis？' },
+    'sec-why-sub':          { en: 'A modern, high-performance ORM for Rust with compile-time safety', zh: '一个现代、高性能的 Rust ORM，编译期安全保障' },
+    'sec-why-compile-title':  { en: 'Compile-time Dynamic SQL',       zh: '编译期动态 SQL' },
+    'sec-why-compile-desc':   { en: 'Zero-cost dynamic SQL powered by proc-macros at compile time. Uses Cow to minimize cloning — no ONGL engine needed.', zh: '编译期通过 proc-macro 实现的零成本动态 SQL，使用 Cow 减少克隆，无需 ONGL 引擎。' },
+    'sec-why-mybatis-title':  { en: 'MyBatis3 Compatible',            zh: '兼容 MyBatis3' },
+    'sec-why-mybatis-desc':   { en: 'Familiar MyBatis3 syntax support. Easily migrate existing Java projects to Rust with minimal changes.', zh: '支持熟悉的 MyBatis3 语法，轻松将 Java 项目迁移到 Rust。' },
+    'sec-why-safe-title':     { en: '100% Safe Rust',                zh: '100% 安全的 Rust' },
+    'sec-why-safe-desc':      { en: 'Enforces #![forbid(unsafe_code)] — compile-time query verification, zero undefined behavior.', zh: '强制 #![forbid(unsafe_code)] — 编译期查询验证，零未定义行为。' },
+    'sec-why-async-title':    { en: 'Async & High Performance',       zh: '异步 & 高性能' },
+    'sec-why-async-desc':     { en: 'Built on Tokio async runtime. No GC, no runtime overhead — pure zero-cost abstractions.', zh: '基于 Tokio 异步运行时，无 GC，无运行时开销 — 纯粹的零成本抽象。' },
+    'sec-why-driver-title':   { en: 'Pluggable Drivers',              zh: '可插拔驱动' },
+    'sec-why-driver-desc':    { en: 'JDBC-like rbdc trait system. Switch databases by changing a single line of Cargo.toml.', zh: '类似 JDBC 的 rbdc trait 系统，切换数据库只需修改一行 Cargo.toml。' },
+    'sec-why-plugin-title':   { en: 'Rich Plugin System',             zh: '丰富的插件系统' },
+    'sec-why-plugin-desc':    { en: 'Interceptors, auto table-sync, snowflake & ObjectId generators, pagination, and more.', zh: '拦截器、自动表同步、雪花算法 & ObjectId 生成器、分页等等。' },
+    /* Dynamic SQL section */
+    'sec-dsql-title':   { en: 'Dynamic SQL',                  zh: '动态 SQL' },
+    'sec-dsql-sub':     { en: 'Two powerful dynamic SQL languages — write complex queries with ease', zh: '两种强大的动态 SQL 语言 — 轻松编写复杂查询' },
+    'sec-dsql-html-desc': { en: 'MyBatis-compatible XML syntax with <if>, <foreach>, <where>, <trim>, and <choose> support.', zh: '兼容 MyBatis 的 XML 语法，支持 <if>、<foreach>、<where>、<trim>、<choose>。' },
+    'sec-dsql-py-desc':   { en: 'Python-like syntax for dynamic SQL — concise, readable, and expressive.', zh: '类似 Python 的动态 SQL 语法 — 简洁、可读、表达力强。' },
+    /* Database section */
+    'sec-db-title':   { en: 'Supported Databases',            zh: '支持的数据库' },
+    'sec-db-sub':     { en: 'Any database that implements the rbdc trait — or write your own driver', zh: '任何实现了 rbdc trait 的数据库 — 你也可以自己编写驱动' },
+    /* Ecosystem section */
+    'sec-eco-title':  { en: 'Ecosystem',                      zh: '生态项目' },
+    'sec-eco-sub':    { en: 'Production-ready projects built with RBatis', zh: '基于 RBatis 的生产级项目' },
+    'sec-eco-abs':    { en: 'Background user management system — Vue.js + RBatis + Axum', zh: '后台用户管理系统 — Vue.js + RBatis + Axum' },
+    'sec-eco-salvo':  { en: 'Permission management system — React + RBatis + Salvo', zh: '后台权限管理系统 — React + RBatis + Salvo' }
   };
 
   function applyHomeI18n(lang) {

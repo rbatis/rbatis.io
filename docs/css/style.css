@@ -375,6 +375,8 @@ img { max-width: 100%; height: auto; }
 
 .btn-secondary svg { width: 18px; height: 18px; fill: currentColor; }
 
+.btn-lg { padding: 16px 48px; font-size: 1.15rem; }
+
 /* Scroll Indicator */
 .scroll-indicator {
   position: absolute;
@@ -703,6 +705,209 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
 }
 .site-footer a:hover { color: var(--green-400); }
 
+/* ---- Homepage Content Sections ---- */
+.home-section {
+  padding: 80px var(--space-lg);
+  position: relative;
+}
+
+.home-section.section-alt {
+  background: var(--bg-secondary);
+}
+
+.section-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--green-400);
+  margin-bottom: var(--space-sm);
+}
+
+.section-subtitle {
+  text-align: center;
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: var(--space-xl);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* 6-card Feature Grid */
+.feature-grid-6 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-lg);
+}
+
+.feature-card-lg {
+  background: rgba(26, 34, 26, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: all var(--ease-normal);
+}
+.feature-card-lg:hover {
+  border-color: var(--green-500);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-4px);
+  background: rgba(26, 34, 26, 0.9);
+}
+.feature-card-lg .icon {
+  font-size: 1.8rem;
+  margin-bottom: var(--space-sm);
+}
+.feature-card-lg h3 {
+  color: var(--green-400);
+  font-size: 1rem;
+  margin-bottom: var(--space-xs);
+}
+.feature-card-lg p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.6;
+}
+.feature-card-lg code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--green-200);
+  background: rgba(66, 185, 131, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* Dynamic SQL Section */
+.dsql-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-xl);
+}
+
+.dsql-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.dsql-label {
+  display: inline-block;
+  background: var(--green-500);
+  color: var(--text-inverse);
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 4px 14px;
+  border-radius: var(--radius-round);
+  margin-bottom: var(--space-sm);
+  align-self: flex-start;
+}
+
+.dsql-card p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: var(--space-md);
+}
+.dsql-card p code {
+  font-family: var(--font-mono);
+  font-size: 0.85em;
+  color: var(--green-200);
+  background: rgba(66, 185, 131, 0.1);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.dsql-terminal {
+  margin-bottom: 0;
+  flex: 1;
+}
+.dsql-terminal .terminal-body {
+  font-size: 0.78rem;
+  padding: var(--space-sm) var(--space-md);
+}
+
+/* Database Grid */
+.db-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--space-md);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.db-item {
+  background: rgba(26, 34, 26, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-md) var(--space-lg);
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+  transition: all var(--ease-fast);
+  min-width: 110px;
+  text-align: center;
+}
+.db-item:hover {
+  border-color: var(--green-500);
+  color: var(--green-400);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-2px);
+}
+
+/* Ecosystem Grid */
+.eco-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-lg);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.eco-card {
+  display: block;
+  background: rgba(26, 34, 26, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  padding: var(--space-lg);
+  transition: all var(--ease-normal);
+  text-decoration: none;
+}
+.eco-card:hover {
+  border-color: var(--green-500);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-4px);
+  background: rgba(26, 34, 26, 0.9);
+}
+
+.eco-icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-sm);
+}
+.eco-card h3 {
+  color: var(--green-400);
+  font-size: 1.1rem;
+  margin-bottom: var(--space-xs);
+}
+.eco-card p {
+  color: var(--text-secondary);
+  font-size: 0.88rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-sm);
+}
+.eco-link {
+  color: var(--green-500);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+.eco-card:hover .eco-link {
+  color: var(--green-400);
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 1024px) {
   .sidebar { width: 240px; }
@@ -755,6 +960,14 @@ h2:hover .anchor-link, h3:hover .anchor-link, h4:hover .anchor-link { opacity: 0
   .lang-toggle { align-self: flex-start; }
 
   .btn { padding: 10px 22px; font-size: 0.9rem; }
+
+  .home-section { padding: 60px var(--space-md); }
+  .section-title { font-size: 1.6rem; }
+  .section-subtitle { font-size: 0.95rem; }
+  .feature-grid-6 { grid-template-columns: 1fr; max-width: 450px; margin: 0 auto; }
+  .dsql-grid { grid-template-columns: 1fr; }
+  .eco-grid { grid-template-columns: 1fr; max-width: 450px; }
+  .db-item { min-width: 90px; font-size: 0.85rem; padding: var(--space-sm) var(--space-md); }
 }
 
 @media (max-width: 480px) {
