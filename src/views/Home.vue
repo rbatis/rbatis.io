@@ -5,9 +5,10 @@
       <ParticleCanvas />
 
       <div class="hero-content">
-        <img :src="logoUrl" alt="RBatis" class="hero-logo">
-
-        <h1>RBatis</h1>
+        <div class="hero-title-row">
+          <img :src="logoUrl" alt="RBatis" class="hero-logo">
+          <h1>RBatis</h1>
+        </div>
         <p class="tagline">{{ $t('tagline') }}</p>
 
         <div class="hero-cta">

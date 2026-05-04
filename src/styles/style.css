@@ -245,10 +245,16 @@ img { max-width: 100%; height: auto; }
   max-width: 900px;
 }
 
+.hero-title-row {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: var(--space-lg);
+}
+
 .hero-logo {
   width: 160px;
   height: auto;
-  margin-bottom: var(--space-lg);
   filter: drop-shadow(0 0 30px rgba(66, 185, 131, 0.3));
   transition: filter 0.7s ease;
 }
