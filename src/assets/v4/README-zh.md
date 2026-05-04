@@ -122,6 +122,7 @@ rbatis::crud!(BizActivity {},"biz_activity");
 #[macro_use]
 extern crate rbatis;
 
+use rbatis::Error;
 
 use rbatis::rbdc::datetime::DateTime;
 use serde_json::json;
@@ -146,7 +147,7 @@ pub struct BizActivity {
 crud!(BizActivity{});
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Error> {
     /// enable log crate to show sql logs
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
@@ -154,17 +155,17 @@ async fn main() {
     /// connect to database
 
     //init() just set driver
-    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" )?;
 
     // link() will set driver and try use acquire() link database
     // sqlite
-    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
+    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await?;
     // mysql
-    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await?;
     // postgresql
-    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await?;
     // mssql/sqlserver
-    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
+    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await?;
 
     let table = BizActivity {
         id: Some("2".into()),
@@ -191,6 +192,7 @@ async fn main() {
 
     let data = BizActivity::insert_batch(&rb, &tables, 10).await;
     println!("insert_batch = {}", json!(data));
+    Ok(())
 }
 ```
 
@@ -201,6 +203,7 @@ async fn main() {
 #[macro_use]
 extern crate rbatis;
 
+use rbatis::Error;
 
 use rbatis::rbdc::datetime::DateTime;
 use serde_json::json;
@@ -223,7 +226,7 @@ pub struct BizActivity {
 crud!(BizActivity{});
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Error> {
     /// enable log crate to show sql logs
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
@@ -231,17 +234,17 @@ async fn main() {
     /// connect to database
 
     //init() just set driver
-    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" )?;
 
     // link() will set driver and try use acquire() link database
     // sqlite
-    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
+    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await?;
     // mysql
-    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await?;
     // postgresql
-    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await?;
     // mssql/sqlserver
-    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
+    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await?;
 
     let table = BizActivity {
         id: Some("2".into()),
@@ -260,6 +263,7 @@ async fn main() {
 
     let data = BizActivity::update_by_map(&rb, &table, value!{"id":&table.id}).await;
     println!("update_by_map = {}", json!(data));
+    Ok(())
 
 }
 ```
@@ -271,6 +275,7 @@ async fn main() {
 #[macro_use]
 extern crate rbatis;
 
+use rbatis::Error;
 
 use rbatis::rbdc::datetime::DateTime;
 use serde_json::json;
@@ -293,7 +298,7 @@ pub struct BizActivity {
 crud!(BizActivity{});
 
 #[tokio::main]
-async fn main() {
+async fn main() -> Result<(), Error> {
     /// enable log crate to show sql logs
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     /// initialize rbatis. also you can call rb.clone(). this is  an Arc point
@@ -301,20 +306,21 @@ async fn main() {
     /// connect to database
 
     //init() just set driver
-    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" ).unwrap();
+    //rb.init(rbdc_sqlite::SqliteDriver {}, "sqlite://target/sqlite.db" )?;
 
     // link() will set driver and try use acquire() link database
     // sqlite
-    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await.unwrap();
+    rb.link(SqliteDriver {}, "sqlite://target/sqlite.db").await?;
     // mysql
-    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await.unwrap();
+    // rb.link(MysqlDriver{},"mysql://root:123456@localhost:3306/test").await?;
     // postgresql
-    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
+    // rb.link(PgDriver{},"postgres://postgres:123456@localhost:5432/postgres").await?;
     // mssql/sqlserver
-    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await.unwrap();
+    // rb.link(MssqlDriver{},"jdbc:sqlserver://localhost:1433;User=SA;Password={TestPass!123456};Database=test").await?;
 
     let data = BizActivity::select_by_map(&rb, value!{"id":"1"}).await;
     println!("select_by_map = {}", json!(data));
+    Ok(())
 }
 ```
 
@@ -441,8 +447,11 @@ fn main(){
 
 *  rbs 从 value 解码
 ```rust
-fn main(){
-    let v:i32 = rbs::from_value(Value::I32(1)).unwrap();
+use rbatis::Error;
+
+fn main() -> Result<(), Error> {
+    let v: i32 = rbs::from_value(Value::I32(1))?;
+    Ok(())
 }
 ```
 
@@ -464,6 +473,7 @@ fn main(){
 示例请参见 [这里](https://github.com/rbatis/rbatis/blob/master/example/src/transaction.rs)
 
 ```rust
+use rbatis::Error;
 use serde::{Deserialize, Serialize};
 #[derive(Clone, Debug, Serialize, Deserialize)]
 pub struct BizActivity {
@@ -482,16 +492,16 @@ pub struct BizActivity {
 }
 crud!(BizActivity{});
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> Result<(), Error> {
     let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     let rb = RBatis::new();
-    // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
-    // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await.unwrap();
+    // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await?;
+    // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await?;
+    // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await?;
     rb.link(
         SqliteDriver {},
         &format!("sqlite://{}target/sqlite.db", path),
-    ).await.unwrap();
+    ).await?;
     let t = BizActivity {
         id: Some("2".into()),
         name: Some("2".into()),
@@ -506,19 +516,20 @@ pub async fn main() {
         version: Some(1),
         delete_flag: Some(1),
     };
-    let tx = rb.acquire_begin().await.unwrap();
+    let tx = rb.acquire_begin().await?;
     // defer_async will be rollback if tx drop
     // let mut tx = tx.defer_async(|mut tx| async move {
     //     if !tx.done() {
-    //         tx.rollback().await.unwrap();
+    //         tx.rollback().await?;
     //         println!("rollback");
     //     }
     // });
-    //tx.exec("select 1", vec![]).await.unwrap();
-    BizActivity::insert(& tx, &t).await.unwrap();
+    //tx.exec("select 1", vec![]).await?;
+    BizActivity::insert(& tx, &t).await?;
 
-    tx.commit().await.unwrap();
-    tx.rollback().await.unwrap();
+    tx.commit().await?;
+    tx.rollback().await?;
+    Ok(())
 }
 ```
 
@@ -529,6 +540,7 @@ pub async fn main() {
 > RBatis 提供的驱动都支持占位符 '?'，因此你可以在 Postgres/mssql 等数据库上使用 '?'
 
 ```rust
+use rbatis::Error;
 use rbs::to_value;
 use std::time::Duration;
 use tokio::time::sleep;
@@ -549,27 +561,26 @@ pub struct BizActivity {
     pub delete_flag: Option<i32>,
 }
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> Result<(), Error> {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
      let rb = RBatis::new();
-    // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await.unwrap();
-    // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await.unwrap();
-    // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await.unwrap();
+    // rb.link(MysqlDriver {},"mysql://root:123456@localhost:3306/test").await?;
+    // rb.link(PgDriver {},"postgres://postgres:123456@localhost:5432/postgres").await?;
+    // rb.link(MssqlDriver {},"mssql://SA:TestPass!123456@localhost:1433/test").await?;
     rb.link(
         SqliteDriver {},
         &format!("sqlite://{}target/sqlite.db", path),
-    ).await.unwrap();
+    ).await?;
     let table: Option<BizActivity> = rb
         .exec_decode("select * from biz_activity limit ?", vec![to_value!(1)])
-        .await
-        .unwrap();
+        .await?;
     let count: u64 = rb
         .exec_decode("select count(1) as count from biz_activity", vec![])
-        .await
-        .unwrap();
+        .await?;
     sleep(Duration::from_secs(1)).await;
     println!(">>>>> table={:?}", table);
     println!(">>>>> count={}", count);
+    Ok(())
 }
 ```
 
@@ -739,20 +750,20 @@ use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::DateTime;
 use rbatis::sql::PageRequest;
 use rbdc_sqlite::SqliteDriver;
+use rbatis::Error;
 
 htmlsql_select_page!(select_page_data(name: &str, dt: &DateTime) -> BizActivity => "example/example.html");
 
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> Result<(), Error> {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     let rb = RBatis::new();
     rb.link(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
-        .await
-        .unwrap();
+        .await?;
     let a = select_page_data(&rb,&PageRequest::new(1, 10),"test",&DateTime::now().set_micro(0))
-        .await
-        .unwrap();
+        .await?;
     println!("{:?}", a);
+    Ok(())
 }
 ```
 
@@ -890,6 +901,7 @@ use rbatis::rbatis::RBatis;
 use rbatis::rbdc::datetime::DateTime;
 use rbdc_sqlite::SqliteDriver;
 use rbs::to_value;
+use rbatis::Error;
 
 #[derive(Clone, Debug, serde::Serialize, serde::Deserialize)]
 pub struct RBUser {
@@ -902,15 +914,14 @@ pub struct RBUser {
 }
 
 #[tokio::main]
-pub async fn main() {
+pub async fn main() -> Result<(), Error> {
     fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
     let rb = RBatis::new();
     // ------------choose database driver------------
-    //rb.init(rbdc_mysql::MysqlDriver {}, "mysql://root:123456@localhost:3306/test").unwrap();
-    // rb.init(rbdc_pg::PgDriver {}, "postgres://postgres:123456@localhost:5432/postgres").unwrap();
-    // rb.init(rbdc_mssql::MssqlDriver {}, "mssql://SA:TestPass!123456@localhost:1433/test").unwrap();
-    rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))
-        .unwrap();
+    //rb.init(rbdc_mysql::MysqlDriver {}, "mysql://root:123456@localhost:3306/test")?;
+    // rb.init(rbdc_pg::PgDriver {}, "postgres://postgres:123456@localhost:5432/postgres")?;
+    // rb.init(rbdc_mssql::MssqlDriver {}, "mssql://SA:TestPass!123456@localhost:1433/test")?;
+    rb.init(SqliteDriver {}, &format!("sqlite://target/sqlite.db"))?;
     // ------------直接用 &rb 作 column mapper（也可以自定义 impl ColumnMapper）------------
     let map = rbs::to_value!{
             "id":"INT",
@@ -920,7 +931,7 @@ pub async fn main() {
 
 
     RBatis::sync(
-        &rb.acquire().await.unwrap(),
+        &rb.acquire().await?,
         &rb,
         &RBUser {
             id: 0,
@@ -936,8 +947,8 @@ pub async fn main() {
         },
         "rb_user",
     )
-        .await
-        .unwrap();
+        .await?;
+    Ok(())
 }
 
 ```
@@ -1160,7 +1171,7 @@ impl Driver for MockDriver {
         &'a self,
         opt: &'a dyn ConnectOptions,
     ) -> BoxFuture<Result<Box<dyn Connection>, Error>> {
-        let opt = opt.downcast_ref::<MockConnectOptions>().unwrap();
+        let opt = opt.downcast_ref::<MockConnectOptions>().expect("downcast to MockConnectOptions failed");
         Box::pin(async move {
             let conn = MockConnection {};
             Ok(Box::new(conn) as Box<dyn Connection>)
@@ -1213,11 +1224,14 @@ impl Placeholder for MockDriver {
 * 步骤4: 在 rbatis 中加载你的驱动
 
 ```rust
+use rbatis::Error;
+
 #[tokio::main]
-async fn main(){
+async fn main() -> Result<(), Error> {
     let mut rb = RBatis::new();
-    rb.init(MockDriver {}, "xxx://xxx.db").unwrap();
-    rb.acquire().await.expect("connect database fail");
+    rb.init(MockDriver {}, "xxx://xxx.db")?;
+    let conn = rb.acquire().await?;
     println!("connect database successful");
+    Ok(())
 }
 ```
