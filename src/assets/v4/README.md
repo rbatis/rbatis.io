@@ -537,6 +537,67 @@ pub async fn main() -> Result<(), Error> {
 ```
 
 
+> The RBatis also supports the `auto_commit()` method. `auto_commit()` returns a `RBatisTxExecutorGuard` which will auto commit on success or rollback on error when the guard is dropped. This is useful for preventing forgotten commits/rollbacks.
+
+example [see](https://github.com/rbatis/rbatis/blob/master/example/src/transaction_auto_commit.rs)
+
+```rust
+use rbatis::Error;
+use rbatis::rbac::RBatisTxExecutorGuard;
+use serde::{Deserialize, Serialize};
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<DateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+crud!(BizActivity{});
+#[tokio::main]
+pub async fn main() -> Result<(), Error> {
+    let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    let rb = RBatis::new();
+    rb.link(
+        SqliteDriver {},
+        &format!("sqlite://{}target/sqlite.db", path),
+    ).await?;
+    let tx = rb.acquire_begin().await?;
+    // auto_commit will commit on success or rollback on error when guard is dropped
+    let tx: RBatisTxExecutorGuard = tx.auto_commit();
+    log::info!("transaction [{}] start", tx.tx_id());
+    let _ = BizActivity::insert(
+        &tx,
+        &BizActivity {
+            id: Some("3".into()),
+            name: Some("3".into()),
+            pc_link: Some("3".into()),
+            h5_link: Some("3".into()),
+            pc_banner_img: None,
+            h5_banner_img: None,
+            sort: None,
+            status: Some(3),
+            remark: Some("3".into()),
+            create_time: Some(DateTime::now()),
+            version: Some(1),
+            delete_flag: Some(1),
+        },
+    )
+    .await;
+    // if not commit or rollback, tx.done = false,
+    // tx will auto commit when guard goes out of scope
+    Ok(())
+}
+```
+
+
 #### Raw Sql
 
 > the RBatis also support Write the original statements of the database

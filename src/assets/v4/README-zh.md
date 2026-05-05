@@ -534,6 +534,67 @@ pub async fn main() -> Result<(), Error> {
 ```
 
 
+> RBatis 还支持 `auto_commit()` 方法。`auto_commit()` 返回一个 `RBatisTxExecutorGuard`，当 guard 被 drop 时，会自动在成功时 commit，在错误时 rollback。这有助于防止忘记提交/回滚。
+
+示例请参见 [这里](https://github.com/rbatis/rbatis/blob/master/example/src/transaction_auto_commit.rs)
+
+```rust
+use rbatis::Error;
+use rbatis::rbac::RBatisTxExecutorGuard;
+use serde::{Deserialize, Serialize};
+#[derive(Clone, Debug, Serialize, Deserialize)]
+pub struct BizActivity {
+    pub id: Option<String>,
+    pub name: Option<String>,
+    pub pc_link: Option<String>,
+    pub h5_link: Option<String>,
+    pub pc_banner_img: Option<String>,
+    pub h5_banner_img: Option<String>,
+    pub sort: Option<String>,
+    pub status: Option<i32>,
+    pub remark: Option<String>,
+    pub create_time: Option<DateTime>,
+    pub version: Option<i64>,
+    pub delete_flag: Option<i32>,
+}
+crud!(BizActivity{});
+#[tokio::main]
+pub async fn main() -> Result<(), Error> {
+    let _ = fast_log::init(fast_log::Config::new().console()).expect("rbatis init fail");
+    let rb = RBatis::new();
+    rb.link(
+        SqliteDriver {},
+        &format!("sqlite://{}target/sqlite.db", path),
+    ).await?;
+    let tx = rb.acquire_begin().await?;
+    // auto_commit 会在 guard 被 drop 时自动 commit（成功时）或 rollback（错误时）
+    let tx: RBatisTxExecutorGuard = tx.auto_commit();
+    log::info!("transaction [{}] start", tx.tx_id());
+    let _ = BizActivity::insert(
+        &tx,
+        &BizActivity {
+            id: Some("3".into()),
+            name: Some("3".into()),
+            pc_link: Some("3".into()),
+            h5_link: Some("3".into()),
+            pc_banner_img: None,
+            h5_banner_img: None,
+            sort: None,
+            status: Some(3),
+            remark: Some("3".into()),
+            create_time: Some(DateTime::now()),
+            version: Some(1),
+            delete_flag: Some(1),
+        },
+    )
+    .await;
+    // 如果没有手动 commit 或 rollback，tx.done = false，
+    // guard 超出作用域时会自动 commit
+    Ok(())
+}
+```
+
+
 #### 原生 SQL
 
 > RBatis 也支持编写数据库的原始语句
